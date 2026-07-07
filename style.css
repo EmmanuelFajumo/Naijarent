@@ -1,0 +1,128 @@
+        /* font-family: "Voltaire", sans-serif; */
+        /* font-family: "Inter", sans-serif; */
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: "Voltaire", sans-serif;
+        }
+
+        h2 {
+            font-size: 2em;
+        }
+
+        p {
+            font-family: "Inter", sans-serif;
+            font-size: 15px;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+        }
+
+
+        .nlink {
+            margin-left: 10px;
+            font-family: "Inter", sans-serif;
+            text-transform: uppercase;
+            font-size: 0.5em;
+        }
+
+        .hero {
+            background-image: url("media/bg.png");
+            background-size: cover;
+            background-position: bottom center;
+            min-height: 800px;
+        }
+
+        .overlay {
+            background-color: rgba(0, 0, 0, 0.4);
+            min-height: inherit;
+            padding: 120px 0px;
+        }
+
+        .butt {
+            width: 100px;
+            height: 50px;
+        }
+
+        .select {
+            border-radius: 0%;
+        }
+
+        .section {
+            padding: 70px 0px;
+        }
+
+        .box:hover {
+            background-color: white;
+            transform: scale(1.02);
+            transition: 0.5s;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .icon {
+            width: 50px;
+            object-fit: cover;
+        }
+
+        .agent {
+            background: linear-gradient(135deg, #14213D, #1E3888);
+            border-radius: 30px;
+            padding: 60px 40px;
+        }
+
+        .abox:hover {
+            background-color: rgba(244, 245, 244, 0.2);
+            transform: scale(1.02);
+            transition: 0.5s;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .footer-section {
+            background: linear-gradient(135deg, #14213D, #1E3888);
+            border-top-left-radius: 30px;
+            border-top-right-radius: 30px;
+        }
+
+        .footer-title {
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #ffffff;
+        }
+
+        .footer-text {
+            color: rgba(255, 255, 255, 0.75);
+            max-width: 500px;
+            margin: auto;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.75);
+            transition: 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #ffffff;
+            padding-left: 5px;
+        }
+
+        .footer-line {
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .footer-section p {
+            color: rgba(255, 255, 255, 0.75);
+        }

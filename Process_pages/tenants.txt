@@ -1,0 +1,5 @@
+Firstname: Emmanuel Lastname: Fajuo Email: fajumoe@gmail.com Password: 1234
+Firstname: Fajembola Lastname: Timmy Email: timmy@gmail.com Password: timmy123
+Firstname: Fajembola Lastname: Timmy Email: timmy@gmail.com Password: timmy123
+Firstname: olarewaju Lastname: Adebola Email: olaade@gmail.com Password: 123ola
+Firstname: Kikelomo Lastname: Fajumo Email: kike@gmail.com Password: 123456
