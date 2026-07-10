@@ -1,4 +1,4 @@
-        /* font-family: "Voltaire", sans-serif; */
+/* font-family: "Voltaire", sans-serif; */
         /* font-family: "Inter", sans-serif; */
 
         h1,
@@ -43,14 +43,19 @@
         }
 
         .overlay {
-            background-color: rgba(0, 0, 0, 0.4);
+            background-color: rgba(0, 0, 0, 0.60) !important;
             min-height: inherit;
             padding: 120px 0px;
         }
 
         .butt {
-            width: 100px;
+            width: 200px;
             height: 50px;
+            background: linear-gradient(135deg, #FFD700, #FFA500); 
+            border: none; 
+            transition: all 0.3s ease; 
+            box-shadow: 0 4px 18px rgba(255, 165, 0, 0.4); 
+            white-space: nowrap;
         }
 
         .select {
@@ -71,6 +76,211 @@
         .icon {
             width: 50px;
             object-fit: cover;
+        }
+
+        /* ================================
+           FEATURED PROPERTIES SECTION
+           (matching agent dashboard grid style)
+        ================================ */
+        .featured-section .section-header p {
+            color: #1E3888;
+            font-size: 0.82em;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .featured-section .section-header h2 {
+            font-family: 'Voltaire', sans-serif;
+            font-size: 2.2em;
+            color: #1E3888;
+            font-weight: 700;
+        }
+
+        .featured-section .section-header hr {
+            width: 100px;
+            height: 3px;
+            background-color: #1E3888;
+            opacity: 1;
+            border: none;
+            margin: 16px 0;
+        }
+
+        .featured-section .section-header p:last-child {
+            color: #6c757d;
+            font-size: 0.95em;
+        }
+
+        .featured-section .property-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            border: none;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            transition: transform 0.25s, box-shadow 0.25s;
+            height: 100%;
+        }
+
+        .featured-section .property-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+        }
+
+        .featured-section .property-card .card-img-wrapper {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .featured-section .property-card .card-img-top {
+            height: 190px;
+            object-fit: cover;
+            width: 100%;
+            transition: transform 0.4s ease;
+        }
+
+        .featured-section .property-card:hover .card-img-top {
+            transform: scale(1.04);
+        }
+
+        .featured-section .property-card .card-body {
+            padding: 16px 18px 18px;
+        }
+
+        .featured-section .property-card .card-title {
+            font-size: 0.95em;
+            font-weight: 600;
+            color: #1a1a2e;
+            margin-bottom: 5px;
+        }
+
+        .featured-section .property-card .card-location {
+            font-size: 0.8em;
+            color: #9ca3af;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .featured-section .property-card .property-price {
+            font-size: 1.05em;
+            font-weight: 700;
+            color: #1E3888;
+            margin-bottom: 10px;
+        }
+
+        .featured-section .property-card .property-price .price-unit {
+            font-size: 0.75em;
+            color: #9ca3af;
+            font-weight: 400;
+        }
+
+        .featured-section .property-card .property-features {
+            display: flex;
+            gap: 12px;
+            font-size: 0.78em;
+            color: #6b7280;
+            margin-bottom: 14px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .featured-section .property-card .property-features span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .featured-section .property-card .property-features span i {
+            color: #1E3888;
+        }
+
+        .featured-section .property-card .badge-verified {
+            background: #ecfdf5;
+            color: #059669;
+            border-radius: 20px;
+            padding: 4px 10px;
+            font-size: 0.72em;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .featured-section .property-card .badge-rent {
+            background: #eff6ff;
+            color: #1E3888;
+            border-radius: 20px;
+            padding: 4px 10px;
+            font-size: 0.72em;
+            font-weight: 600;
+        }
+
+        .featured-section .property-card .btn-view-details {
+            background: #f0f4ff;
+            color: #1E3888;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.82em;
+            font-weight: 600;
+            padding: 8px 0;
+            transition: all 0.2s;
+            flex: 1;
+            text-align: center;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .featured-section .property-card .btn-view-details:hover {
+            background: #1E3888;
+            color: white;
+        }
+
+        .featured-section .property-card .btn-save {
+            background: #f9fafb;
+            color: #6b7280;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        .featured-section .property-card .btn-save:hover {
+            background: #fff0f0;
+            color: #ef4444;
+            border-color: #fecaca;
+        }
+
+        .featured-section .btn-view-all {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            border: none;
+            color: #14213D;
+            font-weight: 600;
+            padding: 12px 32px;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 18px rgba(255, 165, 0, 0.4);
+            white-space: nowrap;
+        }
+
+        .featured-section .btn-view-all:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(255, 165, 0, 0.55);
+            background: linear-gradient(135deg, #ffe033, #ffb520);
+            color: #14213D;
+        }
+
+        /* Responsive tweaks */
+        @media (max-width: 768px) {
+            .featured-section .property-card .card-img-top {
+                height: 160px;
+            }
         }
 
         .agent {
@@ -125,4 +335,560 @@
 
         .footer-section p {
             color: rgba(255, 255, 255, 0.75);
+        }
+
+        /* ================================
+           PROPERTY DETAILS PAGE
+        ================================ */
+        .property-details-page {
+            background-color: #f8f9fc;
+        }
+
+        /* ── Gallery ─────────────────── */
+        .property-details-page .gallery-section {
+            background: #ffffff;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .property-details-page .main-image {
+            width: 100%;
+            height: 480px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .property-details-page .main-image-wrapper {
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .property-details-page .main-image-wrapper:hover .main-image {
+            transform: scale(1.03);
+        }
+
+        .property-details-page .thumbnail-strip {
+            display: flex;
+            gap: 10px;
+            padding: 16px 20px;
+            overflow-x: auto;
+            background: #ffffff;
+        }
+
+        .property-details-page .thumbnail-strip .thumb-item {
+            flex: 0 0 auto;
+            width: 100px;
+            height: 70px;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            opacity: 0.7;
+        }
+
+        .property-details-page .thumbnail-strip .thumb-item:hover,
+        .property-details-page .thumbnail-strip .thumb-item.active {
+            border-color: #1E3888;
+            opacity: 1;
+        }
+
+        .property-details-page .thumbnail-strip .thumb-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* ── Property Meta Bar ──────── */
+        .property-details-page .property-meta-bar {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 16px 24px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            margin-top: 24px;
+        }
+
+        .property-details-page .property-meta-bar .badge-group {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .property-details-page .property-meta-bar .badge-custom-featured {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #14213D;
+            font-weight: 600;
+            font-size: 0.72em;
+            padding: 5px 14px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        .property-details-page .property-meta-bar .badge-custom-rent {
+            background: #1E3888;
+            color: #ffffff;
+            font-weight: 500;
+            font-size: 0.72em;
+            padding: 5px 14px;
+            border-radius: 20px;
+        }
+
+        .property-details-page .property-meta-bar .meta-stat {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #6c757d;
+            font-size: 0.85em;
+        }
+
+        .property-details-page .property-meta-bar .meta-stat i {
+            color: #1E3888;
+            font-size: 0.9em;
+        }
+
+        .property-details-page .property-meta-bar .action-icons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .property-details-page .property-meta-bar .action-icons a {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #f0f2f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+        }
+
+        .property-details-page .property-meta-bar .action-icons a:hover {
+            background: #1E3888;
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        /* ── Title & Price ──────────── */
+        .property-details-page .title-price-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 24px 28px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            margin-top: 20px;
+        }
+
+        .property-details-page .title-price-card .property-title {
+            font-family: "Voltaire", sans-serif;
+            font-size: 2em;
+            color: #1a2332;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .property-details-page .title-price-card .property-location {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #6c757d;
+            font-size: 0.9em;
+            margin-bottom: 12px;
+        }
+
+        .property-details-page .title-price-card .property-location i {
+            color: #dc3545;
+        }
+
+        .property-details-page .title-price-card .property-price-lg {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #1E3888;
+        }
+
+        .property-details-page .title-price-card .property-price-lg .price-unit {
+            font-weight: 400;
+            font-size: 0.6em;
+            color: #6c757d;
+        }
+
+        /* ── Description ────────────── */
+        .property-details-page .description-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            margin-top: 20px;
+        }
+
+        .property-details-page .description-card h3 {
+            font-family: "Voltaire", sans-serif;
+            font-size: 1.5em;
+            color: #1a2332;
+            margin-bottom: 16px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .property-details-page .description-card h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: #1E3888;
+            border-radius: 2px;
+        }
+
+        .property-details-page .description-card p {
+            color: #4a5568;
+            line-height: 1.8;
+            font-size: 0.95em;
+        }
+
+        /* ── Features Grid ──────────── */
+        .property-details-page .features-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            margin-top: 20px;
+        }
+
+        .property-details-page .features-card h3 {
+            font-family: "Voltaire", sans-serif;
+            font-size: 1.5em;
+            color: #1a2332;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .property-details-page .features-card h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: #1E3888;
+            border-radius: 2px;
+        }
+
+        .property-details-page .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 18px;
+            background: #f8f9fc;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .property-details-page .feature-item:hover {
+            background: #eef0f7;
+            transform: translateY(-2px);
+        }
+
+        .property-details-page .feature-item .feature-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            background: #e8ecf4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1E3888;
+            font-size: 1.1em;
+            flex-shrink: 0;
+        }
+
+        .property-details-page .feature-item .feature-label {
+            font-size: 0.78em;
+            color: #6c757d;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            line-height: 1.3;
+        }
+
+        .property-details-page .feature-item .feature-value {
+            font-size: 0.95em;
+            font-weight: 600;
+            color: #1a2332;
+        }
+
+        /* ── Address / Map ──────────── */
+        .property-details-page .address-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            margin-top: 20px;
+        }
+
+        .property-details-page .address-card h3 {
+            font-family: "Voltaire", sans-serif;
+            font-size: 1.5em;
+            color: #1a2332;
+            margin-bottom: 16px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .property-details-page .address-card h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: #1E3888;
+            border-radius: 2px;
+        }
+
+        .property-details-page .address-card .map-placeholder {
+            width: 100%;
+            height: 220px;
+            background: #f0f2f6;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-size: 0.9em;
+            border: 2px dashed #d0d5dd;
+            margin-top: 12px;
+        }
+
+        .property-details-page .btn-map {
+            background: #1E3888;
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 24px;
+            font-size: 0.85em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .property-details-page .btn-map:hover {
+            background: #14213D;
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 14px rgba(30, 56, 136, 0.3);
+        }
+
+        /* ── Agent Sidebar Card ─────── */
+        .property-details-page .agent-sidebar {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 32px 24px;
+            text-align: center;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
+            position: sticky;
+            top: 24px;
+        }
+
+        .property-details-page .agent-sidebar .agent-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #e8ecf4;
+            margin-bottom: 12px;
+        }
+
+        .property-details-page .agent-sidebar .agent-name {
+            font-family: "Voltaire", sans-serif;
+            font-size: 1.4em;
+            color: #1a2332;
+            margin-bottom: 4px;
+        }
+
+        .property-details-page .agent-sidebar .agent-verified {
+            display: inline-block;
+            background: rgba(25, 135, 84, 0.1);
+            color: #198754;
+            font-size: 0.75em;
+            font-weight: 600;
+            padding: 3px 14px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+        }
+
+        .property-details-page .agent-sidebar .agent-stars {
+            display: flex;
+            justify-content: center;
+            gap: 4px;
+            margin-bottom: 12px;
+        }
+
+        .property-details-page .agent-sidebar .agent-stars i {
+            color: #FFD700;
+            font-size: 0.9em;
+        }
+
+        .property-details-page .agent-sidebar .agent-tagline {
+            color: #6c757d;
+            font-size: 0.85em;
+            margin-bottom: 20px;
+        }
+
+        .property-details-page .agent-sidebar .btn-contact-agent {
+            width: 100%;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            border: none;
+            color: #14213D;
+            font-weight: 600;
+            padding: 12px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 18px rgba(255, 165, 0, 0.3);
+        }
+
+        .property-details-page .agent-sidebar .btn-contact-agent:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(255, 165, 0, 0.45);
+            background: linear-gradient(135deg, #ffe033, #ffb520);
+        }
+
+        .property-details-page .agent-sidebar .btn-view-profile {
+            width: 100%;
+            background: transparent;
+            border: 1.5px solid #1E3888;
+            color: #1E3888;
+            font-weight: 500;
+            padding: 10px;
+            border-radius: 12px;
+            margin-top: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .property-details-page .agent-sidebar .btn-view-profile:hover {
+            background: #1E3888;
+            color: #ffffff;
+        }
+
+        /* ── Alert Messages ─────────── */
+        .property-details-page .alert-custom {
+            border-radius: 12px;
+            border: none;
+            padding: 14px 20px;
+            font-size: 0.9em;
+        }
+
+        .property-details-page .alert-custom.alert-danger {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        .property-details-page .alert-custom.alert-success {
+            background: #f0fdf4;
+            color: #16a34a;
+        }
+
+        /* ── Chat Offcanvas ─────────── */
+        .chat-offcanvas .offcanvas-header {
+            background: #1E3888;
+            color: #ffffff;
+            padding: 20px 24px;
+        }
+
+        .chat-offcanvas .offcanvas-header .offcanvas-title {
+            font-family: "Voltaire", sans-serif;
+            font-size: 1.3em;
+        }
+
+        .chat-offcanvas .offcanvas-header .btn-close {
+            filter: brightness(0) invert(1);
+        }
+
+        .chat-offcanvas .offcanvas-body {
+            padding: 24px;
+        }
+
+        .chat-offcanvas .chat-property-label {
+            font-size: 0.85em;
+            color: #6c757d;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #e8ecf4;
+        }
+
+        .chat-offcanvas .chat-property-label strong {
+            color: #1a2332;
+        }
+
+        .chat-offcanvas .input_message {
+            border-radius: 12px;
+            border: 1.5px solid #d0d5dd;
+            padding: 12px 16px;
+            font-size: 0.9em;
+            transition: border-color 0.3s ease;
+            resize: vertical;
+        }
+
+        .chat-offcanvas .input_message:focus {
+            border-color: #1E3888;
+            box-shadow: 0 0 0 3px rgba(30, 56, 136, 0.1);
+            outline: none;
+        }
+
+        .chat-offcanvas .btn-send-chat {
+            background: #1E3888;
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            padding: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 12px;
+        }
+
+        .chat-offcanvas .btn-send-chat:hover {
+            background: #14213D;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 14px rgba(30, 56, 136, 0.3);
+        }
+
+        /* ── Responsive ─────────────── */
+        @media (max-width: 991px) {
+            .property-details-page .main-image {
+                height: 320px;
+            }
+            .property-details-page .agent-sidebar {
+                margin-top: 24px;
+                position: static;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .property-details-page .main-image {
+                height: 240px;
+            }
+            .property-details-page .property-meta-bar {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+            }
+            .property-details-page .title-price-card .property-title {
+                font-size: 1.5em;
+            }
+            .property-details-page .title-price-card .property-price-lg {
+                font-size: 1.4em;
+            }
+            .property-details-page .thumbnail-strip .thumb-item {
+                width: 70px;
+                height: 50px;
+            }
         }

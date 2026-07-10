@@ -19,7 +19,7 @@ $agent_id = $_SESSION['agent_online'];
 $generated_ref = $pay->generate_ref_code();
 
 $property_deets = $prop->fetch_property_detail($property_id);
-$amount = $property_deets['price'];
+$amount = 30000;
 $agent_deet = $agent->fetch_agent_details($agent_id);
 
 $date = date("Y-M-d H:i:s");
@@ -33,8 +33,10 @@ $agent_id = $property_deets['Agent_id'];
 
 $payment_attempt = $pay->add_payment_attempt($amount, $property_id, $generated_ref, $fullname, $email, $agent_id);
 
-if(!$payment_attempt){
-    $_SESSION['errormsg'] = "You cannot pay for this Apartment at this moment";
+if((int)$payment_attempt == 0){
+    $_SESSION['errormsg'] = "You have paid for this appartment already";
+    header("location: ../agent/agent_dashboard_listings.php");
+    exit;
 }
 
 //initialize paystack method
@@ -47,6 +49,11 @@ $_SESSION['paystack_reference'] = $generated_ref;
         exit;
     }
     $paystack = json_decode($res);
+
+    // echo "<pre>";
+    // print_r($paystack);
+    // echo "</pre>";
+    // die;
     $url = $paystack->data->authorization_url;
     header("location: $url"); //redirecting to paystact GUI
     exit;

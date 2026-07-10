@@ -25,6 +25,25 @@ require_once "Db.php";
             $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return $res;
         }
+
+
+
+        //fetch all Agents
+        public function get_all_agents(){
+            try{
+                    $sql = "SELECT * FROM agentprofile";
+                    $stmt = $this->conn->prepare($sql);
+                    $stmt->execute();
+                    $agents = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    return $agents;
+            }catch(PDOExtension $e){
+                    $e->getMessage();
+            }
+        }
+
+
+
+
     }
 
 

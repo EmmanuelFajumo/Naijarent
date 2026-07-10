@@ -11,7 +11,11 @@ error_reporting(E_ALL);
     define("PUSHER_APP_KEY", "0b42e5c2803d6ace4baf");
     define('PUSHER_APP_SECRET', "77ee8ca67ee76602eedf");
     define("PUSHER_APP_CLUSTER", "mt1");
-    define("MAP_API_KEY", "AIzaSyBi8RbqnRjxzVr3BG442mkSJq-YXfYwntc");
+
+    // define("MAP_API_KEY", "AIzaSyBi8RbqnRjxzVr3BG442mkSJq-YXfYwntc");
+
+    define("APP_EMAIL", "fajumoe@gmail.com");
+    define("APP_KEY", "jeiaqiacytfkssdq");
 
 
     // Application Config

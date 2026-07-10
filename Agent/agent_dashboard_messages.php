@@ -7,6 +7,14 @@ $det = $agent->fetch_agent_details($_SESSION['agent_online']);
 
 require_once "../process_pages/classes/ChatService.php";
 require_once "../process_pages/classes/config.php";
+
+$chats = new ChatService;
+$all_chats = $chats->fetch_agent_conversations($_SESSION['agent_online']);
+echo "<pre>";
+print_r($all_chats);
+echo "</pre>";
+
+
 ?>
 
 <!DOCTYPE html>
@@ -15,7 +23,7 @@ require_once "../process_pages/classes/config.php";
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agent Dashboard</title>
+    <title>Agent Dashboard - Messages</title>
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../animate.min.css">
@@ -27,292 +35,514 @@ require_once "../process_pages/classes/config.php";
         rel="stylesheet">
 
     <style>
-        .dashboard {
-            max-width: 1200px;
-            margin: 0 auto;
+        :root {
+            --navy-dark: #14213D;
+            --navy-light: #1E3888;
+            --gold: #FFD700;
+            --gold-hover: #FFA500;
+            --bg-light: #f8f9fc;
         }
-        h1 {
-            color: #333;
-            border-bottom: 2px solid #007bff;
-            padding-bottom: 10px;
+
+        /* ── Layout ── */
+        .messages-wrapper {
+            background: var(--bg-light);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
         }
-        .conversations {
-            display: grid;
-            grid-template-columns: 300px 1fr;
-            gap: 20px;
-            margin-top: 20px;
-        }
-        .conversation-list {
-            background: white;
-            border-radius: 10px;
-            padding: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            max-height: 600px;
+
+        /* ── Conversation List ── */
+        .conversation-list-panel {
+            background: #fff;
+            border-right: 1px solid #eef0f4;
+            max-height: 650px;
             overflow-y: auto;
         }
-        .conversation-item {
-            padding: 15px;
-            border-bottom: 1px solid #eee;
+        .conversation-list-panel::-webkit-scrollbar {
+            width: 5px;
+        }
+        .conversation-list-panel::-webkit-scrollbar-thumb {
+            background: #d0d4dc;
+            border-radius: 10px;
+        }
+
+        .conv-search-box {
+            padding: 16px 16px 8px;
+        }
+        .conv-search-box .search-inner {
+            display: flex;
+            align-items: center;
+            background: var(--bg-light);
+            border-radius: 10px;
+            padding: 8px 14px;
+            border: 1.5px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .conv-search-box .search-inner:focus-within {
+            border-color: var(--navy-light);
+            box-shadow: 0 0 0 3px rgba(30, 56, 136, 0.08);
+        }
+        .conv-search-box input {
+            border: none;
+            background: transparent;
+            width: 100%;
+            font-size: 0.85rem;
+            outline: none;
+        }
+        .conv-search-box input::placeholder {
+            color: #adb5bd;
+        }
+
+        .conv-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px 16px;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.2s ease;
+            border-bottom: 1px solid #f1f3f6;
             position: relative;
         }
-        .conversation-item:hover {
-            background: #f0f7ff;
+        .conv-item:hover {
+            background: rgba(30, 56, 136, 0.04);
         }
-        .conversation-item.active {
-            background: #007bff;
-            color: white;
+        .conv-item.active {
+            background: linear-gradient(135deg, var(--navy-dark), var(--navy-light));
+            border-bottom-color: transparent;
         }
-        .conversation-item .property-title {
-            font-weight: bold;
+        .conv-item .conv-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: rgba(30, 56, 136, 0.1);
+            color: var(--navy-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            font-weight: 600;
         }
-        .conversation-item .last-message {
-            font-size: 13px;
-            color: #666;
-            margin-top: 5px;
+        .conv-item.active .conv-avatar {
+            background: rgba(255,255,255,0.2);
+            color: #fff;
+        }
+        .conv-item .conv-body {
+            flex: 1;
+            min-width: 0;
+        }
+        .conv-item .conv-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2px;
+        }
+        .conv-item .conv-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #1a1a2e;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        .conversation-item.active .last-message {
-            color: #ddd;
+        .conv-item.active .conv-title {
+            color: #fff;
         }
-        .conversation-item .badge {
+        .conv-item .conv-time {
+            font-size: 0.72rem;
+            color: #adb5bd;
+            white-space: nowrap;
+            margin-left: 8px;
+        }
+        .conv-item.active .conv-time {
+            color: rgba(255,255,255,0.65);
+        }
+        .conv-item .conv-tenant {
+            font-size: 0.78rem;
+            color: #6c757d;
+            margin-bottom: 3px;
+        }
+        .conv-item.active .conv-tenant {
+            color: rgba(255,255,255,0.75);
+        }
+        .conv-item .conv-preview {
+            font-size: 0.8rem;
+            color: #8e94a2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .conv-item.active .conv-preview {
+            color: rgba(255,255,255,0.6);
+        }
+        .conv-item .unread-badge {
+            position: absolute;
+            top: 14px;
+            right: 16px;
             background: #dc3545;
-            color: white;
-            border-radius: 50%;
-            padding: 2px 8px;
-            font-size: 12px;
-            float: right;
-            margin-top: -5px;
+            color: #fff;
+            border-radius: 50px;
+            padding: 1px 9px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            min-width: 22px;
+            text-align: center;
         }
-        .conversation-item .message-time {
-            font-size: 11px;
-            color: #999;
-            float: right;
+        .conv-item.active .unread-badge {
+            background: rgba(255,255,255,0.3);
+            color: #fff;
         }
-        .conversation-item.active .message-time {
-            color: #ddd;
-        }
-        .chat-window {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+
+        /* ── Chat Panel ── */
+        .chat-panel {
             display: flex;
             flex-direction: column;
-            height: 600px;
+            background: #fff;
+            height: 650px;
         }
         .chat-header {
-            border-bottom: 1px solid #eee;
-            padding-bottom: 15px;
-            margin-bottom: 15px;
+            padding: 16px 20px;
+            border-bottom: 1px solid #eef0f4;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-shrink: 0;
         }
-        .chat-header h3 {
+        .chat-header .chat-header-info h5 {
             margin: 0;
-            color: #333;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--navy-dark);
         }
+        .chat-header .chat-header-info small {
+            color: #6c757d;
+            font-size: 0.8rem;
+        }
+        .chat-header .chat-header-status {
+            font-size: 0.78rem;
+            padding: 4px 12px;
+            border-radius: 50px;
+            background: rgba(25, 135, 84, 0.1);
+            color: #198754;
+            font-weight: 500;
+        }
+
         .chat-messages {
             flex: 1;
             overflow-y: auto;
-            padding: 10px 0;
+            padding: 20px;
+            background: var(--bg-light);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
-        .message {
-            margin: 8px 0;
-            padding: 10px 15px;
+        .chat-messages::-webkit-scrollbar {
+            width: 5px;
+        }
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #d0d4dc;
             border-radius: 10px;
-            max-width: 70%;
+        }
+
+        .msg {
+            max-width: 75%;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-size: 0.88rem;
+            line-height: 1.45;
+            position: relative;
             word-wrap: break-word;
         }
-        .message.sent {
-            background: #007bff;
-            color: white;
-            margin-left: auto;
+        .msg.sent {
+            background: linear-gradient(135deg, var(--navy-dark), var(--navy-light));
+            color: #fff;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
         }
-        .message.received {
-            background: #e9ecef;
-            color: #333;
-            margin-right: auto;
+        .msg.received {
+            background: #fff;
+            color: #1a1a2e;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.04);
         }
-        .message .time {
-            font-size: 11px;
-            opacity: 0.7;
-            margin-left: 10px;
-        }
-        .message .sender {
-            font-weight: bold;
+        .msg .msg-sender {
+            font-weight: 600;
+            font-size: 0.75rem;
             display: block;
-            font-size: 12px;
+            margin-bottom: 2px;
         }
-        .message.sent .sender {
-            color: #cce5ff;
+        .msg.sent .msg-sender {
+            color: rgba(255,255,255,0.7);
         }
-        .chat-input {
+        .msg.received .msg-sender {
+            color: var(--navy-light);
+        }
+        .msg .msg-time {
+            font-size: 0.65rem;
+            opacity: 0.6;
+            display: block;
+            text-align: right;
+            margin-top: 4px;
+        }
+        .msg.sent .msg-time {
+            color: rgba(255,255,255,0.7);
+        }
+        .msg.received .msg-time {
+            color: #adb5bd;
+        }
+
+        .no-conversation-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #adb5bd;
+        }
+        .no-conversation-placeholder i {
+            font-size: 3rem;
+            margin-bottom: 12px;
+            opacity: 0.4;
+        }
+        .no-conversation-placeholder p {
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .chat-input-area {
+            padding: 14px 20px;
+            border-top: 1px solid #eef0f4;
             display: flex;
             gap: 10px;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid #eee;
+            align-items: center;
+            flex-shrink: 0;
+            background: #fff;
         }
-        .chat-input input {
+        .chat-input-area input {
             flex: 1;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 14px;
+            padding: 10px 16px;
+            border: 1.5px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 0.88rem;
             outline: none;
+            transition: all 0.3s ease;
         }
-        .chat-input input:focus {
-            border-color: #007bff;
+        .chat-input-area input:focus {
+            border-color: var(--navy-light);
+            box-shadow: 0 0 0 3px rgba(30, 56, 136, 0.08);
         }
-        .chat-input button {
-            padding: 12px 25px;
-            background: #007bff;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: bold;
-        }
-        .chat-input button:hover {
-            background: #0056b3;
-        }
-        .chat-input button:disabled {
-            background: #ccc;
+        .chat-input-area input:disabled {
+            background: #f8f9fa;
             cursor: not-allowed;
         }
-        .no-conversation {
-            text-align: center;
-            color: #888;
-            padding: 100px 0;
+        .btn-send {
+            padding: 10px 22px;
+            background: linear-gradient(135deg, var(--navy-dark), var(--navy-light));
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.88rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(20, 33, 61, 0.2);
+            white-space: nowrap;
         }
-        .tenant-info {
-            font-size: 13px;
-            color: #666;
+        .btn-send:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(20, 33, 61, 0.3);
         }
-        .loading-spinner {
-            text-align: center;
-            padding: 20px;
-            color: #999;
+        .btn-send:disabled {
+            background: #ccc;
+            box-shadow: none;
+            cursor: not-allowed;
         }
-        .empty-state {
-            text-align: center;
-            color: #999;
-            padding: 40px 0;
-        }
-        
-        /* Toast Notification */
-        .toast {
+
+        /* ── Toast ── */
+        .toast-custom {
             position: fixed;
             top: 20px;
             right: 20px;
-            background: white;
-            padding: 15px 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            border-left: 4px solid #007bff;
+            background: #fff;
+            padding: 16px 20px;
+            border-radius: 14px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            border-left: 4px solid var(--navy-light);
             z-index: 9999;
             transform: translateX(120%);
-            transition: transform 0.3s ease;
-            max-width: 350px;
+            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+            max-width: 360px;
+            min-width: 280px;
         }
-        .toast.show {
+        .toast-custom.show {
             transform: translateX(0);
         }
-        .toast .toast-title {
-            font-weight: bold;
-            color: #333;
+        .toast-custom .toast-title {
+            font-weight: 600;
+            color: var(--navy-dark);
+            font-size: 0.9rem;
+            margin-bottom: 4px;
         }
-        .toast .toast-message {
-            color: #666;
-            margin-top: 5px;
-            font-size: 14px;
+        .toast-custom .toast-message {
+            color: #6c757d;
+            font-size: 0.83rem;
         }
-        .toast .toast-time {
-            font-size: 11px;
-            color: #999;
-            margin-top: 5px;
+        .toast-custom .toast-time {
+            font-size: 0.7rem;
+            color: #adb5bd;
+            margin-top: 6px;
         }
-        .notification-bell {
+
+        .notification-bell-wrap {
             position: relative;
             cursor: pointer;
-            font-size: 24px;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: rgba(30, 56, 136, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            font-size: 1.2rem;
+            color: var(--navy-dark);
         }
-        .notification-badge {
+        .notification-bell-wrap:hover {
+            background: rgba(30, 56, 136, 0.12);
+        }
+        .notification-badge-custom {
             position: absolute;
-            top: -8px;
-            right: -8px;
+            top: -4px;
+            right: -4px;
             background: #dc3545;
-            color: white;
+            color: #fff;
             border-radius: 50%;
-            padding: 2px 8px;
-            font-size: 12px;
-            font-weight: bold;
+            padding: 1px 7px;
+            font-size: 0.65rem;
+            font-weight: 700;
             display: none;
+            min-width: 20px;
+            text-align: center;
         }
-        .notification-badge.show {
+        .notification-badge-custom.show {
             display: inline-block;
+        }
+
+        .loading-spinner {
+            text-align: center;
+            padding: 30px 0;
+            color: #adb5bd;
+            font-size: 0.85rem;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 40px 16px;
+            color: #adb5bd;
+            font-size: 0.85rem;
+        }
+
+        /* ── Section Divider ── */
+        .section-divider {
+            height: 2px;
+            background: linear-gradient(to right, transparent, rgba(20, 33, 61, 0.12), transparent);
+            border: none;
+            margin: 16px 0 24px;
+            opacity: 1;
         }
     </style>
 </head>
 
 <body>
-    <!-- Navigation -->
-    <?php // include 'nav.php'; ?>
 
-    <div class="container-fluid" style="min-height:400px;">
+    <div class="container-fluid" style="min-height: 100vh; background: var(--bg-light);">
         <div class="row">
 
-            <!-- Sidebar (Profile and Navigation) -->
+            <!-- Sidebar -->
             <?php include 'agent_nav.php'; ?>
-            <!-- Sidebar (Profile and Navigation) -->
 
             <!-- Main Content -->
-            <div class="col-md-9 px-5 mt-3 pb-5">
-                
-                <div class="row g-3 mb-5">
-                    <div class="dashboard">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-                            <h2>💬 Messages</h2>
-                            <div class="notification-bell" id="notificationBell">
-                                🔔
-                                <span class="notification-badge" id="notificationBadge">0</span>
+            <div class="col-md-9 px-4 px-lg-5 pb-5 pt-4">
+
+                <!-- Page Header -->
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <div>
+                        <h2 class="mb-1" style="font-size: 1.75rem; color: var(--navy-dark);">Messages</h2>
+                        <p class="text-muted mb-0" style="font-size: 0.95rem;">
+                            <i class="fa-regular fa-envelope me-2 opacity-50"></i>
+                            Chat with tenants about your properties
+                        </p>
+                    </div>
+                    <div class="notification-bell-wrap" id="notificationBell">
+                        <i class="fa-regular fa-bell"></i>
+                        <span class="notification-badge-custom" id="notificationBadge">0</span>
+                    </div>
+                </div>
+
+                <hr class="section-divider">
+
+                <!-- Messages Layout -->
+                <div class="messages-wrapper row g-0">
+                    
+                    <!-- Left: Conversation List -->
+                    <div class="col-lg-4 conversation-list-panel">
+                        <div class="conv-search-box">
+                            <div class="search-inner">
+                                <i class="fa-solid fa-magnifying-glass text-muted me-2" style="font-size:0.82rem;"></i>
+                                <input type="text" placeholder="Search conversations..." id="convSearch">
                             </div>
                         </div>
-                        
-                        <div class="conversations">
-                            <!-- Left Side: Conversation List -->
-                            <div class="conversation-list" id="conversation-list">
-                                <div class="loading-spinner">Loading conversations...</div>
+                        <div id="conversation-list">
+                            <div class="loading-spinner">
+                                <i class="fa-solid fa-spinner fa-spin me-2"></i>Loading conversations...
                             </div>
-
-                            <!-- Right Side: Chat Window -->
-                            <div class="chat-window">
-                                <div class="chat-header">
-                                    <div>
-                                        <h3 id="chat-title">Select a conversation</h3>
-                                        <div class="tenant-info" id="tenant-info">Click a conversation to start chatting</div>
-                                    </div>
-                                    <span id="propertyStatus" style="font-size:13px;color:#888;"></span>
-                                </div>
-
-                                <div class="chat-messages" id="chat-messages">
-                                    <div class="no-conversation">👈 Select a conversation from the left</div>
-                                </div>
-
-                                <div class="chat-input">
-                                    <input type="text" id="message-input" placeholder="Type your reply..." disabled>
-                                    <button id="send-btn" onclick="sendMessage()" disabled>Send</button>
-                                </div>
+                            <div class="" id="chatPreview">
+                               <?php foreach($all_chats as $chat): ?>
+                                   <div class="conv-item" data-property="<?= $chat['property_id'] ?>" data-tenant="<?= $chat['tenant_id'] ?>" data-chat="<?= $chat['id'] ?>" onclick="loadMessages(<?= $chat['property_id'] ?>); this.closest('.conv-item').classList.add('active'); document.querySelectorAll('#chatPreview .conv-item').forEach(i => i.classList.remove('active')); this.classList.add('active');">
+                                       <div class="conv-avatar">T</div>
+                                       <div class="conv-body">
+                                           <div class="conv-header">
+                                               <span class="conv-title">Property #<?= $chat['property_id'] ?></span>
+                                               <span class="conv-time"><?= date('h:i A', strtotime($chat['created_at'])) ?></span>
+                                           </div>
+                                           <div class="conv-tenant"><i class="fa-regular fa-user me-1"></i>Tenant #<?= $chat['tenant_id'] ?></div>
+                                           <div class="conv-preview">Click to view messages</div>
+                                       </div>
+                                   </div>
+                               <?php endforeach; ?>
                             </div>
                         </div>
                     </div>
+
+                    <!-- Right: Chat Window -->
+                    <div class="col-lg-8 chat-panel">
+                        <div class="chat-header">
+                            <div class="chat-header-info">
+                                <h5 id="chat-title">Select a conversation</h5>
+                                <small id="tenant-info">Click a conversation to start chatting</small>
+                            </div>
+                            <span class="chat-header-status" id="propertyStatus" style="display:none;">
+                                <i class="fa-regular fa-circle-check me-1"></i> Active
+                            </span>
+                        </div>
+
+                        <div class="chat-messages" id="chat-messages">
+                            <div class="no-conversation-placeholder">
+                                <i class="fa-regular fa-comment-dots"></i>
+                                <p>Select a conversation from the left panel</p>
+                            </div>
+                        </div>
+
+                        <div class="chat-input-area">
+                            <input type="text" id="message-input" placeholder="Type your reply..." disabled>
+                            <button id="send-btn" class="btn-send" onclick="sendMessage()" disabled>
+                                <i class="fa-regular fa-paper-plane me-1"></i> Send
+                            </button>
+                        </div>
+                    </div>
+
                 </div>
+
             </div>
             <!-- Main Content End -->
         </div> 
@@ -326,8 +556,8 @@ require_once "../process_pages/classes/config.php";
     </form>
 
     <!-- Toast Notification -->
-    <div class="toast" id="toast">
-        <div class="toast-title" id="toastTitle">📩 New Message</div>
+    <div class="toast-custom" id="toast">
+        <div class="toast-title" id="toastTitle"><i class="fa-regular fa-envelope me-1"></i> New Message</div>
         <div class="toast-message" id="toastMessage">Message preview</div>
         <div class="toast-time" id="toastTime">Just now</div>
     </div>
@@ -359,6 +589,7 @@ require_once "../process_pages/classes/config.php";
     const chatMessages = document.getElementById('chat-messages');
     const chatTitle = document.getElementById('chat-title');
     const tenantInfo = document.getElementById('tenant-info');
+    const propertyStatus = document.getElementById('propertyStatus');
     const messageInput = document.getElementById('message-input');
     const sendBtn = document.getElementById('send-btn');
     const notificationBadge = document.getElementById('notificationBadge');
@@ -372,12 +603,12 @@ require_once "../process_pages/classes/config.php";
             .then(response => response.json())
             .then(data => {
                 if (data.error) {
-                    conversationList.innerHTML = '<div class="empty-state">Error loading conversations</div>';
+                    conversationList.innerHTML = '<div class="empty-state"><i class="fa-solid fa-triangle-exclamation me-2"></i>Error loading conversations</div>';
                     return;
                 }
                 
                 if (data.length === 0) {
-                    conversationList.innerHTML = '<div class="empty-state">No conversations yet</div>';
+                    conversationList.innerHTML = '<div class="empty-state"><i class="fa-regular fa-inbox me-2"></i>No conversations yet</div>';
                     return;
                 }
                 
@@ -390,14 +621,14 @@ require_once "../process_pages/classes/config.php";
                 });
                 
                 // Auto-select first conversation
-                const firstItem = conversationList.querySelector('.conversation-item');
+                const firstItem = conversationList.querySelector('.conv-item');
                 if (firstItem) {
                     firstItem.click();
                 }
             })
             .catch(error => {
                 console.error('Error loading conversations:', error);
-                conversationList.innerHTML = '<div class="empty-state">Error loading conversations</div>';
+                conversationList.innerHTML = '<div class="empty-state"><i class="fa-solid fa-triangle-exclamation me-2"></i>Error loading conversations</div>';
             });
     }
 
@@ -406,7 +637,7 @@ require_once "../process_pages/classes/config.php";
     // ============================================
     function addConversationItem(conv) {
         const item = document.createElement('div');
-        item.className = 'conversation-item';
+        item.className = 'conv-item';
         item.dataset.property = conv.property_id;
         item.dataset.tenant = conv.tenant_id;
         item.dataset.chat = conv.chat_id;
@@ -414,13 +645,19 @@ require_once "../process_pages/classes/config.php";
         const lastMessage = conv.last_message || 'No messages yet';
         const lastTime = conv.last_message_time ? formatTime(conv.last_message_time) : '';
         const unread = parseInt(conv.unread_count) || 0;
+        const initials = conv.tenant_name ? conv.tenant_name.charAt(0).toUpperCase() : 'T';
         
         item.innerHTML = `
-            <div class="property-title">🏠 ${conv.property_title}</div>
-            <div class="tenant-info">Tenant: ${conv.tenant_name}</div>
-            <div class="last-message">${lastMessage}</div>
-            <span class="message-time">${lastTime}</span>
-            ${unread > 0 ? `<span class="badge">${unread}</span>` : ''}
+            <div class="conv-avatar">${initials}</div>
+            <div class="conv-body">
+                <div class="conv-header">
+                    <span class="conv-title">${conv.property_title}</span>
+                    <span class="conv-time">${lastTime}</span>
+                </div>
+                <div class="conv-tenant"><i class="fa-regular fa-user me-1"></i>${conv.tenant_name}</div>
+                <div class="conv-preview">${lastMessage}</div>
+            </div>
+            ${unread > 0 ? `<span class="unread-badge">${unread}</span>` : ''}
         `;
         
         // Add click event
@@ -436,18 +673,19 @@ require_once "../process_pages/classes/config.php";
     // ============================================
     function openConversation(item) {
         // Remove active class from all
-        document.querySelectorAll('.conversation-item').forEach(i => i.classList.remove('active'));
+        document.querySelectorAll('.conv-item').forEach(i => i.classList.remove('active'));
         item.classList.add('active');
         
         // Get data
         currentPropertyId = parseInt(item.dataset.property);
         currentTenantId = parseInt(item.dataset.tenant);
-        const propertyTitle = item.querySelector('.property-title').textContent;
-        const tenantName = item.querySelector('.tenant-info').textContent.replace('Tenant: ', '');
+        const propertyTitle = item.querySelector('.conv-title').textContent;
+        const tenantName = item.querySelector('.conv-tenant').textContent.replace(/^.*?Tenant:\s*/, '').trim();
         
         // Update header
         chatTitle.textContent = propertyTitle;
         tenantInfo.textContent = 'Tenant: ' + tenantName;
+        propertyStatus.style.display = 'inline-block';
         
         // Enable input
         messageInput.disabled = false;
@@ -458,7 +696,7 @@ require_once "../process_pages/classes/config.php";
         loadMessages(currentPropertyId);
         
         // Remove badge
-        const badge = item.querySelector('.badge');
+        const badge = item.querySelector('.unread-badge');
         if (badge) badge.remove();
         
         // Update unread count
@@ -469,7 +707,7 @@ require_once "../process_pages/classes/config.php";
     // 4. LOAD MESSAGES FOR A CONVERSATION
     // ============================================
     function loadMessages(propertyId) {
-        chatMessages.innerHTML = '<div class="loading-spinner">Loading messages...</div>';
+        chatMessages.innerHTML = '<div class="loading-spinner"><i class="fa-solid fa-spinner fa-spin me-2"></i>Loading messages...</div>';
         
         const formData = new FormData();
         formData.append('property_id', propertyId);
@@ -481,14 +719,14 @@ require_once "../process_pages/classes/config.php";
         .then(response => response.json())
         .then(data => {
             if (data.error) {
-                chatMessages.innerHTML = '<div class="no-conversation">Error loading messages</div>';
+                chatMessages.innerHTML = '<div class="no-conversation-placeholder"><i class="fa-solid fa-triangle-exclamation"></i><p>Error loading messages</p></div>';
                 return;
             }
             
             chatMessages.innerHTML = '';
             
             if (data.length === 0) {
-                chatMessages.innerHTML = '<div class="no-conversation">No messages yet. Start the conversation!</div>';
+                chatMessages.innerHTML = '<div class="no-conversation-placeholder"><i class="fa-regular fa-comment-dots"></i><p>No messages yet. Start the conversation!</p></div>';
                 return;
             }
             
@@ -508,7 +746,7 @@ require_once "../process_pages/classes/config.php";
         })
         .catch(error => {
             console.error('Error loading messages:', error);
-            chatMessages.innerHTML = '<div class="no-conversation">Error loading messages</div>';
+            chatMessages.innerHTML = '<div class="no-conversation-placeholder"><i class="fa-solid fa-triangle-exclamation"></i><p>Error loading messages</p></div>';
         });
     }
 
@@ -517,20 +755,27 @@ require_once "../process_pages/classes/config.php";
     // ============================================
     function addMessageToChat(sender, message, time, isSent) {
         // Remove empty state if it exists
-        const emptyState = chatMessages.querySelector('.no-conversation');
+        const emptyState = chatMessages.querySelector('.no-conversation-placeholder');
         if (emptyState) emptyState.remove();
         
         const messageDiv = document.createElement('div');
-        messageDiv.className = 'message ' + (isSent ? 'sent' : 'received');
+        messageDiv.className = 'msg ' + (isSent ? 'sent' : 'received');
         
         messageDiv.innerHTML = `
-            <span class="sender">${isSent ? 'You' : sender}</span>
-            ${message}
-            <span class="time">${time}</span>
+            <span class="msg-sender">${isSent ? 'You' : sender}</span>
+            ${escapeHtml(message)}
+            <span class="msg-time">${time}</span>
         `;
         
         chatMessages.appendChild(messageDiv);
         chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // Simple escape to prevent XSS
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
     }
 
     // ============================================
@@ -562,24 +807,24 @@ require_once "../process_pages/classes/config.php";
     // 7. UPDATE CONVERSATION LIST (Real-time)
     // ============================================
     function updateConversationList(propertyId, sender, message, time) {
-        const items = conversationList.querySelectorAll('.conversation-item');
+        const items = conversationList.querySelectorAll('.conv-item');
         let found = false;
         
         items.forEach(item => {
             if (parseInt(item.dataset.property) === propertyId) {
                 found = true;
-                const lastMsg = item.querySelector('.last-message');
-                const msgTime = item.querySelector('.message-time');
+                const preview = item.querySelector('.conv-preview');
+                const msgTime = item.querySelector('.conv-time');
                 
-                lastMsg.textContent = sender + ': ' + message;
+                preview.textContent = sender + ': ' + message;
                 msgTime.textContent = time || formatTime(new Date());
                 
                 // If not active, add badge
                 if (!item.classList.contains('active')) {
-                    let badge = item.querySelector('.badge');
+                    let badge = item.querySelector('.unread-badge');
                     if (!badge) {
                         badge = document.createElement('span');
-                        badge.className = 'badge';
+                        badge.className = 'unread-badge';
                         item.appendChild(badge);
                     }
                     badge.textContent = parseInt(badge.textContent || '0') + 1;
@@ -604,7 +849,7 @@ require_once "../process_pages/classes/config.php";
     // 8. TOAST NOTIFICATION
     // ============================================
     function showToast(sender, message, time) {
-        document.getElementById('toastTitle').textContent = '📩 New message from ' + sender;
+        document.getElementById('toastTitle').innerHTML = '<i class="fa-regular fa-envelope me-1"></i> New message from ' + sender;
         document.getElementById('toastMessage').textContent = message;
         document.getElementById('toastTime').textContent = time || 'Just now';
         
@@ -686,6 +931,21 @@ require_once "../process_pages/classes/config.php";
     document.getElementById('notificationBell').addEventListener('click', function() {
         unreadCount = 0;
         updateBadge();
+    });
+
+    // Conversation search
+    document.getElementById('convSearch').addEventListener('input', function() {
+        const query = this.value.toLowerCase();
+        const items = conversationList.querySelectorAll('.conv-item');
+        items.forEach(item => {
+            const title = item.querySelector('.conv-title').textContent.toLowerCase();
+            const tenant = item.querySelector('.conv-tenant').textContent.toLowerCase();
+            if (title.includes(query) || tenant.includes(query)) {
+                item.style.display = '';
+            } else {
+                item.style.display = 'none';
+            }
+        });
     });
 
     // ============================================

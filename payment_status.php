@@ -12,7 +12,7 @@ $refcode_url = isset($_GET['reference']) ? $_GET['reference'] : "";
 
 if(empty($refcode_session) || empty($refcode_url) || ($refcode_session != $refcode_url)){
     $_SESSION['errormsg'] = "Error confirming your payment. Send a message to admin@naijarent.com with title of Error: $refcode_session";
-    header('location:tenant_dashboard.php');
+    header('location:agent/agent_dashboard.php');
     exit;
 }
 
@@ -24,29 +24,29 @@ $res = json_decode($res);
 echo "<pre>";
 print_r($res);
 echo "</pre>";
-
+//
 //send them away with a success meessage
-    $amount = $pay->fetch_property_id($_SESSION['$refcode_session']);
+    $amount = 3000000;
     if(!$amount){
-        $_SESSION['errormsg'] = "Error!!!!";
-        header('location:tenant_dashboard.php');
+        $_SESSION['errormsg'] = "Promote your listed property with N30000!!!!";
+        header('agent/agent_dashboard.php');
         exit;
     }
     if($res->status == true && $res->data->amount == $amount){
         $update_payment = $pay->update_payment_status("successful", $res->data->paid_at, $refcode_session);
         if($update_payment){
             $_SESSION['successmsg'] = "You have successfully paid to for this apartment, Kinldy check your email for a detailed guide on what to do next";
-            header('location:tenant_dashboard.php');
+            header('location:agent/agent_dashboard.php');
         exit;
         }
         else{
             $_SESSION['errormsg'] = "Our server seem to be asleep admin@naijarent.com with title of the payment Confirmation Error: REF code: $refcode_session ";
-            header('location:tenant_dashboard.php');
+            header('location:agent/agent_dashboard.php');
             exit;
         }
     }else{
             $_SESSION['errormsg'] = "Payment not successful ";
-            header('location:tenant_dashboard.php');
+            header('location:agent/agent_dashboard.php');
             exit;
     }
 

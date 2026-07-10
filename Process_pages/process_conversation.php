@@ -1,52 +1,63 @@
 <?php
 session_start();
-require_once '../vendor/autoload.php';
-require_once 'classes/config.php';
 require_once 'classes/ChatService.php';
+require_once "classes/Tenant.php";
 
-use Pusher\Pusher;
 
-if (isset($_POST['property_id']) && isset($_POST['receiver_id']) && isset($_POST['message'])) {
-    $propertyId = (int)$_POST['property_id'];
-    $receiverId = (int)$_POST['receiver_id'];
-    $message = trim($_POST['message']);
 
-    $senderId = null;
-    if (!empty($_SESSION['useronline'])) {
-        $senderId = (int)$_SESSION['useronline'];
-    } elseif (!empty($_SESSION['agent_online'])) {
-        $senderId = (int)$_SESSION['agent_online'];
+if(isset($_POST['send'])){
+    $property_id = $_POST['property_id'];
+    $receiver_id = $_POST['Agent_id'];
+    $message = $_POST['message'];
+    
+    if(empty($property_id) || empty($receiver_id) || empty($message)){
+        $_SESSION['errormsg'] = "Kinly enter your message";
+        header("location:../property_details.php?id=$property_id");
+        exit;
     }
 
-    if ($senderId) {
-        $chatService = new ChatService();
-        $result = $chatService->saveMessage($propertyId, $senderId, $receiverId, $message);
+    $tenant = new Tenant();
+    $user = $tenant->fetch_user_detailby_id($_SESSION['useronline']);
+    $sender_id = $user['tenant_id'];
+    // $conversation_id = md5(uniqid(mt_rand(), true));
 
-        if ($result) {
-            $pusher = new Pusher(
-                PUSHER_APP_KEY,
-                PUSHER_APP_SECRET,
-                PUSHER_APP_ID,
-                ['cluster' => PUSHER_APP_CLUSTER, 'useTLS' => true]
-            );
 
-            $pusher->trigger('property-' . $propertyId, 'new-message', [
-                'sender_id' => $senderId,
-                'sender_name' => 'User',
-                'message' => htmlspecialchars($message, ENT_QUOTES, 'UTF-8'),
-                'time' => date('h:i A'),
-                'property_id' => $propertyId,
-                'receiver_id' => $receiverId
-            ]);
-
-            echo json_encode(['status' => 'success', 'message' => 'Message sent successfully']);
-        } else {
-            echo json_encode(['status' => 'error', 'message' => 'Failed to send message']);
+    $chat = new ChatService();
+    $chat_id = $chat->saveConversation($sender_id, $receiver_id, $property_id);
+    if($chat_id){
+        $rep = $chat->saveMessage($message, $chat_id);
+        //echo "Message sent successfully";
+        if($rep){
+            //send email notification to agent.
+            require_once "classes/Agent.php";
+            $agent = new Agent();
+            $agent_deet = $agent-> fetch_agent_details($receiver_id);
+            $agent_email = $agent_deet['email'];
+            $agent_name = $agent_deet['first_name'] . " " . $agent_deet['last_name'];
+            $property_link = "../property_details.php?id=" . $property_id;
+            $link_to_view_message = "../Agent/messages.php";
+            $message_body = "Hi $agent_name, You have new message.";
+            require_once "classes/Email.php";
+            $email = new Email();
+            $send_email = $email->agent_message_alert($agent_email, $agent_name, "New Message", $message_body);
+            if($send_email){
+                $_SESSION['successmsg'] ="Message sent successfully, the agent will get back to you as soon as possible";
+            }else{
+                $_SESSION['errormsg'] ="Message sent successfully, but email failed to send. the agent will get back to you as soon as possible";
+            }
         }
-    } else {
-        echo json_encode(['status' => 'error', 'message' => 'User not logged in']);
-    }
-} else {
-    echo json_encode(['status' => 'error', 'message' => 'Invalid request']);
-}
 
+        //this is the main redirection code that was commented out
+        header("location:../property_details.php?id=$property_id");
+        exit;
+    }else{
+        $_SESSION['errormsg'] ="Failed to send message, try again later";
+        header("location:../property_details.php?id=$property_id");
+        exit;
+    }   
+
+}
+else{
+    header("location:../index.php");
+    exit;
+}

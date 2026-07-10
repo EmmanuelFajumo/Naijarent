@@ -20,7 +20,7 @@
         //fetch listing details by id
         public function fetch_property_detail($property_id){
             try{
-                $sql = "SELECT properties.*, lga.LGA_name, property_type.name, state.state, agentprofile.Agent_id, agentprofile.first_name, agentprofile.last_name, agentprofile.profile_picture FROM properties JOIN Property_type ON properties.property_type = property_type.property_typeid JOIN lga ON properties.LGA = lga.LgA_id JOIN state ON properties.state = state.state_id JOIN agentprofile ON properties.agent_id = agentprofile.Agent_id WHERE property_id = ?";
+                $sql = "SELECT properties.*, lga.LGA_name, property_type.name, state.state, agentprofile.Agent_id, agentprofile.email, agentprofile.first_name, agentprofile.last_name, agentprofile.profile_picture FROM properties JOIN Property_type ON properties.property_type = property_type.property_typeid JOIN lga ON properties.LGA = lga.LgA_id JOIN state ON properties.state = state.state_id JOIN agentprofile ON properties.agent_id = agentprofile.Agent_id WHERE property_id = ?";
                 $stmt = $this->conn->prepare($sql);
                 $stmt->execute([$property_id]);
                 $res = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -39,6 +39,45 @@
                 return $res;
             }catch(PDOException $e){
                 echo $e->getMessage();
+            }
+        }
+
+        //a method that searches properties based on property type, state, and LGA
+        public function search_property($property_type, $state, $lga){
+            try{
+                $sql = "SELECT properties.*, lga.LGA_name, property_type.name AS property_type_name, state.state 
+                        FROM properties 
+                        JOIN Property_type ON properties.property_type = property_type.property_typeid 
+                        JOIN lga ON properties.LGA = lga.LgA_id 
+                        JOIN state ON properties.state = state.state_id 
+                        WHERE properties.verification_status = 'approved'";
+
+                $params = [];
+
+                if(!empty($property_type)){
+                    $sql .= " AND properties.property_type = ?";
+                    $params[] = $property_type;
+                }
+
+                if(!empty($state)){
+                    $sql .= " AND properties.state = ?";
+                    $params[] = $state;
+                }
+
+                if(!empty($lga)){
+                    $sql .= " AND properties.LGA = ?";
+                    $params[] = $lga;
+                }
+
+                $sql .= " ORDER BY properties.created_at DESC";
+
+                $stmt = $this->conn->prepare($sql);
+                $stmt->execute($params);
+                $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                return $res;
+            }catch(PDOException $e){
+                //log the error
+                return false;
             }
         }
 

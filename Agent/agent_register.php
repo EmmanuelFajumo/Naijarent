@@ -83,7 +83,7 @@
 </head>
 <body>
     <!-- Navigation -->
-    <?php // include 'nav.php'; ?> 
+    <?php include 'nav.php'; ?> 
 
     <!-- Register Form -->
      

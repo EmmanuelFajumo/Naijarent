@@ -2,9 +2,13 @@
 session_start();
 require_once "process_pages/classes/Site.php";
 require_once "process_pages/classes/Tenant.php";
+require_once "process_pages/classes/Utilities.php";
+
+
 
 $prop = new Site();
 $user = new Tenant();
+$a = new Utilities();
 
 if(isset($_SESSION['useronline'])){
     $user_deet = $user->fetch_user_detailby_id($_SESSION['useronline']);
@@ -12,7 +16,12 @@ if(isset($_SESSION['useronline'])){
 if(isset($_SESSION['agent_online'])){
     $user_deet = $user->fetch_user_detailby_id($_SESSION['agent_online']);
 }
+
+    // Fetch all agents
+    $all_agents = $a->get_all_agents();
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -272,7 +281,48 @@ if(isset($_SESSION['agent_online'])){
         <!-- Agent Cards Grid -->
         <div class="row g-4 mt-3" id="agentGrid">
             <!-- Dynamically populated by JS -->
+             <?php 
+                foreach($all_agents as $agent){
+             ?>
+             <div class="col-sm-12 col-md-6 col-lg-4 d-flex animate__animated animate__fadeIn">
+                        <div class="card box border-0 shadow-sm w-100 agent-card p-4 text-center">
+                            <div class="agent-img-wrapper">
+                                <img src="media/profile_pictures/<?php echo $agent['profile_picture']; ?>" class="agent-img" alt="">
+                            </div>
+                            <h4 class="fw-bold mb-1 fs-3" style="color: #14213D;"><?php echo $agent['first_name'].' '.$agent['last_name']; ?></h4>
+                            <p class="text-muted small mb-2 fw-semibold"><?php echo $agent['agency']; ?></p>
+                            
+                            <div class="d-flex justify-content-center align-items-center mb-2">
+                                <span class="badge bg-success-subtle text-success border border-success-subtle px-2.5 py-1.5 rounded" style="font-size: 0.72rem;">
+                                    <i class="fa-solid fa-circle-check me-1"></i><?php echo $agent['verification_status']; ?> Agent
+                                </span>
+                            </div>
+
+                            <div class="star-rating d-flex justify-content-center align-items-center gap-1 mb-2">
+                                <span class="text-muted small ms-1">(5.0 reviews)</span>
+                            </div>
+
+                            <div class="spec-meta-block">
+                                <div class="small mb-1.5"><span class="fw-semibold text-muted">Active Listings:</span> <span class="badge bg-primary px-2 text-white">5 active</span></div>
+                                <div class="small text-truncate"><span class="fw-semibold text-muted">Specialises in:</span> Lekki, Ikeja, Yaba</div>
+                            </div>
+
+                            <p class="text-muted small mt-1 text-start flex-grow-1 agent-bio-trunc">
+                                <?php echo $agent['agent_bio']; ?>
+                            </p>
+
+                            <div class="d-flex gap-2 mt-3 w-100">
+                                <a href="#" class="btn btn-outline-primary btn-sm flex-grow-1 py-2 fw-semibold">View Profile</a>
+                                <a href="#" class="btn btn-primary btn-sm flex-grow-1 py-2 fw-semibold text-light">Message Agent</a>
+                            </div>
+                        </div>
+                </div>
+                <?php
+                    }
+                ?>
+            </div>
         </div>
+       
 
         <!-- Empty State (hidden by default) -->
         <div id="emptyState" class="text-center py-5 my-5 d-none animate__animated animate__fadeIn">
@@ -304,291 +354,7 @@ if(isset($_SESSION['agent_online'])){
     <script src="jquery.js"></script>
     <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Mock database of Lagos agents
-        const agentsData = [
-            {
-                id: 1,
-                name: "Chidi Obi",
-                agency: "Obi & Co. Properties",
-                rating: 4.8,
-                reviewsCount: 142,
-                listingsCount: 28,
-                lgas: ["Lekki", "Ikoyi"],
-                propertyTypes: ["Flat", "Duplex"],
-                bio: "Specializes in luxury residential rentals in Lekki and Ikoyi with over 8 years of experience.",
-                image: "media/q.png",
-                dateAdded: "2025-01-10"
-            },
-            {
-                id: 2,
-                name: "Funmi Adebayo",
-                agency: "Adebayo Realty Group",
-                rating: 4.9,
-                reviewsCount: 96,
-                listingsCount: 19,
-                lgas: ["Ikeja", "Maryland", "Gbagada"],
-                propertyTypes: ["Flat", "Mini Flat", "Self-contained"],
-                bio: "Helping mainland tenants discover affordable, modern mini-flats and self-contain units.",
-                image: "media/q.png",
-                dateAdded: "2025-02-15"
-            },
-            {
-                id: 3,
-                name: "Emeka Okafor",
-                agency: "Okafor Associates",
-                rating: 4.2,
-                reviewsCount: 54,
-                listingsCount: 12,
-                lgas: ["Yaba", "Surulere"],
-                propertyTypes: ["Flat", "Self-contained", "Mini Flat"],
-                bio: "Dedicated to student housing solutions and rental homes near Unilag and Yabatech.",
-                image: "media/q.png",
-                dateAdded: "2025-03-20"
-            },
-            {
-                id: 4,
-                name: "Tunde Bakare",
-                agency: "Bakare Homes & Lands",
-                rating: 4.7,
-                reviewsCount: 110,
-                listingsCount: 24,
-                lgas: ["Ajah", "Lekki"],
-                propertyTypes: ["Duplex", "Bungalow"],
-                bio: "Experienced in family bungalows and high-end residential listings along the Lekki corridor.",
-                image: "media/q.png",
-                dateAdded: "2025-04-05"
-            },
-            {
-                id: 5,
-                name: "Yejide Balogun",
-                agency: "Balogun Real Estate",
-                rating: 4.6,
-                reviewsCount: 73,
-                listingsCount: 15,
-                lgas: ["Gbagada", "Maryland"],
-                propertyTypes: ["Flat", "Mini Flat"],
-                bio: "Providing seamless leasing services focused on cozy family apartments in Gbagada.",
-                image: "media/q.png",
-                dateAdded: "2025-05-12"
-            },
-            {
-                id: 6,
-                name: "Mustapha Yusuf",
-                agency: "Yusuf & Sons Properties",
-                rating: 4.4,
-                reviewsCount: 38,
-                listingsCount: 8,
-                lgas: ["Surulere", "Yaba"],
-                propertyTypes: ["Flat", "Bungalow", "Self-contained"],
-                bio: "Client-focused leasing representative specializing in mainland flats and self-contained homes.",
-                image: "media/q.png",
-                dateAdded: "2025-06-01"
-            },
-            {
-                id: 7,
-                name: "Blessing Okon",
-                agency: "Okon & Partners Ltd.",
-                rating: 4.5,
-                reviewsCount: 81,
-                listingsCount: 17,
-                lgas: ["Lekki", "Ajah", "Maryland"],
-                propertyTypes: ["Flat", "Self-contained", "Duplex"],
-                bio: "Passionate about finding quality family apartments and flats with seamless rental steps.",
-                image: "media/q.png",
-                dateAdded: "2025-06-18"
-            },
-            {
-                id: 8,
-                name: "Amina Bello",
-                agency: "Bello Elite Properties",
-                rating: 4.9,
-                reviewsCount: 65,
-                listingsCount: 21,
-                lgas: ["Ikoyi", "Ikeja"],
-                propertyTypes: ["Duplex", "Flat", "Bungalow"],
-                bio: "Delivering executive-level service in luxury property acquisitions and rentals across Lagos.",
-                image: "media/q.png",
-                dateAdded: "2025-07-02"
-            }
-        ];
-
-        let filteredAgents = [...agentsData];
-        const itemsPerPage = 6;
-        let currentPage = 1;
-
-        function applyFilters() {
-            const searchVal = $('#searchInput').val().toLowerCase().trim();
-            const lgaVal = $('#lgaSelect').val();
-            const typeVal = $('#typeSelect').val();
-            const sortVal = $('#sortSelect').val();
-
-            filteredAgents = agentsData.filter(agent => {
-                const matchesSearch = agent.name.toLowerCase().includes(searchVal) || 
-                                      agent.agency.toLowerCase().includes(searchVal) ||
-                                      agent.lgas.some(lga => lga.toLowerCase().includes(searchVal));
-                
-                const matchesLga = !lgaVal || agent.lgas.includes(lgaVal);
-                const matchesType = !typeVal || agent.propertyTypes.includes(typeVal);
-
-                return matchesSearch && matchesLga && matchesType;
-            });
-
-            // Sorting selections
-            if (sortVal === "listings") {
-                filteredAgents.sort((a, b) => b.listingsCount - a.listingsCount);
-            } else if (sortVal === "rating") {
-                filteredAgents.sort((a, b) => b.rating - a.rating);
-            } else if (sortVal === "newest") {
-                filteredAgents.sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded));
-            }
-
-            currentPage = 1;
-            renderGrid();
-        }
-
-        function clearFilters() {
-            $('#searchInput').val('');
-            $('#lgaSelect').val('');
-            $('#typeSelect').val('');
-            $('#sortSelect').val('listings');
-            applyFilters();
-        }
-
-        function renderGrid() {
-            const grid = $('#agentGrid');
-            const emptyState = $('#emptyState');
-            const paginationSection = $('#paginationSection');
-            
-            grid.empty();
-
-            if (filteredAgents.length === 0) {
-                grid.addClass('d-none');
-                emptyState.removeClass('d-none');
-                paginationSection.addClass('d-none');
-                $('#agent-count-badge').text('0 verified agents');
-                return;
-            }
-
-            grid.removeClass('d-none');
-            emptyState.addClass('d-none');
-            paginationSection.removeClass('d-none');
-
-            // Header count badge display
-            const totalCount = filteredAgents.length === agentsData.length ? "1,340" : filteredAgents.length;
-            $('#agent-count-badge').text(`${totalCount} verified agents`);
-
-            // Paginated indexes calculations
-            const startIndex = (currentPage - 1) * itemsPerPage;
-            const endIndex = Math.min(startIndex + itemsPerPage, filteredAgents.length);
-            const paginatedItems = filteredAgents.slice(startIndex, endIndex);
-
-            paginatedItems.forEach(agent => {
-                const isTopRated = agent.rating >= 4.5;
-                
-                // Construct rating stars
-                const starIcons = Array.from({length: 5}, (_, i) => {
-                    if (i < Math.floor(agent.rating)) {
-                        return '<i class="fa-solid fa-star"></i>';
-                    }
-                    if (i === Math.floor(agent.rating) && agent.rating % 1 !== 0) {
-                        return '<i class="fa-solid fa-star-half-stroke"></i>';
-                    }
-                    return '<i class="fa-regular fa-star"></i>';
-                }).join('');
-
-                const lgasSpecialised = agent.lgas.join(', ');
-
-                const cardHtml = `
-                    <div class="col-sm-12 col-md-6 col-lg-4 d-flex animate__animated animate__fadeIn">
-                        <div class="card box border-0 shadow-sm w-100 agent-card p-4 text-center">
-                            ${isTopRated ? '<div class="top-rated-ribbon">Top Rated</div>' : ''}
-                            <div class="agent-img-wrapper">
-                                <img src="${agent.image}" class="agent-img" alt="${agent.name}">
-                            </div>
-                            <h4 class="fw-bold mb-1 fs-3" style="color: #14213D;">${agent.name}</h4>
-                            <p class="text-muted small mb-2 fw-semibold">${agent.agency}</p>
-                            
-                            <div class="d-flex justify-content-center align-items-center mb-2">
-                                <span class="badge bg-success-subtle text-success border border-success-subtle px-2.5 py-1.5 rounded" style="font-size: 0.72rem;">
-                                    <i class="fa-solid fa-circle-check me-1"></i> Verified Agent
-                                </span>
-                            </div>
-
-                            <div class="star-rating d-flex justify-content-center align-items-center gap-1 mb-2">
-                                ${starIcons}
-                                <span class="text-muted small ms-1">(${agent.reviewsCount} reviews)</span>
-                            </div>
-
-                            <div class="spec-meta-block">
-                                <div class="small mb-1.5"><span class="fw-semibold text-muted">Active Listings:</span> <span class="badge bg-primary px-2 text-white">${agent.listingsCount} active</span></div>
-                                <div class="small text-truncate"><span class="fw-semibold text-muted">Specialises in:</span> ${lgasSpecialised}</div>
-                            </div>
-
-                            <p class="text-muted small mt-1 text-start flex-grow-1 agent-bio-trunc">
-                                ${agent.bio}
-                            </p>
-
-                            <div class="d-flex gap-2 mt-3 w-100">
-                                <a href="#" class="btn btn-outline-primary btn-sm flex-grow-1 py-2 fw-semibold">View Profile</a>
-                                <a href="#" class="btn btn-primary btn-sm flex-grow-1 py-2 fw-semibold text-light">Message Agent</a>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                grid.append(cardHtml);
-            });
-
-            // Update pagination details
-            $('#paginationInfo').text(`Displaying ${startIndex + 1}–${endIndex} of ${filteredAgents.length} agents`);
-            renderPagination(filteredAgents.length);
-        }
-
-        function renderPagination(totalItems) {
-            const paginationUl = $('#paginationLinks');
-            paginationUl.empty();
-
-            const totalPages = Math.ceil(totalItems / itemsPerPage);
-            if (totalPages <= 1) return;
-
-            // Previous Link
-            paginationUl.append(`
-                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
-                    <a class="page-link" href="#" onclick="changePage(${currentPage - 1})"><i class="fa-solid fa-chevron-left"></i></a>
-                </li>
-            `);
-
-            // Numeric page links
-            for (let i = 1; i <= totalPages; i++) {
-                paginationUl.append(`
-                    <li class="page-item ${currentPage === i ? 'active' : ''}">
-                        <a class="page-link" href="#" onclick="changePage(${i})">${i}</a>
-                    </li>
-                `);
-            }
-
-            // Next Link
-            paginationUl.append(`
-                <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
-                    <a class="page-link" href="#" onclick="changePage(${currentPage + 1})"><i class="fa-solid fa-chevron-right"></i></a>
-                </li>
-            `);
-        }
-
-        function changePage(page) {
-            currentPage = page;
-            renderGrid();
-            
-            // Smooth scroll back to search box
-            const filterForm = $('#filterForm');
-            if (filterForm.length) {
-                window.scrollTo({ top: filterForm.offset().top - 120, behavior: 'smooth' });
-            }
-        }
-
-        // On document ready trigger grid rendering
-        $(document).ready(() => {
-            renderGrid();
-        });
+        
     </script>
 </body>
 </html>

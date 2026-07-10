@@ -32,6 +32,17 @@ if(isset($_POST['btn'])){
         $_SESSION['user_name'] = trim($firstname . ' ' . $lastname);
         header("location:../tenant_dashboard.php");
         // echo "Tenant data saved, successfully";
+        include_once "classes/Registaration.php";
+            
+            $name = $firstname . ' ' . $lastname;
+            $recipient_email = $email;
+            $recipient_name = $name;
+            $subject = "Account Creation Successfull";
+            $body = "You have successfully created your account";
+
+
+            $message = new Message();
+            $message->welcome($recipient_email, $recipient_name, $subject, $body);
         
         
 }

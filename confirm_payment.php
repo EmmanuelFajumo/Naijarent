@@ -9,6 +9,17 @@
         exit;
     }
 
+    require_once("process_pages/classes/Tenant.php");
+    $user = new Tenant();
+    if(isset($_SESSION['useronline'])){
+    $user_deet = $user->fetch_user_detailby_id($_SESSION['useronline']);
+    }
+    if(isset($_SESSION['agent_online'])){
+        $user_deet = $user->fetch_user_detailby_id($_SESSION['agent_online']);
+    } 
+
+
+
     if(empty($_GET['id'])){
         header("location:index.php");
         exit;

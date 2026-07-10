@@ -100,10 +100,14 @@ class Admin extends Db
 
     //update agent status
     public function update_agent_status($status, $id){
-        $sql = "UPDATE agentprofile SET verification_status = ? WHERE Agent_id = ?";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->execute([$status, $id]);
-        return true;
+        try{
+            $sql = "UPDATE agentprofile SET verification_status = ? WHERE Agent_id = ?";
+            $stmt = $this->conn->prepare($sql);
+            $res = $stmt->execute([$status, $id]);
+            return $res;
+        }catch(PDOException $e){
+            return $e->getMessage();
+        }
     }
 
     //properties
@@ -184,7 +188,6 @@ class Admin extends Db
     }
 }
 // $update = new Admin();
-// echo "<pre>";
-// print_r($update->update_property_status('approved', 9));
-// echo "</pre>";
+// $res = ($update->update_agent_status('verified', 2));
+// echo $res;
 

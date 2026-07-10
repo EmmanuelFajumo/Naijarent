@@ -1,31 +1,55 @@
 <?php
+    require_once "Db.php";
+    require_once "config.php";
 
-require_once "Db.php";
-require_once "config.php";
+    class Payment extends Db
+    {
+        private $dbconn;
 
-class Payment extends Db
-{
-    private $dbconn;
+        public function __construct(){
+            $this->dbconn = $this->connect();
+        }
+        //a method that generates unique Reference number
+        public function generate_ref_code(){
+            $ref = uniqid("naijarent_").time();
+            return $ref;
 
-    public function __construct(){
-        $this->dbconn = $this->connect();
-    }
+        }  
 
-    //a method that generates unique Reference number
-    public function generate_ref_code(){
-        $ref = uniqid("naijarent_").time();
-        return $ref;
-    }
+        //a method that inserts in to the payment table
+        public function add_payment_attempt($amount, $property_id, $generated_ref, $fullname, $email, $agent_id){
+                try{
+                    $sql = "SELECT reference FROM payments where reference = ?";
+                    $stmt = $this->dbconn->prepare($sql);
+                    $stmt->execute([$generated_ref]);
+                    $res = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    //a method that inserts into the payment table
-    public function add_payment_attempt($amount, $property_id, $reference, $user_name, $user_email,  $agent_id){
-        $sql = "INSERT INTO payments(amount, property_id, reference, user_name, user_email, agent_id) VALUES(?, ?, ?, ?, ? ,?)";
-        $stmt = $this->dbconn->prepare($sql);
-        $res = $stmt->execute([$amount, $property_id, $reference, $user_name, $user_email, $agent_id]);
-        return $res;
-    }
+                    if(!empty($res)){
+                        return false;
+                    }
+                    else{
+                         try{
+                            $sql = "INSERT INTO payments(amount, property_id, reference, user_name, user_email, agent_id) VALUES(?, ?, ?, ?, ?, ?)";
+                            $stmt = $this->dbconn->prepare($sql);
+                            $result = $stmt->execute([$amount, $property_id, $generated_ref, $fullname, $email, $agent_id]);
+                            return $result;
+                        }catch(PDOException $e){
+                            //log the error into your server error
+                            //file_put_contents()
+                            return $e->getmessage();
+                            // return false;
+                        }
+                    }
+                }
+                catch(PDOException $e){
+                //log the error into your server error
+                //file_put_contents()
+                return $e->getmessage();
+                // return false;
+            }
+        }
 
-    //a method that initializes Paystack
+        //a method that initializes Paystack
         public function initialize_paystack($email,$amount, $ref){
             $amount_in_kobo = $amount*100;
             try{
@@ -34,7 +58,7 @@ class Payment extends Db
                 $fields = [
                     'email' => "$email",
                     'amount' => "$amount_in_kobo",
-                    'callback_url' => "http://localhost/RMS/Agent/payment_status.php",
+                    'callback_url' => "http://localhost/RMS/agent/payment_status.php",
                     'reference' => "$ref"
                     //'metadata' => ["cancel_action" => "https://your-cancel-url.com"]
                 ];
@@ -70,58 +94,50 @@ class Payment extends Db
             }
         }
 
-    //a method that initializes paystack
-    public function verify_payment($ref){
-        try{
-            $curl = curl_init();
+        //a method that will verify payment using ref
+        public function verify_payment($ref){
+            try{
+                $curl = curl_init();
+  
+                curl_setopt_array($curl, array(
+                    CURLOPT_URL => "https://api.paystack.co/transaction/verify/$ref",
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => "",
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 30,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => "GET",
+                    CURLOPT_HTTPHEADER => array(
+                    "Authorization: Bearer ".PAYSTACK_SECRET_KEY,
+                    "Cache-Control: no-cache",
+                    ),
+                ));
+                
+                $response = curl_exec($curl);
+                $err = curl_error($curl);
 
-            curl_setopt_array($curl, array(
-                CURLOPT_URL => "https://api.paystack.co/transaction/verify/$ref",
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_ENCODING => "",
-                CURLOPT_MAXREDIRS => 10,
-                CURLOPT_TIMEOUT => 30,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                CURLOPT_CUSTOMREQUEST => "GET",
-                CURLOPT_HTTPHEADER => array(
-                "Authorization: Bearer ".PAYSTACK_SECRET_KEY,
-                "Cache-Control: no-cache",
-                ),
-            ));
-            
-            $response = curl_exec($curl);
-            $err = curl_error($curl);
-
-            //curl_close($curl);
-            
-            if ($err) {
-                //log the error message in a log file | send automated email to yourself as the developer
+                //curl_close($curl);
+                
+                if ($err) {
+                    //log the error message in a log file | send automated email to yourself as the developer
+                    return false;
+                } else {
+                    return $response;
+                }
+            }
+            catch(Exception $e){
+                //log the error message in a log file
                 return false;
-            } else {
-                return $response;
             }
 
-
-        }catch(Exception $e){
-            //log the error message in a log file
-            return false;
         }
-    }
-
-    //fetch property_id by ref
-    public function fetch_property_id($res){
-        $sql = "SELECT amount FROM payments WHERE reference = ?";
-        $stmt = $this->dbconn->prepare($sql);
-        $amount = $stmt->execute([$res]);
-        return $amount;
-    }
-
-     //a method that updates payment status
-        public function update_payment_status($status, $time, $ref){
+  
+        //a method that updates payment status
+        public function update_payment_status($status, $paid_at, $ref){
            try{
-            $sql = "UPDATE payments SET status = ?, paid_at = ? WHERE reference = ?";
-            $stmt = $this->dbconn->prepare($sql);
-            $res = $stmt->execute([$status, $time, $ref]);
+            $sql = "UPDATE payments SET status = ?, paid_at = ?  WHERE reference = ?";
+            $stmt = $this->dbconn->prepare($sql); 
+            $res = $stmt->execute([$status, $paid_at, $ref]);
             return $res;
            }
            catch(PDOException $e){
@@ -129,5 +145,11 @@ class Payment extends Db
            }
 
         }
+    }
+    
+  //  $pay1 = new Payment();
+// //$refcode = $pay1->generate_ref_code();
+// $result = $pay1->update_payment_status("sellerhq_6a3e6a7211d971782475378", "paid");
+// echo $result;
+//echo $pay1->add_payment_attempt(30000, 13, "erwrwerwetrwe", "Salui", "salui@gmail", 6);
 
-}

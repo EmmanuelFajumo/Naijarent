@@ -2,6 +2,9 @@
 session_start();
 //require_once "Agent/agentguard.php";
 require_once "process_pages/classes/Site.php";
+require_once "process_pages/classes/Tenant.php";
+require_once "process_pages/classes/Agent.php";
+
 $prop = new Site();
 $all_listings = $prop->get_all_listing_bystatus("approved");
    
@@ -9,6 +12,14 @@ $featured_listings = $prop->fetch_featured_properties();
     // echo "<pre>";
     // print_r($featured_listings);
     // echo "</pre>";
+    if(isset($_SESSION['useronline'])){
+    $user = new Tenant;
+    $user_deet = $user->fetch_user_detailby_id($_SESSION['useronline']);
+}
+if(isset($_SESSION['agent_online'])){
+    
+    $user_deet = $user->fetch_user_detailby_id($_SESSION['agent_online']);
+}
 ?>
 
 

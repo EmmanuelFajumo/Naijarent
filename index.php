@@ -9,12 +9,22 @@ $prop = new Site();
 $user = new Tenant();
 $all_featured_listings = $prop->fetch_featured_properties();
 
+// echo "<pre>";
+// print_r($all_featured_listings);
+// echo "</pre>";
+
 if(isset($_SESSION['useronline'])){
     $user_deet = $user->fetch_user_detailby_id($_SESSION['useronline']);
 }
 if(isset($_SESSION['agent_online'])){
     $user_deet = $user->fetch_user_detailby_id($_SESSION['agent_online']);
 }
+
+
+require_once "process_pages/classes/Utilities.php";
+$a = new Utilities();
+$states =  $a->fetch_all_states();
+
 ?>
 
 
@@ -46,7 +56,112 @@ if(isset($_SESSION['agent_online'])){
         .heading{
             font-size: 50px
         }
+        
+        a{
+            text-decoration: none;
+        }
 
+
+        .butt {
+            width: 200px;
+            height: 50px;
+            background: linear-gradient(135deg, #FFD700, #FFA500); 
+            border: none; 
+            transition: all 0.3s ease; 
+            box-shadow: 0 4px 18px rgba(255, 165, 0, 0.4); 
+            white-space: nowrap;
+        }
+
+        /* ── Hero Slider ── */
+        .hero-slider {
+            position: relative;
+            width: 100%;
+            min-height: 800px;
+            overflow: hidden;
+        }
+        .hero-slider .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: bottom center;
+            opacity: 0;
+            transition: opacity 1.2s ease-in-out;
+            z-index: 0;
+        }
+        .hero-slider .slide.active {
+            opacity: 1;
+        }
+        .hero-slider .overlay {
+            position: relative;
+            z-index: 2;
+            background-color: rgba(0, 0, 0, 0.60) !important;
+            min-height: 800px;
+            padding: 120px 0px;
+        }
+        .slider-dots {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 5;
+            display: flex;
+            gap: 10px;
+        }
+        .slider-dots .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.35);
+            border: 2px solid rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .slider-dots .dot.active {
+            background: #FFD700;
+            border-color: #FFD700;
+            box-shadow: 0 0 12px rgba(255,215,0,0.5);
+            transform: scale(1.15);
+        }
+        .slider-arrows {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            z-index: 5;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+        .slider-arrows button {
+            pointer-events: auto;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(8px);
+            color: #fff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .slider-arrows button:hover {
+            background: rgba(255,255,255,0.25);
+            transform: scale(1.08);
+        }
+        @media (max-width: 767px) {
+            .hero-slider { min-height: 600px; }
+            .hero-slider .overlay { min-height: 600px; padding: 80px 0; }
+            .slider-arrows button { width: 36px; height: 36px; font-size: 0.9rem; }
+        }
         .service-card-simple {
         background: #ffffff;
         border-radius: 16px;
@@ -54,40 +169,40 @@ if(isset($_SESSION['agent_online'])){
         border: 1px solid #f0f0f0;
         transition: all 0.4s ease;
         cursor: default;
-    }
+        }
 
-    .service-card-simple:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.06);
-        border-color: #e0e0e0;
-    }
+        .service-card-simple:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.06);
+            border-color: #e0e0e0;
+        }
 
-    .service-card-simple .icon-wrapper i {
-        transition: all 0.4s ease;
-    }
+        .service-card-simple .icon-wrapper i {
+            transition: all 0.4s ease;
+        }
 
-    .service-card-simple:hover .icon-wrapper i {
-        transform: scale(1.1) rotate(-5deg);
-        color: #0056b3;
-    }
+        .service-card-simple:hover .icon-wrapper i {
+            transform: scale(1.1) rotate(-5deg);
+            color: #0056b3;
+        }
 
-    .service-card-simple .step-label {
-        font-weight: 600;
-        letter-spacing: 2px;
-    }
+        .service-card-simple .step-label {
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
 
-    .service-card-simple h3 {
-        color: #1a2332;
-    }
+        .service-card-simple h3 {
+            color: #1a2332;
+        }
 
-    .service-card-simple .text-muted {
-        color: #6c757d !important;
-    }
+        .service-card-simple .text-muted {
+            color: #6c757d !important;
+        }
 
 
-    /* ================================
-           CITY CARD BASE STYLES
-        ================================ */
+        /* ================================
+            CITY CARD BASE STYLES
+            ================================ */
         .city-card {
             position: relative;
             border-radius: 16px;
@@ -422,6 +537,8 @@ if(isset($_SESSION['agent_online'])){
         }
 
         /* Search CTA button */
+        
+        
         .btn-hero-search {
             background: linear-gradient(135deg, #FFD700, #FFA500);
             border: none;
@@ -469,6 +586,17 @@ if(isset($_SESSION['agent_online'])){
             .search-field-divider { display: none; }
             .hero-stats { gap: 18px; }
         }
+
+        .btn-outline-primary {
+            color: #1E3888 !important;
+            border-color: #1E3888 !important;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-primary:hover {
+            color: #ffffff !important;
+            background-color: #1E3888 !important;
+        }
     </style>
 
 
@@ -481,152 +609,181 @@ if(isset($_SESSION['agent_online'])){
     <!-- Navigation -->
 
 
-    <!-- Hero Section -->
-    <div class="container-fluid hero ">
-        <div class="row overlay ">
-            <div class="col-md-8 offset-md-2 d-flex flex-column justify-content-center align-items-center text-light animate__animated animate__fadeIn animate__slow">
-                <p class="text-center fs-4 mt-5">NaijaRent connects you with verified landlords and trusted agents.</p>
-                <h1 class="text-center fw-bold" style="font-size: 5em; font-weight: bold;">Find Your Next Home in Lagos <br >Without the Stress</h1>
-                <p class="text-center fs-4">No fake listings. No hidden charges. No wahala.</p>
-                <!-- ── Modern Search Widget ──────────────────────── -->
-                <div style="width: 100%; margin-top: 56px;">
+    <!-- Hero Section with Slider Background -->
+    <div class="hero-slider" id="heroSlider">
+        <!-- Slide 1 -->
+        <div class="slide active" style="background-image: url('media/bg.png');"></div>
+        <!-- Slide 2 -->
+        <div class="slide" style="background-image: url('media/lagos_city.png');"></div>
+        <!-- Slide 3 -->
+        <div class="slide" style="background-image: url('media/abuja_city.png');"></div>
 
-                    <!-- Pill Tab Toggle -->
-                    <div class="search-tabs mb-3">
-                        <button type="button" class="search-tab-btn active" id="forRent"
-                            onclick="switchTab('rent', this)">
-                            <i class="fa-solid fa-key me-1"></i> For Rent
-                        </button>
-                        <button type="button" class="search-tab-btn" id="forSale"
-                            onclick="switchTab('sale', this)">
-                            <i class="fa-solid fa-house me-1"></i> For Sale
-                        </button>
-                    </div>
+        <!-- Overlay + Content -->
+        <div class="overlay d-flex align-items-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 offset-md-2 d-flex flex-column justify-content-center align-items-center text-light">
+                        <p class="text-center fs-4 mt-5">NaijaRent connects you with verified landlords and trusted agents.</p>
+                        <h1 class="text-center fw-bold" style="font-size: 5em; font-weight: bold;">Find Your Next Home in Lagos <br >Without the Stress</h1>
+                        <p class="text-center fs-4">No fake listings. No hidden charges. No wahala.</p>
+                        
+                        <!-- Search Widget -->
+                        <div style="width: 100%; margin-top: 56px;">
 
-                    <!-- Glassmorphism Search Card -->
-                    <div class="search-glass-card">
+                            <!-- Pill Tab Toggle -->
+                            <div class="search-tabs mb-3">
+                                <button type="button" class="search-tab-btn active" id="forRent"
+                                    onclick="switchTab('rent', this)">
+                                    <i class="fa-solid fa-key me-1"></i> For Rent
+                                </button>
+                                <button type="button" class="search-tab-btn" id="forSale"
+                                    onclick="switchTab('sale', this)">
+                                    <i class="fa-solid fa-house me-1"></i> For Sale
+                                </button>
+                            </div>
 
-                        <!-- Rent Search -->
-                        <div id="rentSearch">
-                            <form action="" method="GET">
-                                <input type="hidden" name="type" value="rent">
-                                <div class="row g-3 align-items-end">
-                                    <div class="col-12 col-md-4">
-                                        <span class="search-field-label">
-                                            <i class="fa-solid fa-location-dot me-1"></i>Location
-                                        </span>
-                                        <div class="input-icon-wrap">
-                                            <i class="fa-solid fa-magnifying-glass"></i>
-                                            <input type="text" name="location" class="form-control" placeholder="Enter a city, LGA or area...">
+                            <!-- Glassmorphism Search Card -->
+                            <div class="search-glass-card">
+
+                                <!-- Rent Search -->
+                                <div id="rentSearch">
+                                    <form action="" method="GET">
+                                        <input type="hidden" name="type" value="rent">
+                                        <div class="row g-3 align-items-end">
+                                            <div class="col-12 col-md-4">
+                                                <span class="search-field-label">
+                                                    <i class="fa-solid fa-location-dot me-1"></i>Location
+                                                </span>
+                                                <div class="input-icon-wrap">
+                                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                                    <input type="text" name="location" class="form-control" placeholder="Enter a city, LGA or area...">
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-3">
+                                                <span class="search-field-label">
+                                                    <i class="fa-solid fa-building me-1"></i>Property Type
+                                                </span>
+                                                <select name="property_type" class="form-select" name="property_">
+                                                    <option value="">Any type</option>
+                                                      <?php 
+                                                                    foreach($states as $state){
+                                                                ?>
+                                                                <option value="<?php echo $state['state_id']; ?>"> <?php echo $state['state']; ?></option>
+                                                                <?php
+                                                                    }
+                                                                ?>
+                                                </select>
+                                            </div>
+                                            <div class="col-12 col-md-3">
+                                                <span class="search-field-label">
+                                                    <i class="fa-solid fa-naira-sign me-1"></i>Price Range
+                                                </span>
+                                                <select name="price_range" class="form-select">
+                                                    <option value="">Any price</option>
+                                                    <option value="300-500">&#8358;300k &ndash; &#8358;500k</option>
+                                                    <option value="500-1000">&#8358;500k &ndash; &#8358;1M</option>
+                                                    <option value="1000-2000">&#8358;1M &ndash; &#8358;2M</option>
+                                                    <option value="2000+">Above &#8358;2M</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-12 col-md-2">
+                                                <span class="search-field-label" style="opacity:0;user-select:none;">Search</span>
+                                                <button type="submit" class="btn-hero-search">
+                                                    <i class="fa-solid fa-magnifying-glass"></i> Search
+                                                </button>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-12 col-md-3">
-                                        <span class="search-field-label">
-                                            <i class="fa-solid fa-building me-1"></i>Property Type
-                                        </span>
-                                        <select name="property_type" class="form-select">
-                                            <option value="">Any type</option>
-                                            <option value="bungalow">Bungalow</option>
-                                            <option value="duplex">Duplex</option>
-                                            <option value="flat">Flat</option>
-                                            <option value="mini_flat">Mini Flat</option>
-                                            <option value="room_parlour">Room &amp; Parlour</option>
-                                            <option value="self_con">Self-contained</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-12 col-md-3">
-                                        <span class="search-field-label">
-                                            <i class="fa-solid fa-naira-sign me-1"></i>Price Range
-                                        </span>
-                                        <select name="price_range" class="form-select">
-                                            <option value="">Any price</option>
-                                            <option value="300-500">&#8358;300k &ndash; &#8358;500k</option>
-                                            <option value="500-1000">&#8358;500k &ndash; &#8358;1M</option>
-                                            <option value="1000-2000">&#8358;1M &ndash; &#8358;2M</option>
-                                            <option value="2000+">Above &#8358;2M</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-12 col-md-2">
-                                        <span class="search-field-label" style="opacity:0;user-select:none;">Search</span>
-                                        <button type="submit" class="btn-hero-search">
-                                            <i class="fa-solid fa-magnifying-glass"></i> Search
-                                        </button>
-                                    </div>
+                                    </form>
                                 </div>
-                            </form>
-                        </div>
 
-                        <!-- Sale Search -->
-                        <div id="saleSearch" style="display:none;">
-                            <form action="" method="GET">
-                                <input type="hidden" name="type" value="sale">
-                                <div class="row g-3 align-items-end">
-                                    <div class="col-12 col-md-4">
-                                        <span class="search-field-label">
-                                            <i class="fa-solid fa-location-dot me-1"></i>Location
-                                        </span>
-                                        <div class="input-icon-wrap">
-                                            <i class="fa-solid fa-magnifying-glass"></i>
-                                            <input type="text" name="location" class="form-control" placeholder="Enter a city, LGA or area...">
+                                <!-- Sale Search -->
+                                <div id="saleSearch" style="display:none;">
+                                    <form action="" method="GET">
+                                        <input type="hidden" name="type" value="sale">
+                                        <div class="row g-3 align-items-end">
+                                            <div class="col-12 col-md-4">
+                                                <span class="search-field-label">
+                                                    <i class="fa-solid fa-location-dot me-1"></i>Location
+                                                </span>
+                                                <div class="input-icon-wrap">
+                                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                                    <input type="text" name="location" class="form-control" placeholder="Enter a city, LGA or area...">
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-3">
+                                                <span class="search-field-label">
+                                                    <i class="fa-solid fa-building me-1"></i>Property Type
+                                                </span>
+                                                <select name="property_type" class="form-select">
+                                                    <option value="">Any type</option>
+                                                    <option value="bungalow">Bungalow</option>
+                                                    <option value="duplex">Duplex</option>
+                                                    <option value="flat">Flat</option>
+                                                    <option value="mini_flat">Mini Flat</option>
+                                                    <option value="room_parlour">Room & Parlour</option>
+                                                    <option value="self_con">Self-contained</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-12 col-md-3">
+                                                <span class="search-field-label">
+                                                    <i class="fa-solid fa-naira-sign me-1"></i>Price Range
+                                                </span>
+                                                <select name="price_range" class="form-select">
+                                                    <option value="">Any price</option>
+                                                    <option value="5M-20M">&#8358;5M &ndash; &#8358;20M</option>
+                                                    <option value="20M-50M">&#8358;20M &ndash; &#8358;50M</option>
+                                                    <option value="50M+">Above &#8358;50M</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-12 col-md-2">
+                                                <span class="search-field-label" style="opacity:0;user-select:none;">Search</span>
+                                                <button type="submit" class="btn-hero-search">
+                                                    <i class="fa-solid fa-magnifying-glass"></i> Search
+                                                </button>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-12 col-md-3">
-                                        <span class="search-field-label">
-                                            <i class="fa-solid fa-building me-1"></i>Property Type
-                                        </span>
-                                        <select name="property_type" class="form-select">
-                                            <option value="">Any type</option>
-                                            <option value="bungalow">Bungalow</option>
-                                            <option value="duplex">Duplex</option>
-                                            <option value="flat">Flat</option>
-                                            <option value="mini_flat">Mini Flat</option>
-                                            <option value="room_parlour">Room &amp; Parlour</option>
-                                            <option value="self_con">Self-contained</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-12 col-md-3">
-                                        <span class="search-field-label">
-                                            <i class="fa-solid fa-naira-sign me-1"></i>Price Range
-                                        </span>
-                                        <select name="price_range" class="form-select">
-                                            <option value="">Any price</option>
-                                            <option value="5M-20M">&#8358;5M &ndash; &#8358;20M</option>
-                                            <option value="20M-50M">&#8358;20M &ndash; &#8358;50M</option>
-                                            <option value="50M+">Above &#8358;50M</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-12 col-md-2">
-                                        <span class="search-field-label" style="opacity:0;user-select:none;">Search</span>
-                                        <button type="submit" class="btn-hero-search">
-                                            <i class="fa-solid fa-magnifying-glass"></i> Search
-                                        </button>
-                                    </div>
+                                    </form>
                                 </div>
-                            </form>
-                        </div>
 
-                    </div><!-- /.search-glass-card -->
+                            </div><!-- /.search-glass-card -->
 
-                    <!-- Trust Stats Strip -->
-                    <div class="hero-stats">
-                        <div class="hero-stat-item">
-                            <i class="fa-solid fa-shield-halved"></i>
-                            <span><strong>1,340+</strong> Verified Agents</span>
-                        </div>
-                        <div class="hero-stat-item">
-                            <i class="fa-solid fa-house-circle-check"></i>
-                            <span><strong>8,000+</strong> Active Listings</span>
-                        </div>
-                        <div class="hero-stat-item">
-                            <i class="fa-solid fa-star"></i>
-                            <span><strong>4.8</strong> Avg. Rating</span>
-                        </div>
+                            <!-- Trust Stats Strip -->
+                            <div class="hero-stats">
+                                <div class="hero-stat-item">
+                                    <i class="fa-solid fa-shield-halved"></i>
+                                    <span><strong>1,340+</strong> Verified Agents</span>
+                                </div>
+                                <div class="hero-stat-item">
+                                    <i class="fa-solid fa-house-circle-check"></i>
+                                    <span><strong>8,000+</strong> Active Listings</span>
+                                </div>
+                                <div class="hero-stat-item">
+                                    <i class="fa-solid fa-star"></i>
+                                    <span><strong>4.8</strong> Avg. Rating</span>
+                                </div>
+                            </div>
+
+                        </div><!-- /.search widget wrapper -->
                     </div>
-
-                </div><!-- /.search widget wrapper -->
-
-                   
+                </div>
             </div>
+        </div>
+
+        <!-- Slider Navigation Arrows -->
+        <div class="slider-arrows">
+            <button onclick="prevSlide()" aria-label="Previous slide">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <button onclick="nextSlide()" aria-label="Next slide">
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+        </div>
+
+        <!-- Slider Dots -->
+        <div class="slider-dots">
+            <span class="dot active" onclick="goToSlide(0)"></span>
+            <span class="dot" onclick="goToSlide(1)"></span>
+            <span class="dot" onclick="goToSlide(2)"></span>
         </div>
     </div>
     <!-- Hero section end -->
@@ -636,13 +793,13 @@ if(isset($_SESSION['agent_online'])){
 
             <div class="row">
                 <div class="col-md-6">
-                    <p>FEATURED PROPERTIES</p>
-                    <h2 class="text-left mb-4 heading">Browse Properties</h2>
+                    <p style="color: #1E3888; font-size: 0.82em;">FEATURED PROPERTIES</p>
+                    <h2 class="text-left mb-4 heading" style="font-family: 'Voltaire', sans-serif; font-size: 2.2em; color: #1E3888;">Browse Properties</h2>
                     <hr class="mb-4 bg-primary" style="width: 100px; height: 3px;">
                     <p>Discover the perfect property across Nigeria's most desirable locations</p> 
                 </div>
                 <div class="col-md-6 d-flex justify-content-end align-items-center">
-                    <a href="all_properties.php" class="btn btn-primary butt btn-lg rounded-pill">View All Properties</a>
+                    <a href="all_properties.php" class="btn btn-primary butt btn-lg rounded-pill" >View All Properties</a>
                 </div>
             </div>
 
@@ -696,9 +853,8 @@ if(isset($_SESSION['agent_online'])){
         <div class="row" >
                 <div class="col-md-5 col-sm-12">
                     <p>Latest Listed Properties</p>
-                    <h2 class="text-left mb-4 heading">Explore By <br><span class='text-primary'>Property Type</span></h2>
+                    <h2 class="text-left mb-4 heading" style="font-family: 'Voltaire', sans-serif; font-size: 2.2em; color: #1E3888;">Explore By <br><span>Property Type</span></h2>
                     <hr class="mb-4 bg-primary" style="width: 100px; height: 3px;">
-                    <a class=" rounded-pill btn btn-outline-primary mb-4 px-5 py-2" href="#">View All Properties</a> 
                 </div>
                 <div class="col-md-7 d-flex col-sm-12 align-items-center">
                     <div class="d-flex justify-content-center align-items-center m-auto" style="width: 100%; gap: 50px; flex-wrap: wrap;">
@@ -755,8 +911,7 @@ if(isset($_SESSION['agent_online'])){
 
                 <!-- Lagos -->
                 <a href="listings.php?city=lagos" class="city-card city-lagos">
-                    <img src="https://images.unsplash.com/photo-1608096299210-db7e38487075?w=800"
-                        alt="Lagos skyline">
+                    <img src="media/lagos_city.png" alt="Lagos skyline">
                     <div class="listings-pill">240+ listings</div>
                     <div class="card-text">
                         <div class="tagline">
@@ -769,8 +924,7 @@ if(isset($_SESSION['agent_online'])){
 
                 <!-- Abuja -->
                 <a href="listings.php?city=abuja" class="city-card city-abuja">
-                    <img src="https://images.unsplash.com/photo-1569288052389-dac9b01ac769?w=800"
-                        alt="Abuja">
+                    <img src="media/abuja_city.png" alt="Abuja">
                     <div class="listings-pill">185+ listings</div>
                     <div class="card-text">
                         <div class="tagline">
@@ -783,8 +937,7 @@ if(isset($_SESSION['agent_online'])){
 
                 <!-- Port Harcourt -->
                 <a href="listings.php?city=portharcourt" class="city-card city-portharcourt">
-                    <img src="https://images.unsplash.com/photo-1580746738626-0d6f7a4f94c6?w=800"
-                        alt="Port Harcourt">
+                    <img src="media/port_harcourt_city.png" alt="Port Harcourt">
                     <div class="listings-pill">98+ listings</div>
                     <div class="card-text">
                         <div class="tagline">
@@ -797,8 +950,7 @@ if(isset($_SESSION['agent_online'])){
 
                 <!-- Enugu -->
                 <a href="listings.php?city=enugu" class="city-card city-enugu">
-                    <img src="https://images.unsplash.com/photo-1589519160732-57fc498494f8?w=800"
-                        alt="Enugu">
+                    <img src="media/enugu_city.png" alt="Enugu">
                     <div class="listings-pill">64+ listings</div>
                     <div class="card-text">
                         <div class="tagline">
@@ -811,8 +963,7 @@ if(isset($_SESSION['agent_online'])){
 
                 <!-- Ibadan -->
                 <a href="listings.php?city=ibadan" class="city-card city-ibadan">
-                    <img src="https://images.unsplash.com/photo-1621155346337-1d19476ba7d6?w=800"
-                        alt="Ibadan">
+                    <img src="media/ibadan_city.png" alt="Ibadan">
                     <div class="listings-pill">112+ listings</div>
                     <div class="card-text">
                         <div class="tagline">
@@ -825,8 +976,7 @@ if(isset($_SESSION['agent_online'])){
 
                 <!-- Kaduna -->
                 <a href="listings.php?city=kaduna" class="city-card city-kaduna">
-                    <img src="https://images.unsplash.com/photo-1572025442646-866d16c84a54?w=800"
-                        alt="Kaduna">
+                    <img src="media/kaduna_city.png" alt="Kaduna">
                     <div class="listings-pill">76+ listings</div>
                     <div class="card-text">
                         <div class="tagline">
@@ -844,11 +994,14 @@ if(isset($_SESSION['agent_online'])){
     </section>
 
 
+    <?php 
+         if(!isset($_SESSION['agent_online']) && (!isset($_SESSION['useronline'])) ){
+           ?>
     <div class="container section">
         <div class="row ">
                 <div class="col-md-12 py-5 text-center">
                     <p>FIND YOUR HOME IN 3 STEPS</p> 
-                    <h2 class="text-left mb-4 heading">Finding a Home Has <span class='text-primary'>Never Been This Easy</span></h2> 
+                    <h2 class="text-left mb-4 heading" style="font-family: 'Voltaire', sans-serif; font-size: 2.2em; color: #1E3888;">Finding a Home Has <span >Never Been This Easy</span></h2> 
                     <a href="register.html" class="btn btn-outline-primary rounded ">SignUp Now</a>
                 </div>
                
@@ -901,92 +1054,139 @@ if(isset($_SESSION['agent_online'])){
 
 
     </div>
-   
-
-
-
-    <!-- Featured properties -->
-
-
     <!-- Why choose us -->
-    <div class="container" style="padding: 50px 0px 200px 0px;">
+    <div class="container section" style="padding: 80px 0px 100px 0px;">
         <div class="row">
+            <!-- Section Header -->
+            <div class="col-12 text-center mb-5">
+                <span class="badge rounded-pill px-4 py-2 mb-3"
+                    style="background-color: #e8f0fe; color: #1E3888; font-size: 0.82em; letter-spacing: 1px;">
+                    WHY NAIJARENT
+                </span>
+                <h2 style="font-family: 'Voltaire', sans-serif; font-size: 2.4em; color: #14213D;">
+                    Why Nigerians <span style="color: #1E3888;">Choose Us</span>
+                </h2>
+                <p class="text-muted mx-auto" style="max-width: 520px; font-size: 0.95em;">
+                    Built for the reality of house hunting in Nigeria — transparent, verified, and hassle-free.
+                </p>
+            </div>
         </div>
-        <div class="row">
-            <div class="col-md-12">
-                <h2 class="text-left mb-4">Explore By <br>Property Type</h2>
-                <hr class="mb-4 bg-primary" style="width: 100px; height: 3px;">
-            </div>
-            <div class="col-md-12 my-3">
-                <h2>Why Nigerians <span class="text-primary">Choose Us</span></h2>
-            </div>
-            <div class="col-md-4 ">
-                <div class="row">
-                    <div class="col-md-12 pe-2 ps-3 py-5 bg-primary rounded text-light abox">
-                        <p class="">Built for the Reality of House Hunting in Nigeria. View detailed photos, video walkthroughs, and full property features before committing to a visit. View detailed photos, video walkthroughs, and full property features before committing to a visit. View detailed photos, video walkthroughs, and full property features before committing to a visit.</p>
-                        <a class=" rounded-pill btn btn-light my-4 px-5 py-2" href="#">Join Now</a>
+
+        <div class="row g-4 align-items-stretch">
+            <!-- Left Column: Highlight Card + Image -->
+            <div class="col-lg-4 d-flex flex-column">
+                <div class="card border-0 rounded-4 p-4 text-white flex-grow-1 d-flex flex-column justify-content-between"
+                    style="background: linear-gradient(135deg, #14213D, #1E3888); min-height: 280px;">
+                    <div>
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="rounded-3 d-flex align-items-center justify-content-center"
+                                style="width: 48px; height: 48px; background: rgba(255,255,255,0.12);">
+                                <i class="fa-solid fa-star" style="color: #FFD700; font-size: 1.2rem;"></i>
+                            </div>
+                            <h5 class="mb-0" style="font-family: 'Voltaire', sans-serif; font-size: 1.3rem;">Trusted Platform</h5>
+                        </div>
+                        <p style="font-size: 0.9rem; line-height: 1.7; opacity: 0.9;">
+                            Built for the Reality of House Hunting in Nigeria. View detailed photos, video walkthroughs, and full property features before committing to a visit. Every listing is verified so you never waste time on fake deals.
+                        </p>
                     </div>
-                    <img src="media/chat.jpeg" alt="" class="img-fluid mt-3">
+                    <a href="register.php" class="btn rounded-pill px-5 py-2 mt-3 align-self-start fw-semibold"
+                        style="background: #FFD700; color: #14213D; border: none; box-shadow: 0 4px 14px rgba(255,215,0,0.3);">
+                        Join Now <i class="fa-solid fa-arrow-right ms-2"></i>
+                    </a>
+                </div>
+                <div class="rounded-4 overflow-hidden mt-3" style="height: 180px;">
+                    <img src="media/chat.jpeg" alt="Happy tenant" class="w-100 h-100" style="object-fit: cover;">
                 </div>
             </div>
 
-
-
-            <div class="col-md-4 pt-5 ps-3">
-                <div class="d-flex align-items-center gx-2 box p-3">
-                    <a href="" class="fs-1"> <i class="fa-solid fa-certificate"></i> </a>
-                    <div class="d-flex flex-column mx-2">
-                        <h3>Verified Listings</h3>
-                        <p>Every property on NaijaRent is manually reviewed by our team. Agents must submit proof of ownership or authorization before any listing goes live.</p>
-                        <hr class="my-2" style="width: 100%; height: 3px;">
+            <!-- Middle Column: 3 Features -->
+            <div class="col-lg-4 d-flex flex-column gap-3">
+                <div class="card border-0 rounded-4 p-4 flex-grow-1"
+                    style="background: #fff; box-shadow: 0 2px 12px rgba(0,0,0,0.04); transition: all 0.3s ease;">
+                    <div class="d-flex align-items-start gap-3">
+                        <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0"
+                            style="width: 50px; height: 50px; background: rgba(30,56,136,0.08); color: #1E3888; font-size: 1.2rem;">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </div>
+                        <div>
+                            <h5 style="font-size: 1rem; font-weight: 600; color: #14213D; margin-bottom: 4px;">Verified Listings</h5>
+                            <p style="font-size: 0.85rem; color: #6b7280; line-height: 1.6; margin-bottom: 0;">
+                                Every property on NaijaRent is manually reviewed by our team. Agents must submit proof of ownership or authorization before any listing goes live.
+                            </p>
+                        </div>
                     </div>
                 </div>
-                <div class="d-flex align-items-center gx-2 box p-3">
-                    <a href="" class="fs-1"> <i class="fa-solid fa-certificate"></i> </a>
-                    <div class="d-flex flex-column mx-2">
-                        <h3>Verified Listings</h3>
-                        <p>Every property on NaijaRent is manually reviewed by our team. Agents must submit proof of ownership or authorization before any listing goes live.</p>
-                        <hr class="my-2" style="width: 100%; height: 3px;">
+                <div class="card border-0 rounded-4 p-4 flex-grow-1"
+                    style="background: #fff; box-shadow: 0 2px 12px rgba(0,0,0,0.04); transition: all 0.3s ease;">
+                    <div class="d-flex align-items-start gap-3">
+                        <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0"
+                            style="width: 50px; height: 50px; background: rgba(30,56,136,0.08); color: #1E3888; font-size: 1.2rem;">
+                            <i class="fa-solid fa-user-shield"></i>
+                        </div>
+                        <div>
+                            <h5 style="font-size: 1rem; font-weight: 600; color: #14213D; margin-bottom: 4px;">Trusted Agents</h5>
+                            <p style="font-size: 0.85rem; color: #6b7280; line-height: 1.6; margin-bottom: 0;">
+                                Every agent on our platform is identity-verified with a government-issued ID. Read real reviews from real tenants before you make a decision.
+                            </p>
+                        </div>
                     </div>
                 </div>
-                <div class="d-flex align-items-center gx-2 box p-3">
-                    <a href="" class="fs-1"> <i class="fa-solid fa-certificate"></i> </a>
-                    <div class="d-flex flex-column mx-2">
-                        <h3>Trusted Agents</h3>
-                        <p>Every agent on our platform is identity-verified with a government-issued ID. Read real reviews from real tenants before you make a decision.</p>
+                <div class="card border-0 rounded-4 p-4 flex-grow-1"
+                    style="background: #fff; box-shadow: 0 2px 12px rgba(0,0,0,0.04); transition: all 0.3s ease;">
+                    <div class="d-flex align-items-start gap-3">
+                        <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0"
+                            style="width: 50px; height: 50px; background: rgba(30,56,136,0.08); color: #1E3888; font-size: 1.2rem;">
+                            <i class="fa-solid fa-lock"></i>
+                        </div>
+                        <div>
+                            <h5 style="font-size: 1rem; font-weight: 600; color: #14213D; margin-bottom: 4px;">Secure Payments</h5>
+                            <p style="font-size: 0.85rem; color: #6b7280; line-height: 1.6; margin-bottom: 0;">
+                                Pay your rent deposit or rent directly on NaijaRent via Paystack. Your payment is recorded, tracked, and receipts are always available for download.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4" style="border-left: 1px solid rgba(0, 0, 0, 0.4);">
-                <div class="d-flex align-items-center gx-2 box p-3">
-                    <a href="" class="fs-1"> <i class="fa-solid fa-certificate"></i> </a>
-                    <div class="d-flex flex-column mx-2">
-                        <h3>Secure Payments</h3>
-                        <p>Pay your rent deposit or rent directly on NaijaRent via Paystack. Your payment is recorded, tracked, and receipts are always available for download.</p>
-                        <hr class="my-2" style="width: 100%; height: 3px;">
+
+            <!-- Right Column: 2 Features -->
+            <div class="col-lg-4 d-flex flex-column gap-3">
+                <div class="card border-0 rounded-4 p-4 flex-grow-1"
+                    style="background: #fff; box-shadow: 0 2px 12px rgba(0,0,0,0.04); transition: all 0.3s ease;">
+                    <div class="d-flex align-items-start gap-3">
+                        <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0"
+                            style="width: 50px; height: 50px; background: rgba(30,56,136,0.08); color: #1E3888; font-size: 1.2rem;">
+                            <i class="fa-solid fa-comments"></i>
+                        </div>
+                        <div>
+                            <h5 style="font-size: 1rem; font-weight: 600; color: #14213D; margin-bottom: 4px;">Direct Communication</h5>
+                            <p style="font-size: 0.85rem; color: #6b7280; line-height: 1.6; margin-bottom: 0;">
+                                No more lost WhatsApp messages or missed calls. Chat directly with agents on the platform, tied to the specific property you are interested in.
+                            </p>
+                        </div>
                     </div>
                 </div>
-                <div class="d-flex align-items-center gx-2 box p-3">
-                    <a href="" class="fs-1"> <i class="fa-solid fa-certificate"></i> </a>
-                    <div class="d-flex flex-column mx-2">
-                        <h3>Direct Communication</h3>
-                        <p>No more lost WhatsApp messages or missed calls. Chat directly with agents on the platform, tied to the specific property you are interested in.</p>
-                        <hr class="my-2" style="width: 100%; height: 3px;">
-                    </div>
-                </div>
-                <div class="d-flex align-items-center gx-2 box p-3 text-light rounded" style="background-color: #721817;">
-                    <a href="" class="fs-1" style="color:white;"> <i class="fa-solid fa-certificate"></i> </a>
-                    <div class="d-flex flex-column mx-2">
-                        <h3>Virtual Inspection</h3>
-                        <p>Tour properties from the comfort of your phone. Browse multiple room photos and video walkthroughs before scheduling a physical visit.</p>
+                <div class="card border-0 rounded-4 p-4 flex-grow-1"
+                    style="background: linear-gradient(135deg, #721817, #a82020); box-shadow: 0 4px 16px rgba(114,24,23,0.2);">
+                    <div class="d-flex align-items-start gap-3">
+                        <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0"
+                            style="width: 50px; height: 50px; background: rgba(255,255,255,0.15); color: #fff; font-size: 1.2rem;">
+                            <i class="fa-solid fa-video"></i>
+                        </div>
+                        <div>
+                            <h5 style="font-size: 1rem; font-weight: 600; color: #fff; margin-bottom: 4px;">Virtual Inspection</h5>
+                            <p style="font-size: 0.85rem; color: rgba(255,255,255,0.85); line-height: 1.6; margin-bottom: 0;">
+                                Tour properties from the comfort of your phone. Browse multiple room photos and video walkthroughs before scheduling a physical visit.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
     <!-- Why choose us -->
-
+    <?php 
+         }
+    ?>
 
     <!-- Popular Listings -->
     <div class="container section">
@@ -1048,7 +1248,7 @@ if(isset($_SESSION['agent_online'])){
             
     </div>
     <!-- Popular Listings -->
-
+  
 
 
           <!-- Footer  -->
@@ -1061,8 +1261,32 @@ if(isset($_SESSION['agent_online'])){
 
     <script src="jquery.js"></script>
     <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://trtc.io/knocket-sdk/sdk.js?identifier=bf15a4aeb4024f52ec&v=1783467189436" async></script>
     <script>
         $(document).ready(function(){
+
+            $('#state').change(function(){
+                    var state_id = $('#state').val();
+
+                        $.ajax({
+                            url:"../process_pages/process_state_lga.php",
+                            method: "get",
+                            dataType: "text",
+                            data: {state_id},
+                            success: function(res){
+                                console.log(res)
+                                $('#lga').append(res);
+                            },
+                            error: function(er){
+                            console.log(er);
+                            },
+                            precessData: false,
+                            contentType: false,
+                            cache: false
+                        })
+
+
+                })
 
             $('#saleSearch').hide();
 
@@ -1076,9 +1300,65 @@ if(isset($_SESSION['agent_online'])){
             })
 
 
-        })
+        });
 
+        // ============================================
+        // HERO SLIDER
+        // ============================================
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.hero-slider .slide');
+        const dots = document.querySelectorAll('.slider-dots .dot');
+        const totalSlides = slides.length;
+        let slideInterval;
 
+        function showSlide(index) {
+            slides.forEach((s, i) => {
+                s.classList.toggle('active', i === index);
+            });
+            dots.forEach((d, i) => {
+                d.classList.toggle('active', i === index);
+            });
+            currentSlide = index;
+        }
+
+        function nextSlide() {
+            const next = (currentSlide + 1) % totalSlides;
+            showSlide(next);
+            resetAutoPlay();
+        }
+
+        function prevSlide() {
+            const prev = (currentSlide - 1 + totalSlides) % totalSlides;
+            showSlide(prev);
+            resetAutoPlay();
+        }
+
+        function goToSlide(index) {
+            showSlide(index);
+            resetAutoPlay();
+        }
+
+        function startAutoPlay() {
+            slideInterval = setInterval(nextSlide, 5000);
+        }
+
+        function resetAutoPlay() {
+            clearInterval(slideInterval);
+            startAutoPlay();
+        }
+
+        // Initialize: show first slide and start auto-play
+        if (slides.length > 0) {
+            showSlide(0);
+            startAutoPlay();
+        }
+
+        // Pause auto-play when hovering over the slider
+        const heroSlider = document.getElementById('heroSlider');
+        if (heroSlider) {
+            heroSlider.addEventListener('mouseenter', () => clearInterval(slideInterval));
+            heroSlider.addEventListener('mouseleave', startAutoPlay);
+        }
     </script>
 </body>
 </html>

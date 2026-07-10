@@ -101,7 +101,7 @@ class Agent extends Db
         }
     }
 
-    public function create_listing($agentid, $property_type, $title, $description, $price, $payment_flexibility, $full_address, $lga ,$state,  $bedrooms, $bathrooms, $toilets, $furnishing, $parking_space, $electricity_supply, $water_supply, $security, $pop_ceiling, $tiled_floor, $prepaid_meter, $image1){
+    public function create_listing($agentid, $property_type, $title, $description, $price, $payment_flexibility, $full_address, $lga ,$state, $bedrooms, $bathrooms, $toilets, $furnishing, $parking_space, $electricity_supply, $water_supply, $security, $pop_ceiling, $tiled_floor, $prepaid_meter, $image1){
         try{
             $sql = "INSERT INTO properties(agent_id, Property_type, title, description, price, payment_flexibility, address, LGA, state, bedrooms, bathrooms, toilet, furnished_status, parking_space, electricity_supply, water_supply, security, pop_ceiling, tiled_floor, prepaid_meter, image1) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" ;
             $stmt = $this->conn->prepare($sql);

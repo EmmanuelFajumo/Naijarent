@@ -150,7 +150,7 @@
                             <div class="row py-4 bg-light px-5">
                                 <h3 class="">Description</h3>
                                 <p><?php echo $res['description'] ?></p>
-
+  
                                 <ul>
                                     <li>AGENCY - 10% </li>
                                     <li>LEGAL- 10% </li>

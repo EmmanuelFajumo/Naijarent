@@ -29,6 +29,7 @@
                                     </ul>
                                 </div>
                             </li>
+                            
                             <?php 
                                 if(isset($_SESSION['agent_online']) ){
                             ?>
@@ -42,7 +43,10 @@
                             ?>
                             <div class="d-flex justify-content-end " style="width: 30%; gap: 15px;">
                                 <a class=" btn rounded-pil btn-outline-light btn rounded" href="register.php">Register</a>
-                                <a class="btn rounded-pil btn-primary btn rounded" href="login.php">Sign In</a>
+                                <a class="btn rounded" href="login.php" style="background: linear-gradient(135deg, #FFD700, #FFA500); border: none; transition: all 0.3s ease; box-shadow: 0 4px 18px rgba(255, 165, 0, 0.4); white-space: nowrap;">Sign In</a>
+                                <!-- <button type="submit" class="btn-hero-search">
+                                            <i class="fa-solid fa-magnifying-glass"></i> Search
+                                        </button> -->
                             </div>
                             <?php } ?>
 
@@ -55,10 +59,10 @@
                                    Hi, <?php if(isset($_SESSION['useronline'])) { echo $user_deet['first_name']; } else{echo "Login";} ?>
                                 </button>
                                 <ul class="dropdown-menu px-3">
-                                   <li><a href="tenant_dashboard.php" class="text-dark"> <i class="fa-solid fa-list"></i> Dashboard </a></li>
-                                   <li><a href="#" class="text-dark"> <i class="fa-solid fa-list"></i> Browse Listings</a></li>
-                                    <li><a href="#" class="text-dark "><i class="fa-solid fa-user"></i> My Profile </a></li>
-                                    <li><a href="user_logout.php" class="text-dark"><i class="fa-solid fa-right-from-bracket"></i>  Logout</a></li>
+                                   <li><a href="tenant_dashboard.php" class="text-secondary">  Dashboard </a></li>
+                                   <li><a href="#" class="text-secondary">Browse Listings</a></li>
+                                    <li><a href="#" class="text-secondary ">My Profile </a></li>
+                                    <li><a href="user_logout.php" class="text-secondary"> Logout</a></li>
                                 </ul>
                             </div>
                          </div>

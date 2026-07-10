@@ -8,7 +8,6 @@
     $listings = $admin->fetch_All_listings();
     
 
-
     $no_of_listing = 18;
     $no_of_agents = 6;
     $no_of_reports = 7;
@@ -21,7 +20,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+    <title>Admin Dashboard · NaijaRent</title>
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../animate.min.css">
     <link rel="stylesheet" href="../style.css">
@@ -31,92 +30,24 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Voltaire&display=swap"
         rel="stylesheet">
-
+    <link rel="stylesheet" href="admin.css">
 
     <style>
-        /* font-family: "Voltaire", sans-serif; */
-        /* font-family: "Inter", sans-serif; */
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6 {
-            font-family: "Voltaire", sans-serif;
-        }
-
-        a {
-            text-decoration: none;
-        }
-
-        body {
-            font-family: "Inter", sans-serif;
-        }
-
-        .nlink {
-            margin-left: 10px;
-            font-family: "Inter", sans-serif;
-            text-transform: uppercase;
-            font-size: 1em;
-        }
-
+        /* Page-specific styles only */
         .label {
             font-family: "Inter", sans-serif;
             font-size: 0.8em;
             font-weight: 400;
         }
-
         .icon {
             width: 30px;
             object-fit: cover;
         }
-
         .box:hover {
             background-color: white;
             transform: scale(1.02);
             transition: 0.5s;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .footer-section {
-            background: linear-gradient(135deg, #14213D, #1E3888);
-            border-top-left-radius: 30px;
-            border-top-right-radius: 30px;
-        }
-
-        .footer-title {
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: #ffffff;
-        }
-
-        .footer-text {
-            color: rgba(255, 255, 255, 0.75);
-            max-width: 500px;
-            margin: auto;
-        }
-
-        .footer-links li {
-            margin-bottom: 12px;
-        }
-
-        .footer-links a {
-            text-decoration: none;
-            color: rgba(255, 255, 255, 0.75);
-            transition: 0.3s ease;
-        }
-
-        .footer-links a:hover {
-            color: #ffffff;
-            padding-left: 5px;
-        }
-
-        .footer-line {
-            border-color: rgba(255, 255, 255, 0.15);
-        }
-
-        .footer-section p {
-            color: rgba(255, 255, 255, 0.75);
         }
     </style>
 
@@ -124,37 +55,40 @@
 
 <body>
     
-    <div class="container-fluid " style="min-height: 900px;">
-        <div class="row" style="min-height: 900px;">
-            <!-- Sidebar (Profile and Navigation) -->
-                <?php include 'admin_nav.php'; ?>
-            <!-- Sidebar (Profile and Navigation) -->
+    <div class="container-fluid" style="min-height: 100vh;">
+        <div class="row" style="min-height: 100vh;">
+            <!-- Sidebar -->
+            <?php include 'admin_nav.php'; ?>
 
             <!-- Main Content -->
-            <div class="col-md-9 px-5 pb-5 pt-3">
+            <div class="col-md-9 col-lg-10 px-4 px-lg-5 pb-5 pt-3">
 
                 <!-- Mobile Menu Toggle -->
-                <div class="row mb-2">
-                    <a class="btn btn-primary d-md-none mt-2" type="button" data-bs-toggle="offcanvas"
-                        data-bs-target="#mobileMenu" aria-controls="mobileMenu">
-                        <i class="fa-solid fa-bars"></i>
-                    </a>
+                <div class="row mb-3">
+                    <div class="col-12 d-md-none">
+                        <button class="mobile-menu-btn" type="button" data-bs-toggle="offcanvas"
+                            data-bs-target="#mobileMenu" aria-controls="mobileMenu">
+                            <i class="fa-solid fa-bars me-2"></i> Menu
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Welcome Banner -->
-                <div class="row mt-4">
-                    <div class="col-12 text-dark p-4 rounded-4" style="background-color: #f1f1f1;">
-                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
-                            <div>
-                                <h1 class="mb-1">Admin Dashboard </h1>
-                                <p class="mb-0 text-muted">Welcome back, <strong>Admin.</strong> Here's what's
-                                    happening on NaijaRent today.</p>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <div class="welcome-banner d-flex align-items-center gap-4 flex-wrap">
+                            <div class="banner-icon flex-shrink-0">
+                                <i class="fa-solid fa-gauge-high"></i>
                             </div>
-                            <div class="d-flex gap-2 flex-wrap">
-                                <a href="admin_dashboard_verifications.php" class="rounded-pill btn btn-primary px-4 py-2">
+                            <div class="flex-grow-1">
+                                <h1>Admin Dashboard</h1>
+                                <p>Welcome back, <strong style="color:#FFD700;">Admin.</strong> Here's what's happening on NaijaRent today.</p>
+                            </div>
+                            <div class="d-flex gap-2 flex-wrap flex-shrink-0">
+                                <a href="admin_dashboard_verifications.php" class="btn btn-primary">
                                     <i class="fa-solid fa-check-double me-2"></i> Review Verifications
                                 </a>
-                                <a href="#" class="rounded-pill btn btn-outline-danger px-4 py-2">
+                                <a href="#" class="btn btn-outline-danger">
                                     <i class="fa-solid fa-flag me-2"></i> View Reports
                                 </a>
                             </div>
@@ -162,136 +96,191 @@
                     </div>
                 </div>
 
-                <hr class="my-4">
-
                 <!-- Pending Actions Alert -->
-                <div class="row mb-4">
+                <div class="row mt-4">
                     <div class="col-12">
-                        <div class="alert border-0 shadow-sm d-flex align-items-center justify-content-between flex-wrap gap-3 mb-0" style="background-color: #fff8e1;">
+                        <div class="alert-banner d-flex align-items-center justify-content-between flex-wrap gap-3">
                             <div class="d-flex align-items-center gap-3">
-                                <i class="fa-solid fa-triangle-exclamation fa-lg text-warning mx-2"></i>
-                            
-                                <span style='font-size: 0.95em;'>You have <strong> <?php echo count($listings); ?></strong> and<strong> <?php echo count($listings); ?> </strong> awaiting verification, and <strong><?php echo count($listings); ?> open reports</strong> to resolve. </span>
-                                
+                                <div class="alert-icon">
+                                    <i class="fa-solid fa-triangle-exclamation"></i>
+                                </div>
+                                <span class="alert-text">
+                                    You have <strong><?php echo count($listings); ?></strong> listings and <strong><?php echo count($listings); ?></strong> agents awaiting verification, and <strong>7 open reports</strong> to resolve.
+                                </span>
                             </div>
                             <div class="d-flex gap-2 flex-wrap">
-                                <a href="#" class="btn btn-sm btn-warning px-3">
-                                    Review Agents
-                                </a>
-                                <a href="#" class="btn btn-sm btn-outline-warning px-3">
-                                    Review Listings
-                                </a>
+                                <a href="#" class="btn-sm-warning">Review Agents</a>
+                                <a href="#" class="btn-sm-outline-warning">Review Listings</a>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Stats Row 1 - Users -->
-                <div class="row mb-2">
+                <!-- Stats Row 1 - User Overview -->
+                <div class="row mt-4">
                     <div class="col-12">
-                        <h5 class="text-muted fw-medium" style="font-size: 0.9em; text-transform: uppercase;
-                letter-spacing: 1px;">User Overview</h5>
+                        <div class="section-header-custom">User Overview</div>
                     </div>
                 </div>
                 <div class="row g-3 mb-4">
                     <div class="col-6 col-md-3">
-                        <div class="card box border-0 shadow-sm p-3 text-center">
-                            <i class="fa-solid fa-users fa-2x mb-2" style="color: #1E3888;"></i>
-                            <h5 class="mb-0 fw-bold">--</h5>
-                            <small class="text-muted">Total Users</small>
+                        <div class="stat-card primary text-center">
+                            <div class="stat-icon mx-auto"><i class="fa-solid fa-users"></i></div>
+                            <div class="stat-value">--</div>
+                            <div class="stat-label">Total Users</div>
+                            <div class="stat-trend text-muted"><i class="fa-regular fa-circle me-1"></i> All time</div>
                         </div>
                     </div>
                     <div class="col-6 col-md-3">
-                        <div class="card box border-0 shadow-sm p-3 text-center">
-                            <i class="fa-solid fa-person fa-2x text-success mb-2"></i>
-                            <h5 class="mb-0 fw-bold"><?php echo count($tenants); ?></h5>
-                            <small class="text-muted">Total Tenants</small>
+                        <div class="stat-card success text-center">
+                            <div class="stat-icon mx-auto"><i class="fa-solid fa-person"></i></div>
+                            <div class="stat-value"><?php echo count($tenants); ?></div>
+                            <div class="stat-label">Total Tenants</div>
+                            <div class="stat-trend" style="color:#10b981;"><i class="fa-solid fa-arrow-up me-1"></i> Active</div>
                         </div>
                     </div>
                     <div class="col-6 col-md-3">
-                        <div class="card box border-0 shadow-sm p-3 text-center">
-                            <i class="fa-solid fa-user-tie fa-2x text-primary mb-2"></i>
-                            <h5 class="mb-0 fw-bold"><?php echo count($agents); ?></h5>
-                            <small class="text-muted">Total Agents</small>
+                        <div class="stat-card info text-center">
+                            <div class="stat-icon mx-auto"><i class="fa-solid fa-user-tie"></i></div>
+                            <div class="stat-value"><?php echo count($agents); ?></div>
+                            <div class="stat-label">Total Agents</div>
+                            <div class="stat-trend" style="color:#6366f1;"><i class="fa-solid fa-arrow-up me-1"></i> Active</div>
                         </div>
                     </div>
                     <div class="col-6 col-md-3">
-                        <div class="card box border-0 shadow-sm p-3 text-center">
-                            <i class="fa-solid fa-user-plus fa-2x text-warning mb-2"></i>
-                            <h5 class="mb-0 fw-bold">---</h5>
-                            <small class="text-muted">New This Week</small>
+                        <div class="stat-card warning text-center">
+                            <div class="stat-icon mx-auto"><i class="fa-solid fa-user-plus"></i></div>
+                            <div class="stat-value">---</div>
+                            <div class="stat-label">New This Week</div>
+                            <div class="stat-trend" style="color:#f59e0b;"><i class="fa-regular fa-clock me-1"></i> This week</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Stats Row 2 - Platform -->
+                <!-- Stats Row 2 - Platform Overview -->
                 <div class="row mb-2">
                     <div class="col-12">
-                        <h5 class="text-muted fw-medium" style="font-size: 0.9em; text-transform: uppercase; etter-spacing: 1px;">Platform Overview</h5>
+                        <div class="section-header-custom">Platform Overview</div>
                     </div>
                 </div>
                 <div class="row g-3 mb-5">
                     <div class="col-6 col-md-3">
-                        <div class="card box border-0 shadow-sm p-3 text-center">
-                            <i class="fa-solid fa-house-chimney fa-2x text-primary mb-2"></i>
-                            <h5 class="mb-0 fw-bold"><?php echo count($listings); ?></h5>
-                            <small class="text-muted">Total Listings</small>
+                        <div class="stat-card primary text-center">
+                            <div class="stat-icon mx-auto"><i class="fa-solid fa-house-chimney"></i></div>
+                            <div class="stat-value"><?php echo count($listings); ?></div>
+                            <div class="stat-label">Total Listings</div>
+                            <div class="stat-trend text-muted"><i class="fa-regular fa-building me-1"></i> Properties</div>
                         </div>
                     </div>
                     <div class="col-6 col-md-3">
-                        <div class="card box border-0 shadow-sm p-3 text-center">
-                            <i class="fa-solid fa-clock fa-2x text-warning mb-2"></i>
-                            <h5 class="mb-0 fw-bold"><?php echo count($listings); ?></h5>
-                            <small class="text-muted">Pending Approvals</small>
+                        <div class="stat-card warning text-center">
+                            <div class="stat-icon mx-auto"><i class="fa-solid fa-clock"></i></div>
+                            <div class="stat-value"><?php echo count($listings); ?></div>
+                            <div class="stat-label">Pending Approvals</div>
+                            <div class="stat-trend" style="color:#f59e0b;"><i class="fa-regular fa-hourglass-half me-1"></i> Needs review</div>
                         </div>
                     </div>
                     <div class="col-6 col-md-3">
-                        <div class="card box border-0 shadow-sm p-3 text-center">
-                            <i class="fa-solid fa-flag fa-2x text-danger mb-2"></i>
-                            <h5 class="mb-0 fw-bold">7</h5>
-                            <small class="text-muted">Open Reports</small>
+                        <div class="stat-card danger text-center">
+                            <div class="stat-icon mx-auto"><i class="fa-solid fa-flag"></i></div>
+                            <div class="stat-value">7</div>
+                            <div class="stat-label">Open Reports</div>
+                            <div class="stat-trend" style="color:#ef4444;"><i class="fa-solid fa-exclamation me-1"></i> Requires action</div>
                         </div>
                     </div>
                     <div class="col-6 col-md-3">
-                        <div class="card box border-0 shadow-sm p-3 text-center">
-                            <i class="fa-solid fa-circle-dollar-to-slot fa-2x text-success mb-2"></i>
-                            <h5 class="mb-0 fw-bold">₦48.5M</h5>
-                            <small class="text-muted">Total Payments</small>
+                        <div class="stat-card gold text-center">
+                            <div class="stat-icon mx-auto"><i class="fa-solid fa-circle-dollar-to-slot"></i></div>
+                            <div class="stat-value">₦48.5M</div>
+                            <div class="stat-label">Total Payments</div>
+                            <div class="stat-trend" style="color:#059669;"><i class="fa-solid fa-arrow-up me-1"></i> +12% vs last month</div>
                         </div>
                     </div>
                 </div>
 
+                <!-- Quick Actions + Recent Activity Row -->
+                <div class="row g-4 mb-5">
+                    <!-- Quick Actions -->
+                    <div class="col-md-5">
+                        <div class="section-header-custom mt-2">Quick Actions</div>
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <a href="admin_dashboard_manage_listings.php" class="quick-action-card">
+                                    <div class="qa-icon" style="background:#eef1fa;color:#1E3888;"><i class="fa-solid fa-plus"></i></div>
+                                    <div class="qa-title">New Listing</div>
+                                    <div class="qa-sub">Add a property</div>
+                                </a>
+                            </div>
+                            <div class="col-6">
+                                <a href="admin_dashboard_manage_agents.php" class="quick-action-card">
+                                    <div class="qa-icon" style="background:#ecfdf5;color:#10b981;"><i class="fa-solid fa-user-plus"></i></div>
+                                    <div class="qa-title">Add Agent</div>
+                                    <div class="qa-sub">Register agent</div>
+                                </a>
+                            </div>
+                            <div class="col-6">
+                                <a href="admin_dashboard_property_type.php" class="quick-action-card">
+                                    <div class="qa-icon" style="background:#fffbeb;color:#f59e0b;"><i class="fa-solid fa-tags"></i></div>
+                                    <div class="qa-title">Property Types</div>
+                                    <div class="qa-sub">Manage categories</div>
+                                </a>
+                            </div>
+                            <div class="col-6">
+                                <a href="admin_dashboard_verifications.php" class="quick-action-card">
+                                    <div class="qa-icon" style="background:#fef2f2;color:#ef4444;"><i class="fa-solid fa-check-double"></i></div>
+                                    <div class="qa-title">Verifications</div>
+                                    <div class="qa-sub">Review pending</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="col-md-7">
+                        <div class="section-header-custom mt-2">Recent Activity</div>
+                        <div class="activity-card">
+                            <div class="card-header-custom">
+                                <h6><i class="fa-regular fa-clock me-2" style="color:#1E3888;"></i> Latest Updates</h6>
+                                <a href="#">View All <i class="fa-solid fa-arrow-right ms-1" style="font-size:0.7em;"></i></a>
+                            </div>
+                            <div class="activity-item">
+                                <span class="activity-dot green"></span>
+                                <span class="activity-text"><strong>John Doe</strong> registered as a new tenant</span>
+                                <span class="activity-time">2 min ago</span>
+                            </div>
+                            <div class="activity-item">
+                                <span class="activity-dot blue"></span>
+                                <span class="activity-text"><strong>Luxury Villa</strong> listing was approved</span>
+                                <span class="activity-time">15 min ago</span>
+                            </div>
+                            <div class="activity-item">
+                                <span class="activity-dot yellow"></span>
+                                <span class="activity-text"><strong>Jane Smith</strong> submitted a verification request</span>
+                                <span class="activity-time">1 hr ago</span>
+                            </div>
+                            <div class="activity-item">
+                                <span class="activity-dot red"></span>
+                                <span class="activity-text"><strong>Property #204</strong> was flagged for review</span>
+                                <span class="activity-time">3 hrs ago</span>
+                            </div>
+                            <div class="activity-item">
+                                <span class="activity-dot green"></span>
+                                <span class="activity-text"><strong>Payment</strong> of ₦2,500,000 was received</span>
+                                <span class="activity-time">5 hrs ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </div>
             <!-- End Main Content -->
 
         </div>
 
-
-
-
     </div>
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
 
     <script src="../jquery.js"></script>
     <script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script>
-
-    </script>
 </body>
 
 </html>
