@@ -11,6 +11,7 @@
 Process_pages/classes/config.php
 Admin/classes/config.php
 includes/config.php
+pusher_test.php
 
 # API Keys & Credentials
 *.pem
