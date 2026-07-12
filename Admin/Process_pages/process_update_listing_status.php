@@ -19,7 +19,7 @@ session_start();
     elseif(isset($_POST['rejected'])){
         $property_id = $_POST['property_id'];
 
-        require_once "classes/Admin.php";
+        require_once "../classes/Admin.php";
         $sta = new Admin();
         $verify = $sta->update_property_status("rejected", $property_id);
         if($verify){

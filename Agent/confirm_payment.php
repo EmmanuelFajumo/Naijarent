@@ -51,28 +51,111 @@
 
 
         <style>
-            .progress_bar{
-                width: 40px;
-                height: 40px; 
-                background-color: #cfe2ff; 
-                border: 2px solid #0d6efd; 
-                color: #084298; 
-                font-size: 14px;
+            body {
+                font-family: 'Inter', sans-serif;
+                background-color: #f4f6fa;
             }
-
-            .step{
-                width: 40px; 
-                height: 40px; 
-                background-color: #f1f1f1; 
-                border: 2px solid #dee2e6; 
-                color: #adb5bd; 
-                font-size: 14px;
+            .payment-card {
+                background: #ffffff;
+                border-radius: 16px;
+                border: none;
+                box-shadow: 0 10px 30px rgba(20, 33, 61, 0.05);
+                transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+                overflow: hidden;
             }
-
-            .amenities{
-                background-color: #cfe2ff;
-                 color: #084298; 
-                 font-size:0.8em;
+            .payment-card:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 15px 35px rgba(20, 33, 61, 0.1);
+            }
+            .featured-badge {
+                background: linear-gradient(135deg, #FFD700, #FFA500);
+                color: #14213D;
+                font-weight: 700;
+                font-size: 0.75rem;
+                text-transform: uppercase;
+                letter-spacing: 1.5px;
+                padding: 6px 16px;
+                border-radius: 30px;
+                display: inline-flex;
+                align-items: center;
+                box-shadow: 0 4px 10px rgba(255, 165, 0, 0.2);
+            }
+            .benefit-item {
+                display: flex;
+                align-items: flex-start;
+                margin-bottom: 20px;
+            }
+            .benefit-icon {
+                background: linear-gradient(135deg, rgba(30, 56, 136, 0.1), rgba(20, 33, 61, 0.05));
+                color: #1E3888;
+                width: 38px;
+                height: 38px;
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-right: 15px;
+                flex-shrink: 0;
+                font-size: 1.1rem;
+            }
+            .btn-pay {
+                background: linear-gradient(135deg, #1E3888, #14213D);
+                color: white;
+                border: none;
+                font-weight: 600;
+                padding: 14px 28px;
+                border-radius: 12px;
+                transition: all 0.3s ease;
+                letter-spacing: 0.5px;
+            }
+            .btn-pay:hover {
+                background: linear-gradient(135deg, #14213D, #1E3888);
+                color: white;
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(30, 56, 136, 0.3);
+            }
+            .btn-cancel {
+                border: 1px solid #e2e8f0;
+                background: #ffffff;
+                color: #64748b;
+                font-weight: 600;
+                padding: 14px 28px;
+                border-radius: 12px;
+                transition: all 0.3s;
+            }
+            .btn-cancel:hover {
+                background: #f8fafc;
+                color: #334155;
+                border-color: #cbd5e1;
+            }
+            .checkout-summary {
+                background: #f8fafc;
+                border-radius: 12px;
+                padding: 20px;
+                border: 1px solid #f1f5f9;
+            }
+            .premium-alert {
+                background-color: rgba(30, 56, 136, 0.03);
+                border-left: 4px solid #1E3888;
+                border-radius: 0 12px 12px 0;
+                padding: 16px;
+                color: #334155;
+            }
+            .property-img-container {
+                position: relative;
+                overflow: hidden;
+                border-radius: 12px;
+                height: 200px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            }
+            .property-img-container img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                transition: transform 0.5s ease;
+            }
+            .property-card-hover:hover .property-img-container img {
+                transform: scale(1.05);
             }
         </style>
     
@@ -83,110 +166,143 @@
     <!-- Navigation -->
      <?php // require_once 'nav.php'; ?>
 
-     <div class="container-fluid " style="min-height: 900px;">
-        <div class="row">/
+     <div class="container-fluid" style="min-height: 900px;">
+        <div class="row">
 
             <!-- Sidebar (Profile and Navigation) -->
             <?php include 'agent_nav.php'; ?>
-            <div class="col-md-9 px-5 pb-5 pt-3">
-                <!-- Featured properties -->
-                    <div class="row g-2 ">
-                        <div class="col-md-12 ">
-                            <!-- <img src="uploads/property_pictures/<?php echo $res['image1'] ?>" id="pro11" class="img-fluid rounded" alt=""> -->
-                            <!-- <img src="uploads/property_pictures/<?php //echo $res['image2'] ?>" id="pro12" class="img-fluid rounded" alt="">
-                            <img src="uploads/property_pictures/<?php //echo $res['image3'] ?>" id="pro13" class="img-fluid rounded" alt="">
-                            <img src="uploads/property_pictures/<?php// echo $res['image4'] ?>" id="pro14" class="img-fluid rounded" alt=""> -->
+            <div class="col-md-10 px-5 pb-5 pt-4">
+                <div class="container-fluid py-2">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <div>
+                            <h2 class="fw-bold" style="color: #14213D; font-family: 'Voltaire', sans-serif; letter-spacing: 0.5px;">Feature Property Listing</h2>
+                            <p class="text-muted mb-0">Feature your listing on the home page to gain maximum visibility and attract clients faster.</p>
                         </div>
-                        <!-- <div class="col-12 py-3">
-                            <div class="row">
-                                <div class="col-sm-2">
-                                    <a type="botton" href="" id="pro1"> <img src="uploads/property_pictures/<?php// echo $res['image1'] ?>"
-                                            class="img-fluid rounded" alt=""> </a>
-                                </div>
-                                <div class="col-md-2 ">
-                                    <a type="botton" href="" id="pro2"> <img src="media/singleproperty02.png"
-                                            class="img-fluid rounded" alt=""> </a>
-                                </div>
-                                <div class="col-md-2">
-                                    <a type="botton" href="" id="pro3"> <img src="media/singleproperty03.png"
-                                            class="img-fluid rounded" alt=""> </a>
-                                </div>
-                                <div class="col-md-2">
-                                    <a type="botton" href="" id="pro4"> <img src="media/singleproperty01.png"
-                                            class="img-fluid rounded" alt=""> </a>
-                                </div>
-                                <div class="col-md-2">
-                                    <a type="botton" href="" id="pro5"> <img src="media/singleproperty01.png"
-                                            class="img-fluid rounded" alt=""> </a>
-                                </div>
-                                <div class="col-md-2">
-                                    <a type="botton" href="" id="pro5"> <img src="media/singleproperty01.png"
-                                            class="img-fluid rounded" alt=""> </a>
-                                </div>
-                            </div>
-                        </div> -->
+                        <div>
+                            <a href="agent_dashboard_listings.php" class="btn btn-sm btn-cancel px-3 py-2"><i class="fas fa-arrow-left me-2"></i>Back to Listings</a>
+                        </div>
                     </div>
 
-                    <div class="row py-5 d-flex flex-row justify-content-between align-items-center g-5">
-                        <div class="col-md-8 py-3 ">
-                            <div class="row d-flex bg-light flex-row justify-content-between align-items-center px-3">
+                    <div class="row g-4">
+                        <!-- Left Column: Details & Benefits -->
+                        <div class="col-lg-7">
+                            <!-- Property Preview Card -->
+                            <div class="card payment-card p-3 mb-4 property-card-hover">
+                                <h5 class="fw-bold mb-3" style="color: #14213D;"><i class="fas fa-building text-primary me-2"></i>Selected Property</h5>
+                                <div class="row g-3">
+                                    <div class="col-md-5">
+                                        <div class="property-img-container">
+                                            <?php if (!empty($res['image1']) && file_exists("../uploads/property_pictures/".$res['image1'])): ?>
+                                                <img src="../uploads/property_pictures/<?php echo $res['image1']; ?>" alt="<?php echo htmlspecialchars($res['title']); ?>">
+                                            <?php else: ?>
+                                                <div class="h-100 w-100 bg-secondary d-flex align-items-center justify-content-center text-white">
+                                                    <i class="fas fa-image fa-3x"></i>
+                                                </div>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 d-flex flex-column justify-content-between">
+                                        <div>
+                                            <span class="badge mb-2" style="background-color: rgba(30, 56, 136, 0.1); color: #1E3888; font-weight: 600; font-size: 0.8rem;"><?php echo htmlspecialchars($res['name']); ?></span>
+                                            <h4 class="fw-bold mb-2" style="color: #14213D;"><?php echo htmlspecialchars($res['title']); ?></h4>
+                                            <p class="text-muted mb-3" style="font-size: 0.9rem;"><i class="fas fa-map-marker-alt text-danger me-2"></i><?php echo htmlspecialchars($res['address'].", ".$res['LGA_name'].", ".$res['state']); ?></p>
+                                        </div>
+                                        <p class="text-secondary small mb-0 text-truncate-3" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5;"><?php echo htmlspecialchars($res['description']); ?></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Benefits List -->
+                            <div class="card payment-card p-4">
+                                <h5 class="fw-bold mb-4" style="color: #14213D;"><i class="fas fa-chart-line text-primary me-2"></i>Why Feature Your Listing?</h5>
                                 
+                                <div class="benefit-item">
+                                    <div class="benefit-icon">
+                                        <i class="fas fa-eye text-primary"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="fw-bold mb-1" style="color: #14213D;">Maximum Visibility</h6>
+                                        <p class="text-muted small mb-0">Featured listings are pinned to the top of the homepage, getting up to 10x more clicks and views from active house hunters.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="benefit-item">
+                                    <div class="benefit-icon">
+                                        <i class="fas fa-award text-warning"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="fw-bold mb-1" style="color: #14213D;">Premium Badging</h6>
+                                        <p class="text-muted small mb-0">A visually striking "Featured" badge is placed on your listing, building trust and attracting serious leads immediately.</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="benefit-item">
+                                    <div class="benefit-icon">
+                                        <i class="fas fa-rocket text-success"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="fw-bold mb-1" style="color: #14213D;">Faster Placement</h6>
+                                        <p class="text-muted small mb-0">Properties featured on the homepage close up to 3 times faster than standard listings because of high lead generation.</p>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="row bg-light px-3">
-                                <div class="col-12">
-                                    <hr class="mb-4 bg-primary" style="width: 100%; height: 3px;">
+                        </div>
+
+                        <!-- Right Column: Checkout Summary & Form -->
+                        <div class="col-lg-5">
+                            <div class="card payment-card p-4 h-100 d-flex flex-column justify-content-between" style="border-top: 4px solid #1E3888 !important;">
+                                <div>
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <span class="featured-badge"><i class="fas fa-star me-2 animate__animated animate__pulse animate__infinite"></i>Featured Listing</span>
+                                        <span class="text-muted small">ID: #<?php echo $res['property_id']; ?></span>
+                                    </div>
+                                    <h4 class="fw-bold mb-4" style="color: #14213D;">Checkout Summary</h4>
+                                    
+                                    <div class="checkout-summary mb-4">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span class="text-muted small">Service</span>
+                                            <span class="fw-semibold small" style="color: #14213D;">Home Page Promotion</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span class="text-muted small">Duration</span>
+                                            <span class="fw-semibold small text-success">Until Deactivated</span>
+                                        </div>
+                                        <hr class="my-2" style="border-top: 1px dashed #cbd5e1;">
+                                        <div class="d-flex justify-content-between align-items-baseline">
+                                            <span class="fw-bold" style="color: #14213D;">Total Amount:</span>
+                                            <div class="text-end">
+                                                <h3 class="fw-bold mb-0 text-primary" style="letter-spacing: -0.5px;">₦ 30,000.00</h3>
+                                                <span class="text-muted small" style="font-size: 0.75rem;">(VAT Inclusive)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="premium-alert mb-4">
+                                        <div class="d-flex gap-2">
+                                            <i class="fas fa-shield-alt text-primary mt-1"></i>
+                                            <div>
+                                                <h6 class="fw-bold mb-1" style="color: #14213D; font-size: 0.9rem;">Payment Confirmation</h6>
+                                                <p class="small text-secondary mb-0">Please confirm that you are about to pay <strong>₦ 30,000</strong> to feature your listing on the home page.</p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-md-8">
-                                    <h2 class="label"><?php echo $res['title'] ?></h2>
-                                </div>
-                                <div class="col-md-4 text-left">
-                                    <h3 class="text-muted ms-3">₦ <?php echo $res['price'] ?></h3>
-                                </div>
-                                <div class="col-12 ps-2 d-flex flex-row justify-content-start align-items-center g-2">
-                                    <a href=""><i class="fas fa-map-marker-alt"></i></a>
-                                    <p class="px-3 pt-2"><?php echo $res['address'].", ".$res['LGA_name'].", ".$res['state']?></p>
-                                </div>
-                            </div>
-                            <div class="row py-4 bg-light px-5">
-                                <h3 class="">Description</h3>
-                                <p><?php echo $res['description'] ?></p>
-  
-                                <ul>
-                                    <li>AGENCY - 10% </li>
-                                    <li>LEGAL- 10% </li>
-                                    <li>CAUTION- 10%</li>
-                                </ul>
-                                <div class="d-flex gap-4">
-                                    <button type="submit" class="btn btn-outline-secondary mt-2 ">Cancel</button>
-                                    <form action="../Process_pages/payment_process.php" method="get">
+
+                                <div class="mt-auto">
+                                    <form action="../Process_pages/payment_process.php" method="get" class="mb-2">
                                         <input type="hidden" name="property_id" value="<?php echo $res['property_id'] ?>">
-                                        <button type="submit" class="btn btn-danger mt-2" name="confirm" value="confirmPayment">Yes, Confirm</button>
+                                        <button type="submit" class="btn btn-pay w-100 py-3" name="confirm" value="confirmPayment">
+                                            <i class="fas fa-lock me-2"></i>Yes, Confirm and Pay ₦30,000
+                                        </button>
                                     </form>
+                                    <a href="agent_dashboard_listings.php" class="btn btn-cancel w-100 py-3 d-block text-center text-decoration-none">
+                                        Cancel & Go Back
+                                    </a>
                                 </div>
                             </div>
-
-                            <div class='d-flex flex-row justify-content-between align-items-center g-5'>
-                                
-                        </div>
-                            
-                        </div>
-                        <div class="col-md-3 bg-light text-center py-5 agnt" >
-                            <img src="media/q.png" class="img-fluid rounded rounded-circle" alt="Agent Image" style="width: 100px; height: 100px; object-fit: cover;">
-                            <h4 class="p-1"><?php echo $res['first_name']." ".$res['last_name'] ?></h4>
-                            <div class="review d-flex flex-row align-items-center justify-content-center g-2">
-                                <a href="" class="text-primary p-1"><i class="fa-solid fa-star"></i></i></a>
-                                <a href="" class="text-primary p-1"><i class="fa-solid fa-star"></i></i></a>
-                                <a href="" class="text-primary p-1"><i class="fa-solid fa-star"></i></i></a>
-                                <a href="" class="text-primary p-1"><i class="fa-solid fa-star"></i></i></a>
-                                <a href="" class="text-primary p-1"><i class="fa-solid fa-star"></i></i></a>
-                            </div>
-                            <p>Get in touch with the agent for more information.</p>
-                            <form action="#">
-                                <textarea name="message" id="" class="form-control" placeholder="Type your message here..."></textarea>
-                                <button type="submit" class="btn btn-primary mt-2 col-12">Send Message</button>
-                            </form>
                         </div>
                     </div>
+                </div>
             </div>
              <!-- Main Content End-->
         </div> 

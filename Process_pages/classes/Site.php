@@ -3,7 +3,6 @@
 
     class Site extends Db
     {
-
         private $conn;
 
         public function __construct(){
@@ -20,7 +19,7 @@
         //fetch listing details by id
         public function fetch_property_detail($property_id){
             try{
-                $sql = "SELECT properties.*, lga.LGA_name, property_type.name, state.state, agentprofile.Agent_id, agentprofile.email, agentprofile.first_name, agentprofile.last_name, agentprofile.profile_picture FROM properties JOIN Property_type ON properties.property_type = property_type.property_typeid JOIN lga ON properties.LGA = lga.LgA_id JOIN state ON properties.state = state.state_id JOIN agentprofile ON properties.agent_id = agentprofile.Agent_id WHERE property_id = ?";
+                $sql = "SELECT properties.*, lga.LGA_name, property_type.name, state.state, agentprofile.Agent_id, agentprofile.email, agentprofile.first_name, agentprofile.last_name, agentprofile.profile_picture, agentprofile.phone FROM properties JOIN Property_type ON properties.property_type = property_type.property_typeid JOIN lga ON properties.LGA = lga.LgA_id JOIN state ON properties.state = state.state_id JOIN agentprofile ON properties.agent_id = agentprofile.Agent_id WHERE property_id = ?";
                 $stmt = $this->conn->prepare($sql);
                 $stmt->execute([$property_id]);
                 $res = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -39,6 +38,38 @@
                 return $res;
             }catch(PDOException $e){
                 echo $e->getMessage();
+            }
+        }
+
+        public function search_properties($address, $state_id, $property_type){
+            try{
+                $sql = "SELECT payments.property_id, properties.*, lga.LGA_name, property_type.name, state.state, agentprofile.Agent_id, agentprofile.first_name, agentprofile.last_name, agentprofile.profile_picture FROM payments RIGHT JOIN properties ON payments.property_id = properties.property_id JOIN Property_type ON properties.property_type = property_type.property_typeid JOIN lga ON properties.LGA = lga.LgA_id JOIN state ON properties.state = state.state_id JOIN agentprofile ON properties.agent_id = agentprofile.Agent_id WHERE 1=1";
+                
+                $params = [];
+
+                if (!empty($address)) {
+                    $sql .= " AND properties.address LIKE ?";
+                    $params[] = '%' . $address . '%';
+                }
+
+                if (!empty($state_id)) {
+                    $sql .= " AND properties.state = ?";
+                    $params[] = $state_id;
+                }
+
+                if (!empty($property_type)) {
+                    $sql .= " AND properties.property_type = ?";
+                    $params[] = $property_type;
+                }
+
+                $stmt = $this->conn->prepare($sql);
+                $stmt->execute($params);
+                $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                return $res;
+                
+            }catch(PDOException $e){
+                echo $e->getMessage();
+                return false;
             }
         }
 
@@ -82,11 +113,17 @@
         }
 
         
-
+        public function fetch_property_types(){
+            $sql = "SELECT * FROM property_type";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            $res = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $res;
+        }
     }
 
     // $c = new Site();
-    // $res = $c->fetch_featured_properties();
+    // $res = $c->search_properties("", 25, "");
 
     // echo "<pre>";
     // print_r($res);

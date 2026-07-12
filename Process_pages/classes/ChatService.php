@@ -40,7 +40,7 @@ class ChatService extends Db
             }
         }
         
- 
+  
         
     }
 
@@ -86,7 +86,24 @@ class ChatService extends Db
      */
     public function fetch_agent_conversations_with_details($agent_id){
         try{
-            $sql = "SELECT * FROM conversations JOIN messages ON conversations.conversation";
+            $sql = "SELECT 
+                        c.id AS chat_id,
+                        c.property_id,
+                        c.tenant_id,
+                        c.agent_id,
+                        c.created_at,
+                        p.title AS property_title,
+                        t.first_name AS tenant_first_name,
+                        t.last_name AS tenant_last_name,
+                        t.email AS tenant_email,
+                        (SELECT m.content FROM messages m WHERE m.conversation_id = c.id ORDER BY m.id DESC LIMIT 1) AS last_message,
+                        (SELECT m.created_at FROM messages m WHERE m.conversation_id = c.id ORDER BY m.id DESC LIMIT 1) AS last_message_time,
+                        (SELECT COUNT(*) FROM messages m WHERE m.conversation_id = c.id AND m.sender_type = 'tenant' AND m.is_read = 0) AS unread_count
+                    FROM conversations c
+                    LEFT JOIN properties p ON c.property_id = p.property_id
+                    LEFT JOIN tenant t ON c.tenant_id = t.tenant_id
+                    WHERE c.agent_id = ?
+                    ORDER BY last_message_time DESC";
 
             $stmt = $this->conn->prepare($sql);
             $stmt->execute([$agent_id]);
@@ -102,40 +119,24 @@ class ChatService extends Db
      */
     public function fetch_conversation_messages($conversation_id){
         try{
-            $sql = "SELECT 
-                        m.id,
-                        m.content AS message,
-                        m.sender_type,
-                        m.is_read,
-                        m.created_at,
-                        CASE 
-                            WHEN m.sender_type = 'agent' THEN a.first_name
-                            WHEN m.sender_type = 'tenant' THEN t.first_name
-                        END AS sender_name,
-                        CASE 
-                            WHEN m.sender_type = 'agent' THEN 'sent'
-                            WHEN m.sender_type = 'tenant' THEN 'received'
-                        END AS message_type
-                    FROM messages m
-                    LEFT JOIN agentprofile a ON m.sender_id = a.Agent_id AND m.sender_type = 'agent'
-                    LEFT JOIN tenant t ON m.sender_id = t.tenant_id AND m.sender_type = 'tenant'
-                    WHERE m.conversation_id = ?
-                    ORDER BY m.created_at ASC";
+            $sql = "SELECT * FROM messages WHERE conversation_id = ?";
 
             $stmt = $this->conn->prepare($sql);
             $stmt->execute([$conversation_id]);
             $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             // Mark unread tenant messages as read
-            $updateSql = "UPDATE messages SET is_read = 1 WHERE conversation_id = ? AND sender_type = 'tenant' AND is_read = 0";
-            $updateStmt = $this->conn->prepare($updateSql);
-            $updateStmt->execute([$conversation_id]);
+            // $updateSql = "UPDATE messages SET is_read = 1 WHERE conversation_id = ? AND sender_type = 'tenant' AND is_read = 0";
+            // $updateStmt = $this->conn->prepare($updateSql);
+            // $updateStmt->execute([$conversation_id]);
 
             return $messages;
         }catch(PDOException $e){
             return ['error' => $e->getMessage()];
         }
     }
+
+
 
     /**
      * Sends a reply from the agent, triggers Pusher notification, 
@@ -221,7 +222,7 @@ class ChatService extends Db
 }
 
 // $test = new ChatService();
-// $res = ($test->fetch_agent_conversations(11));
+// $res = ($test->fetch_conversation_messages(44));
 
 // echo "<pre>";
 // print_r($res);

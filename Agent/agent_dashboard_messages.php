@@ -10,9 +10,9 @@ require_once "../process_pages/classes/config.php";
 
 $chats = new ChatService;
 $all_chats = $chats->fetch_agent_conversations($_SESSION['agent_online']);
-echo "<pre>";
-print_r($all_chats);
-echo "</pre>";
+// echo "<pre>";
+// print_r($all_chats);
+// echo "</pre>";
 
 
 ?>

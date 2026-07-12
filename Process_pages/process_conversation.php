@@ -6,6 +6,13 @@ require_once "classes/Tenant.php";
 
 
 if(isset($_POST['send'])){
+
+    if(!isset($_SESSION['useronline'])){
+        $_SESSION['errormsg'] = "Kindly register send a message to the agent";
+        header('location: ../register.php');
+        exit;
+    }
+
     $property_id = $_POST['property_id'];
     $receiver_id = $_POST['Agent_id'];
     $message = $_POST['message'];

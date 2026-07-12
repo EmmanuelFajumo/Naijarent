@@ -1,11 +1,6 @@
 <?php
 session_start();
 
-if(!isset($_SESSION['agent_online'])){
-    header("location:../Agent/agent_login.php");
-    exit;
-}
-
 if(isset($_POST['property_id']) && isset($_POST['Agent_id']) && isset($_POST['message'])){
     $property_id = (int)$_POST['property_id'];
     $agent_id = (int)$_SESSION['agent_online'];

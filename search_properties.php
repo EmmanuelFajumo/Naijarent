@@ -20,6 +20,17 @@ if(isset($_SESSION['agent_online'])){
     $user = new Tenant;
     $user_deet = $user->fetch_user_detailby_id($_SESSION['agent_online']);
 }
+// echo "<pre>";
+// print_r($_SESSION['search']);
+// echo "</pre>";
+
+
+
+
+require_once "process_pages/classes/Utilities.php";
+
+$a = new Utilities();
+$states =  $a->fetch_all_states();
 ?>
 
 <!DOCTYPE html>
@@ -130,34 +141,48 @@ if(isset($_SESSION['agent_online'])){
     <!-- Search Form Card -->
     <div class="container">
         <div class="search-card animate__animated animate__fadeInUp">
-            <form action="Process_pages/process_search_properties.php" method="GET">
+            <form action="process_pages/process_search.php" method="GET">
                 <div class="row g-3 align-items-end">
-                    <div class="col-md-4">
-                        <label for="property_type" class="form-label">Property Type</label>
-                        <select name="property_type" id="property_type" class="form-select">
-                            <option value="">All Property Types</option>
-                            <?php foreach($property_types as $pt): ?>
-                                <option value="<?php echo $pt['property_typeid']; ?>"><?php echo $pt['name']; ?></option>
-                            <?php endforeach; ?>
+                     <div class="col-md-3">
+                        <span class="search-field-label">
+                        <i class="fa-solid fa-location-dot me-1"></i>Location
+                    </span>
+                    <div class="input-icon-wrap">
+                        <input type="text" name="address" class="form-control" placeholder="Enter a city, LGA or area...">
+                    </div>
+                     </div>
+                    <div class="col-md-3">
+                        <span class="search-field-label">
+                            <i class="fa-solid fa-building me-1"></i>Property Type
+                        </span>
+                        <select name="property_type" class="form-select" name="property_type">
+                            <option value="">Any type</option>
+                                <?php 
+                                            foreach($property_types as $type){
+                                        ?>
+                                        <option value="<?php echo $type['property_typeid']; ?>"> <?php echo $type['name']; ?></option>
+                                        <?php
+                                            }
+                                        ?>
                         </select>
                     </div>
                     <div class="col-md-3">
-                        <label for="state" class="form-label">State</label>
-                        <select name="state" id="state" class="form-select">
-                            <option value="">All States</option>
-                            <?php foreach($states as $st): ?>
-                                <option value="<?php echo $st['state_id']; ?>"><?php echo $st['state']; ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <label for="lga" class="form-label">LGA</label>
-                        <select name="lga" id="lga" class="form-select">
-                            <option value="">All LGAs</option>
+                       <span class="search-field-label">
+                            <i class="fa-solid fa-naira-sign me-1"></i>State
+                        </span>
+                        <select name="state" class="form-select" name="property_">
+                            <option value="">Any state</option>
+                                <?php 
+                                            foreach($states as $state){
+                                        ?>
+                                        <option value="<?php echo $state['state_id']; ?>"> <?php echo $state['state']; ?></option>
+                                        <?php
+                                            }
+                                        ?>
                         </select>
                     </div>
                     <div class="col-md-2">
-                        <button type="submit" class="btn btn-search w-100">
+                        <button type="submit" name="search" class="btn btn-search w-100">
                             <i class="fa-solid fa-search me-2"></i> Search
                         </button>
                     </div>
@@ -165,14 +190,14 @@ if(isset($_SESSION['agent_online'])){
             </form>
         </div>
     </div>
-
+   
     <!-- Search Results -->
     <div class="container section">
-        <?php if(isset($_GET['results'])): ?>
+        <?php if(isset($_SESSION['search'])): ?>
             <?php 
-                $results_json = urldecode($_GET['results']);
-                $search_results = json_decode($results_json, true);
-                $result_count = count($search_results);
+              $all_listings = $_SESSION['search'];
+              $result_count = count($all_listings);
+  
             ?>
             <div class="result-count">
                 <strong><?php echo $result_count; ?></strong> property(ies) found
@@ -180,42 +205,46 @@ if(isset($_SESSION['agent_online'])){
 
             <?php if($result_count > 0): ?>
                 <div class="row g-3 mb-5">
-                    <?php foreach($search_results as $listing): ?>
-                        <div class="col-md-4">
-                            <div class="card box border-0 shadow-sm h-100">
-                                <div style="position: relative;">
-                                    <img src="uploads/property_pictures/<?php echo $listing['image1']; ?>" class="card-img-top"
-                                        style="height: 180px; object-fit: cover;" alt="Property">
-                                    <span class="badge text-bg-success position-absolute"
-                                        style="top: 10px; left: 10px; font-size: 0.75em;">
-                                        <i class="fa-solid fa-circle-check me-1"></i> Verified
-                                    </span>
-                                    <span class="badge text-bg-primary position-absolute"
-                                        style="top: 10px; right: 10px; font-size: 0.75em;">For Rent</span>
+                    <!-- Property Card 1 -->
+                     <?php 
+                        foreach($all_listings as $listing){
+                     ?>
+                    <div class="col-md-4">
+                        <div class="card box border-0 shadow-sm h-100">
+                            <div style="position: relative;">
+                                <img src="uploads/property_pictures/<?php echo $listing['image1'] ?>" class="card-img-top"
+                                    style="height: 180px; object-fit: cover;" alt="Property">
+                                <span class="badge text-bg-success position-absolute"
+                                    style="top: 10px; left: 10px; font-size: 0.75em;">
+                                    <i class="fa-solid fa-circle-check me-1"></i> Verified
+                                </span>
+                                <span class="badge text-bg-primary position-absolute"
+                                    style="top: 10px; right: 10px; font-size: 0.75em;">For Rent</span>
+                            </div>
+                            <div class="card-body">
+                                <h6 class="card-title fw-semibold mb-1"><?php echo $listing['title'] ?></h6>
+                                <p class="text-muted mb-1" style="font-size: 0.85em;">
+                                    <i class="fa-solid fa-location-dot me-1 text-danger"></i>
+                                    <?php echo $listing['address'] ?>
+                                </p>
+                                <p class="fw-bold text-primary mb-2"><?php echo $listing['price'] ?><span
+                                        class="text-muted fw-normal" style="font-size: 0.8em;">/ yr</span></p>
+                                <div class="d-flex gap-3 text-muted mb-3" style="font-size: 0.82em;">
+                                    <span><i class="fa-solid fa-bed me-1"></i> <?php echo $listing['bedrooms'] ?> Beds</span>
+                                    <span><i class="fa-solid fa-bath me-1"></i> <?php echo $listing['bathrooms'] ?> Baths</span>
+                                    <span><i class="fa-solid fa-couch me-1"></i><?php echo $listing['furnished_status'] ?></span>
                                 </div>
-                                <div class="card-body">
-                                    <h6 class="card-title fw-semibold mb-1"><?php echo $listing['title']; ?></h6>
-                                    <p class="text-muted mb-1" style="font-size: 0.85em;">
-                                        <i class="fa-solid fa-location-dot me-1 text-danger"></i>
-                                        <?php echo $listing['address']; ?>
-                                    </p>
-                                    <p class="fw-bold text-primary mb-2">₦<?php echo number_format($listing['price']); ?><span
-                                            class="text-muted fw-normal" style="font-size: 0.8em;">/ yr</span></p>
-                                    <div class="d-flex gap-3 text-muted mb-3" style="font-size: 0.82em;">
-                                        <span><i class="fa-solid fa-bed me-1"></i> <?php echo $listing['bedrooms']; ?> Beds</span>
-                                        <span><i class="fa-solid fa-bath me-1"></i> <?php echo $listing['bathrooms']; ?> Baths</span>
-                                        <span><i class="fa-solid fa-couch me-1"></i> <?php echo $listing['furnished_status']; ?></span>
-                                    </div>
-                                    <div class="d-flex gap-2">
-                                        <a href="property_details.php?id=<?php echo $listing['property_id']; ?>" class="btn btn-outline-primary btn-sm flex-grow-1">View Details</a>
-                                        <button class="btn btn-outline-secondary btn-sm">
-                                            <i class="fa-regular fa-bookmark"></i>
-                                        </button>
-                                    </div>
+                                <div class="d-flex gap-2">
+                                    <a href="property_details.php?id=<?php echo $listing['property_id'] ?>" class="btn btn-outline-primary btn-sm flex-grow-1">View Details</a>
+                                    <button class="btn btn-outline-secondary btn-sm">
+                                        <i class="fa-regular fa-bookmark"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
-                    <?php endforeach; ?>
+                    </div>
+
+                    <?php } ?>
                 </div>
             <?php else: ?>
                 <div class="no-results">

@@ -194,6 +194,28 @@ if(isset($_SESSION['agent_online'])){
                  $('#rentSearch').hide()
             })
 
+            $('#state').change(function(){
+                var state_id = $('#state').val();
+
+                $.ajax({
+                    url:"../process_pages/process_state_lga.php",
+                    method: "get",
+                    dataType: "text",
+                    data: {state_id},
+                    success: function(res){
+                        console.log(res)
+                        $('#lga').append(res);
+                    },
+                    error: function(er){
+                    console.log(er);
+                    },
+                    precessData: false,
+                    contentType: false,
+                    cache: false
+                })
+            })
+
+
 
         })
 

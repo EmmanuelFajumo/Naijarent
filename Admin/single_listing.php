@@ -405,8 +405,8 @@ $listing_deet = $prop->fetch_property_detail($_GET['id']);
 
                         <!-- Title & Price Card -->
                         <div class="info-card mb-4">
-                            <div class="row align-items-start">
-                                <div class="col-md-8">
+                            <div class="row align-items-start" style='min-height:200px;'>
+                                <div class="col-md-8" >
                                     <div class="info-title"><?php echo $listing_deet['title'] ?></div>
                                     <div class="info-location mt-2">
                                         <i class="fa-solid fa-location-dot"></i>

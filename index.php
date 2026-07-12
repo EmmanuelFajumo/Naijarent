@@ -20,6 +20,7 @@ if(isset($_SESSION['agent_online'])){
     $user_deet = $user->fetch_user_detailby_id($_SESSION['agent_online']);
 }
 
+$property_types = $prop->fetch_property_types();
 
 require_once "process_pages/classes/Utilities.php";
 $a = new Utilities();
@@ -38,6 +39,7 @@ $states =  $a->fetch_all_states();
 	<meta name="author" content="Emmanuel Fajumo" />
 
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="fontawesome/css/all.min.css">
     <link rel="stylesheet" href="animate.min.css">
@@ -46,7 +48,7 @@ $states =  $a->fetch_all_states();
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Voltaire&display=swap" rel="stylesheet">
 
 
-    <style>
+    <!-- <style>
         /* h1{
             font-size: 5em;
             font-family: "Voltaire", sans-serif;
@@ -597,7 +599,7 @@ $states =  $a->fetch_all_states();
             color: #ffffff !important;
             background-color: #1E3888 !important;
         }
-    </style>
+    </style> -->
 
 
 </head>
@@ -647,7 +649,7 @@ $states =  $a->fetch_all_states();
 
                                 <!-- Rent Search -->
                                 <div id="rentSearch">
-                                    <form action="" method="GET">
+                                    <form action="process_pages/process_search.php" method="GET">
                                         <input type="hidden" name="type" value="rent">
                                         <div class="row g-3 align-items-end">
                                             <div class="col-12 col-md-4">
@@ -656,15 +658,31 @@ $states =  $a->fetch_all_states();
                                                 </span>
                                                 <div class="input-icon-wrap">
                                                     <i class="fa-solid fa-magnifying-glass"></i>
-                                                    <input type="text" name="location" class="form-control" placeholder="Enter a city, LGA or area...">
+                                                    <input type="text" name="address" class="form-control" placeholder="Enter a city, LGA or area...">
                                                 </div>
                                             </div>
-                                            <div class="col-12 col-md-3">
+                                             <div class="col-12 col-md-3">
+                                               
                                                 <span class="search-field-label">
                                                     <i class="fa-solid fa-building me-1"></i>Property Type
                                                 </span>
-                                                <select name="property_type" class="form-select" name="property_">
+                                                <select name="property_type" class="form-select" name="property_type">
                                                     <option value="">Any type</option>
+                                                      <?php 
+                                                                    foreach($property_types as $type){
+                                                                ?>
+                                                                <option value="<?php echo $type['property_typeid']; ?>"> <?php echo $type['name']; ?></option>
+                                                                <?php
+                                                                    }
+                                                                ?>
+                                                </select>
+                                            </div>
+                                            <div class="col-12 col-md-3">
+                                                 <span class="search-field-label">
+                                                    <i class="fa-solid fa-naira-sign me-1"></i>State
+                                                </span>
+                                                <select name="state" class="form-select" name="property_">
+                                                    <option value="">Any state</option>
                                                       <?php 
                                                                     foreach($states as $state){
                                                                 ?>
@@ -674,21 +692,9 @@ $states =  $a->fetch_all_states();
                                                                 ?>
                                                 </select>
                                             </div>
-                                            <div class="col-12 col-md-3">
-                                                <span class="search-field-label">
-                                                    <i class="fa-solid fa-naira-sign me-1"></i>Price Range
-                                                </span>
-                                                <select name="price_range" class="form-select">
-                                                    <option value="">Any price</option>
-                                                    <option value="300-500">&#8358;300k &ndash; &#8358;500k</option>
-                                                    <option value="500-1000">&#8358;500k &ndash; &#8358;1M</option>
-                                                    <option value="1000-2000">&#8358;1M &ndash; &#8358;2M</option>
-                                                    <option value="2000+">Above &#8358;2M</option>
-                                                </select>
-                                            </div>
                                             <div class="col-12 col-md-2">
                                                 <span class="search-field-label" style="opacity:0;user-select:none;">Search</span>
-                                                <button type="submit" class="btn-hero-search">
+                                                <button type="submit" name="search" value="search" class="btn-hero-search">
                                                     <i class="fa-solid fa-magnifying-glass"></i> Search
                                                 </button>
                                             </div>
@@ -905,12 +911,12 @@ $states =  $a->fetch_all_states();
                     Click a city to browse available properties.
                 </p>
             </div>
-
+    
             <!-- Cities Grid -->
             <div class="cities-grid">
 
                 <!-- Lagos -->
-                <a href="listings.php?city=lagos" class="city-card city-lagos">
+                <a href="process_pages/process_search.php?search&state=25" class="city-card city-lagos">
                     <img src="media/lagos_city.png" alt="Lagos skyline">
                     <div class="listings-pill">240+ listings</div>
                     <div class="card-text">
@@ -923,7 +929,7 @@ $states =  $a->fetch_all_states();
                 </a>
 
                 <!-- Abuja -->
-                <a href="listings.php?city=abuja" class="city-card city-abuja">
+                <a href="process_pages/process_search.php?search&state=15" class="city-card city-abuja">
                     <img src="media/abuja_city.png" alt="Abuja">
                     <div class="listings-pill">185+ listings</div>
                     <div class="card-text">
@@ -936,7 +942,7 @@ $states =  $a->fetch_all_states();
                 </a>
 
                 <!-- Port Harcourt -->
-                <a href="listings.php?city=portharcourt" class="city-card city-portharcourt">
+                <a href="process_pages/process_search.php?search&state=33" class="city-card city-portharcourt">
                     <img src="media/port_harcourt_city.png" alt="Port Harcourt">
                     <div class="listings-pill">98+ listings</div>
                     <div class="card-text">
@@ -949,7 +955,7 @@ $states =  $a->fetch_all_states();
                 </a>
 
                 <!-- Enugu -->
-                <a href="listings.php?city=enugu" class="city-card city-enugu">
+                <a href="process_pages/process_search.php?search&state=14" class="city-card city-enugu">
                     <img src="media/enugu_city.png" alt="Enugu">
                     <div class="listings-pill">64+ listings</div>
                     <div class="card-text">
@@ -962,7 +968,7 @@ $states =  $a->fetch_all_states();
                 </a>
 
                 <!-- Ibadan -->
-                <a href="listings.php?city=ibadan" class="city-card city-ibadan">
+                <a href="process_pages/process_search.php?search&state=31" class="city-card city-ibadan">
                     <img src="media/ibadan_city.png" alt="Ibadan">
                     <div class="listings-pill">112+ listings</div>
                     <div class="card-text">
@@ -975,7 +981,7 @@ $states =  $a->fetch_all_states();
                 </a>
 
                 <!-- Kaduna -->
-                <a href="listings.php?city=kaduna" class="city-card city-kaduna">
+                <a href="process_pages/process_search.php?search&state=19" class="city-card city-kaduna">
                     <img src="media/kaduna_city.png" alt="Kaduna">
                     <div class="listings-pill">76+ listings</div>
                     <div class="card-text">
@@ -1188,66 +1194,77 @@ $states =  $a->fetch_all_states();
          }
     ?>
 
-    <!-- Popular Listings -->
+    <!-- Trending News & Real Estate Blog -->
     <div class="container section">
 
             <div class="row">
                 <div class="col-md-6">
-                    <h2 class="text-left mb-4">Featured Properties</h2>
+                    <h2 class="text-left mb-4">Trending Real Estate News</h2>
                     <hr class="mb-4 bg-primary" style="width: 100px; height: 3px;">
-                    <p>Latest Listed Properties</p> 
+                    <p>Insights, market updates, and expert tips for buyers, renters, and property owners.</p>
                 </div>
                 <div class="col-md-6 d-flex justify-content-end align-items-center">
-                    <a class=" rounded-pill btn btn-outline-primary mb-4 px-5 py-2" href="#">View All Properties</a>
+                    <a class="rounded-pill btn btn-outline-primary mb-4 px-5 py-2" href="#">View All Articles</a>
                 </div>
             </div>
 
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card box h-100 shadow-sm border-0">
+                    <img src="media/realestate_news_1.png" class="card-img-top" alt="Market Trends">
+                    <div class="card-body">
+                        <h5 class="card-title">Nigeria Property Market Trends 2026</h5>
+                        <p class="card-text">Explore the latest city-by-city rental demand and pricing shifts in Nigeria's top real estate markets.</p>
+                        <a href="#" class="text-primary">Read More <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card box h-100 shadow-sm border-0">
+                    <img src="media/realestate_news_2.png" class="card-img-top" alt="Investment Tips">
+                    <div class="card-body">
+                        <h5 class="card-title">5 Smart Ways to Invest in Rental Properties</h5>
+                        <p class="card-text">From location selection to financing options, get practical advice for building long-term rental income.</p>
+                        <a href="#" class="text-primary">Read More <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <div class="row">
-            <div class="col-md-3">
-                <div class="card box">
-                    <img src="media/singleproperty3.png" class="card-img-top" alt="Property 1">
+        <div class="row g-4 mt-1">
+            <div class="col-md-4">
+                <div class="card box h-100 shadow-sm border-0">
                     <div class="card-body">
-                        <h5 class="card-title">Property 1</h5>
-                        <p class="card-text">Description of Property 1</p>
-                        <a href="#" class="underline text-dark">View Details</a>
+                        <span class="badge bg-success mb-3">Blog</span>
+                        <h5 class="card-title">How to Spot Verified Listings</h5>
+                        <p class="card-text">Learn the red flags of fake property ads and the verification steps that keep you safe on NaijaRent.</p>
+                        <a href="#" class="text-primary">Read More</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card box">
-                    <img src="media/singleproperty1.png" class="card-img-top" alt="Property 2">
+            <div class="col-md-4">
+                <div class="card box h-100 shadow-sm border-0">
                     <div class="card-body">
-                        <h5 class="card-title">Property 2</h5>
-                        <p class="card-text">Description of Property 2</p>
-                        <a href="#" class="underline text-dark">View Details</a>
+                        <span class="badge bg-success mb-3">Advice</span>
+                        <h5 class="card-title">Preparing Your Home for Rent</h5>
+                        <p class="card-text">A quick landlord guide to improving property appeal and attracting higher-quality tenants fast.</p>
+                        <a href="#" class="text-primary">Read More</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card box">
-                    <img src="media/singleproperty2.png" class="card-img-top" alt="Property 3">
+            <div class="col-md-4">
+                <div class="card box h-100 shadow-sm border-0">
                     <div class="card-body">
-                        <h5 class="card-title">Property 3</h5>
-                        <p class="card-text">Description of Property 3</p>
-                        <a href="#" class="underline text-dark">View Details</a>
+                        <span class="badge bg-success mb-3">Insights</span>
+                        <h5 class="card-title">Top Cities for First-Time Renters</h5>
+                        <p class="card-text">Compare cost, amenities, and community feel for the best cities to rent your first home in Nigeria.</p>
+                        <a href="#" class="text-primary">Read More</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card box">
-                    <img src="media/singleproperty2.png" class="card-img-top" alt="Property 3">
-                    <div class="card-body">
-                        <h5 class="card-title">Property 3</h5>
-                        <p class="card-text">Description of Property 3</p>
-                        <a href="#" class="underline text-dark">View Details</a>
-                    </div>
-                </div>
-            </div>
-        </div> 
-            
+        </div>
     </div>
-    <!-- Popular Listings -->
+    <!-- Trending News & Real Estate Blog -->
   
 
 

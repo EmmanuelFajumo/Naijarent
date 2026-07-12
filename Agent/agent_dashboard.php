@@ -462,7 +462,7 @@ $det = $agent->fetch_agent_details($_SESSION['agent_online']);
                         <p class="section-heading mb-3">Quick Actions</p>
                     </div>
                     <div class="col-6 col-md-3">
-                        <a href="create_listing.php" class="quick-action">
+                        <a href="agent_dashboard_create_listing.php" class="quick-action">
                             <div class="quick-action-icon"
                                 style="background:#eff6ff;">
                                 <i class="fa-solid fa-plus"

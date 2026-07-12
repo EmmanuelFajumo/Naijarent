@@ -4,6 +4,10 @@
  require_once "adminguard.php";
  $listing = new Admin();
  $all = $listing->fetch_All_listings();
+
+//  echo "<pre>";
+//  print_r($all);
+//  echo "</pre>";
  
 ?>
 
@@ -65,32 +69,25 @@
 
                 <!-- Stats Cards -->
                 <div class="row g-3 mb-4">
-                    <div class="col-6 col-md-3">
+                    <div class="col-6 col-md-4">
                         <div class="stat-card primary text-center">
                             <div class="stat-icon mx-auto"><i class="fa-solid fa-house-chimney"></i></div>
                             <div class="stat-value"><?php echo count($all); ?></div>
                             <div class="stat-label">Total Listings</div>
                         </div>
                     </div>
-                    <div class="col-6 col-md-3">
+                    <div class="col-6 col-md-4">
                         <div class="stat-card success text-center">
                             <div class="stat-icon mx-auto"><i class="fa-solid fa-circle-check"></i></div>
                             <div class="stat-value">70</div>
                             <div class="stat-label">Live</div>
                         </div>
                     </div>
-                    <div class="col-6 col-md-3">
+                    <div class="col-6 col-md-4">
                         <div class="stat-card warning text-center">
                             <div class="stat-icon mx-auto"><i class="fa-solid fa-clock"></i></div>
                             <div class="stat-value">30</div>
                             <div class="stat-label">Pending Approval</div>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <div class="stat-card danger text-center">
-                            <div class="stat-icon mx-auto"><i class="fa-solid fa-flag"></i></div>
-                            <div class="stat-value">10</div>
-                            <div class="stat-label">Flagged</div>
                         </div>
                     </div>
                 </div>
@@ -151,12 +148,12 @@
                     <?php
                         foreach($all as $prop){
                     ?>
-                        <div class="col-md-4 property <?php echo $prop[0]; ?>">
+                        <div class="col-md-4 property <?php echo $prop['verification_status']; ?>">
                             <div class="property-card">
                                 <div style="position: relative;">
                                     <img src="../uploads/property_pictures/<?php echo $prop['image1']; ?>" class="card-img-top" alt="Property">
                                     <span class="badge position-absolute ta" style="top: 10px; left: 10px; font-size: 0.72em; padding: 5px 12px; border-radius: 50px;">
-                                        <i class="fa-solid fa-circle-check me-1"></i> <?php echo $prop[0]; ?>
+                                        <i class="fa-solid fa-circle-check me-1"></i> <?php echo $prop['verification_status']; ?>
                                     </span>
                                 </div>
                                 <div class="card-body">

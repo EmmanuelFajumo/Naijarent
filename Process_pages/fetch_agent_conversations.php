@@ -1,6 +1,5 @@
 <?php
 session_start();
-header('Content-Type: application/json');
 
 if(!isset($_SESSION['agent_online'])){
     echo json_encode(['error' => 'Unauthorized']);
@@ -10,7 +9,7 @@ if(!isset($_SESSION['agent_online'])){
 require_once "classes/ChatService.php";
 
 $agent_id = (int)$_SESSION['agent_online'];
-$chat = new ChatService();
+$chat = new ChatService();  
 $conversations = $chat->fetch_agent_conversations_with_details($agent_id);
 
 // Reformat the data for the frontend

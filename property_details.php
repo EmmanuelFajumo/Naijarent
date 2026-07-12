@@ -306,8 +306,27 @@
                     </div>
                     <p class="agent-tagline">Get in touch with the agent for more information.</p>
                     <button class="btn-contact-agent mb-4" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
-                        <i class="fa-solid fa-paper-plane me-1"></i> Send Message
+                         <i class="fa-solid fa-paper-plane me-1"></i> Leave a Message
                     </button>
+                    <?php 
+                        if(isset($_SESSION['useroline'])){
+                            $phone = $res['phone'];
+                            $phone = preg_replace('/[^0-9]/', '', $phone);
+                            if (substr($phone, 0, 1) === '0') {
+                                $phone = '234' . substr($phone, 1);
+                            } elseif (substr($phone, 0, 1) !== '234' && substr($phone, 0, 1) !== '+') {
+                                $phone = '234' . $phone;
+                            }
+                            $wa_link = 'https://wa.me/' . $phone;
+
+                        }
+                    ?>
+
+                    <?php if(isset($_SESSION['useroline'])){
+                    ?>
+                    <a href="<?= $wa_link ?>" target="_blank" class="btn-view-profile mt-3"><i class="fa-brands fa-whatsapp"></i> Chat on WhatsApp</a>
+
+                    <?php } ?>
                     <a href="agent_profile.php?id=<?php echo $res['property_id']?>" class="btn-view-profile mt-3">View Profile</a>
                 </div>
             </div>

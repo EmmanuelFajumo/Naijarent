@@ -21,10 +21,21 @@ $pay = new Payment();
 $res = $pay->verify_payment($refcode_session);
 $res = json_decode($res);
 
-echo "<pre>";
-print_r($res);
-echo "</pre>";
-//
+// echo "<pre>";
+// print_r($res);
+// echo "</pre>";
+$sender_email = $res->data->customer->email;
+$sender_name = $res->data->customer->first_name;
+$subject = "Payment Confirmation";
+$body = "
+<h1>Payment Confirmation</h1>
+<p>Dear $sender_name,</p>
+<p>Thank you for your payment of <strong>&#8358;".$res->data->amount."</strong> to NaijaRent.</p>
+<p>You have successfully paid to for this apartment, Kinldy check your email for a detailed guide on what to do next</p>
+<p>Best regards,</p>
+<p>NaijaRent Team</p>
+";
+
 //send them away with a success meessage
     $amount = 3000000;
     if($amount != $res->data->amount){
@@ -37,8 +48,9 @@ echo "</pre>";
         if($update_payment){
 
             require_once "../process_pages/classes/Email.php";
-            $email = new Email;
-            $send_email = $email->agent_message_alert($recipient_email, $recipient_name, $subject, $body);
+            $email = new Email();
+            $send_email = $email->agent_message_alert($sender_email, $sender_name, $subject, $body);
+            
             $_SESSION['successmsg'] = "You have successfully paid to for this apartment, Kinldy check your email for a detailed guide on what to do next";
             header('location:agent_dashboard_listings.php');
         exit;

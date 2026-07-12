@@ -49,25 +49,6 @@
                                         </button> -->
                             </div>
                             <?php } ?>
-
-                             <?php 
-                                if(!isset($_SESSION['agent_online'])){
-                            ?>
-                           <div class="profile-menu mt-4 d-flex flex-row justify-content-center align-items-center">
-                            <div class="dropdown">
-                                <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                   Hi, <?php if(isset($_SESSION['agent_online'])) { echo $agent_deet['first_name']; } else{echo "Login";} ?>
-                                </button>
-                                <ul class="dropdown-menu px-3">
-                                   <li><a href="tenant_dashboard.php" class="text-secondary">  Dashboard </a></li>
-                                   <li><a href="#" class="text-secondary">Browse Listings</a></li>
-                                    <li><a href="#" class="text-secondary ">My Profile </a></li>
-                                    <li><a href="user_logout.php" class="text-secondary"> Logout</a></li>
-                                </ul>
-                            </div>
-                         </div>
-                            <?php } ?>
-                        </div>
                     </div>
                 </nav>
              </div>

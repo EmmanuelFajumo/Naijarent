@@ -1,37 +1,52 @@
 <?php
 session_start();
+require_once "classes/ChatService.php";
+
 header('Content-Type: application/json');
 
-if(!isset($_SESSION['agent_online'])){
-    echo json_encode(['error' => 'Unauthorized']);
+// The JS sends POST with property_id
+$property_id = isset($_POST['property_id']) ? (int)$_POST['property_id'] : 0;
+
+if ($property_id <= 0) {
+    echo json_encode(['error' => 'Invalid property ID']);
     exit;
 }
 
-require_once "classes/ChatService.php";
+$chat = new ChatService();
 
-if(isset($_POST['property_id'])){
-    $property_id = (int)$_POST['property_id'];
-    $agent_id = (int)$_SESSION['agent_online'];
-    $chat = new ChatService();
+// Get the agent_id from session
+$agent_id = isset($_SESSION['agent_online']) ? (int)$_SESSION['agent_online'] : 0;
 
-    // Find the conversation_id from property_id and agent_id
-    $conversations = $chat->fetch_agent_conversations($agent_id);
-    $conversation_id = null;
+// Find the conversation_id from property_id and agent_id
+$conversations = $chat->fetch_agent_conversations($agent_id);
+$conversation_id = null;
 
-    foreach($conversations as $conv){
-        if((int)$conv['property_id'] === $property_id){
-            $conversation_id = (int)$conv['id'];
-            break;
-        }
+foreach ($conversations as $conv) {
+    if ((int)$conv['property_id'] === $property_id) {
+        $conversation_id = (int)$conv['id'];
+        break;
     }
-
-    if($conversation_id){
-        $messages = $chat->fetch_conversation_messages($conversation_id);
-        echo json_encode($messages);
-    } else {
-        echo json_encode(['error' => 'Conversation not found']);
-    }
-} else {
-    echo json_encode(['error' => 'Missing property ID']);
 }
+
+if ($conversation_id === null) {
+    echo json_encode([]);
+    exit;
+}
+
+// Fetch messages
+$messages = $chat->fetch_conversation_messages($conversation_id);
+
+// Format messages for the frontend
+$formatted = [];
+foreach ($messages as $msg) {
+    $isSent = ($msg['sender_type'] ?? '') === 'agent';
+    $formatted[] = [
+        'sender_name' => $isSent ? 'You' : 'Tenant',
+        'message' => $msg['content'],
+        'message_type' => $isSent ? 'sent' : 'received',
+        'created_at' => $msg['created_at']
+    ];
+}
+
+echo json_encode($formatted);
 ?>

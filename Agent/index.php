@@ -1,5 +1,5 @@
 <?php
-    header("location:agent_dashboard.php");
+    header("location:../login.php");
     exit;
 
 ?>
