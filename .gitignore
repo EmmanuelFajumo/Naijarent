@@ -1,28 +1,126 @@
+#############################################
+# Environment & Secrets
+#############################################
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Database and application configuration
+Process_pages/classes/config.php
+Admin/classes/config.php
+includes/config.php
+
+# API Keys & Credentials
+*.pem
+*.key
+*.crt
+*.p12
+
+#############################################
+# Composer
+#############################################
+
+# Ignore vendor if you want others to install dependencies
+/vendor/
+
+# Keep composer files
+!composer.json
+!composer.lock
+
+#############################################
 # Logs
-logs
+#############################################
+
 *.log
+logs/
+storage/logs/
+
+#############################################
+# Cache
+#############################################
+
+cache/
+tmp/
+temp/
+storage/cache/
+
+#############################################
+# Uploads
+#############################################
+
+uploads/
+public/uploads/
+
+# Keep the folders in Git
+!uploads/.gitkeep
+!public/uploads/.gitkeep
+
+#############################################
+# Sessions
+#############################################
+
+sessions/
+
+#############################################
+# Generated Files
+#############################################
+
+*.zip
+*.tar
+*.gz
+*.rar
+*.sql
+*.sqlite
+
+#############################################
+# IDEs
+#############################################
+
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+#############################################
+# OS Files
+#############################################
+
+.DS_Store
+Thumbs.db
+desktop.ini
+
+#############################################
+# Testing
+#############################################
+
+.phpunit.result.cache
+coverage/
+.phpunit.cache/
+
+#############################################
+# Node (if using Vite/Webpack)
+#############################################
+
+node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+#############################################
+# Build Files
+#############################################
 
-# Database configuration
-process_pages/classes/config.php
-Admin/config.php
+dist/
+build/
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+#############################################
+# Miscellaneous
+#############################################
+
+*.bak
+*.tmp
+*.swp
+*.orig
