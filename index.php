@@ -23,6 +23,12 @@ if(isset($_SESSION['agent_online'])){
 $property_types = $prop->fetch_property_types();
 
 require_once "process_pages/classes/Utilities.php";
+require_once "process_pages/classes/Article.php";
+$article = new Article();
+$published_articles = $article->fetch_articles_by_status('Published');
+if (is_string($published_articles)) {
+    $published_articles = [];
+}
 $a = new Utilities();
 $states =  $a->fetch_all_states();
 
@@ -655,61 +661,67 @@ $states =  $a->fetch_all_states();
                 </div>
             </div>
 
-        <div class="row g-4">
-            <div class="col-md-6">
-                <div class="card box h-100 shadow-sm border-0">
-                    <img src="media/agos_city.png" class="card-img-top" alt="Market Trends">
-                    <div class="card-body">
-                        <h5 class="card-title">Nigeria Property Market Trends 2026</h5>
-                        <p class="card-text">Explore the latest city-by-city rental demand and pricing shifts in Nigeria's top real estate markets.</p>
-                        <a href="#" class="text-primary">Read More <i class="fa-solid fa-arrow-right"></i></a>
+        <?php if (empty($published_articles)): ?>
+            <div class="text-center py-5">
+                <p class="text-muted">No articles published yet. Check back soon for insights and updates.</p>
+            </div>
+        <?php else: ?>
+            <!-- First row: first 2 articles with featured images -->
+            <div class="row g-4">
+                <?php foreach (array_slice($published_articles, 0, 2) as $article_item): 
+                    $rawPath = $article_item['featured_image'] ?? '';
+                    // Normalize path: if stored path starts with ./.., extract just the filename portion
+                    if (!empty($rawPath)) {
+                        $imgSrc = 'media/blog_images/' . basename($rawPath);
+                    } else {
+                        $imgSrc = 'media/home.png';
+                    }
+                    $imgSrc = htmlspecialchars($imgSrc);
+                    $artTitle = htmlspecialchars($article_item['title'] ?? '');
+                    $artExcerpt = htmlspecialchars($article_item['excerpt'] ?? '');
+                    $artCategory = htmlspecialchars($article_item['category'] ?? 'Uncategorized');
+                    $artDate = !empty($article_item['created_at']) ? date('M j, Y', strtotime($article_item['created_at'])) : '';
+                ?>
+                <div class="col-md-6">
+                    <div class="card box h-100 shadow-sm border-0">
+                        <img src="<?php echo $imgSrc; ?>" class="card-img-top" alt="<?php echo $artTitle; ?>" style="height: 200px; object-fit: cover;">
+                        <div class="card-body">
+                            <span class="badge bg-primary mb-2"><?php echo $artCategory; ?></span>
+                            <h5 class="card-title"><?php echo $artTitle; ?></h5>
+                            <p class="card-text"><?php echo $artExcerpt; ?></p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted"><i class="fa-regular fa-calendar me-1"></i><?php echo $artDate; ?></small>
+                                <a href="single_article.php?id=<?php echo $article_item['id'] ?>" class="text-primary">Read More <i class="fa-solid fa-arrow-right"></i></a>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                <?php endforeach; ?>
             </div>
-            <div class="col-md-6">
-                <div class="card box h-100 shadow-sm border-0">
-                    <img src="media/realestate_news_2.png" class="card-img-top" alt="Investment Tips">
-                    <div class="card-body">
-                        <h5 class="card-title">5 Smart Ways to Invest in Rental Properties</h5>
-                        <p class="card-text">From location selection to financing options, get practical advice for building long-term rental income.</p>
-                        <a href="#" class="text-primary">Read More <i class="fa-solid fa-arrow-right"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <div class="row g-4 mt-1">
-            <div class="col-md-4">
-                <div class="card box h-100 shadow-sm border-0">
-                    <div class="card-body">
-                        <span class="badge bg-success mb-3">Blog</span>
-                        <h5 class="card-title">How to Spot Verified Listings</h5>
-                        <p class="card-text">Learn the red flags of fake property ads and the verification steps that keep you safe on NaijaRent.</p>
-                        <a href="#" class="text-primary">Read More</a>
+            <!-- Second row: remaining articles as text cards -->
+            <?php $remaining = array_slice($published_articles, 2); ?>
+            <?php if (!empty($remaining)): ?>
+            <div class="row g-4 mt-1">
+                <?php foreach ($remaining as $article_item): 
+                    $artTitle = htmlspecialchars($article_item['title'] ?? '');
+                    $artExcerpt = htmlspecialchars($article_item['excerpt'] ?? '');
+                    $artCategory = htmlspecialchars($article_item['category'] ?? 'Uncategorized');
+                ?>
+                <div class="col-md-4">
+                    <div class="card box h-100 shadow-sm border-0">
+                        <div class="card-body">
+                            <span class="badge bg-success mb-3"><?php echo $artCategory; ?></span>
+                            <h5 class="card-title"><?php echo $artTitle; ?></h5>
+                            <p class="card-text"><?php echo $artExcerpt; ?></p>
+                            <a href="single_article.php?id=<?php echo $article_item['id'] ?>" class="text-primary">Read More</a>
+                        </div>
                     </div>
                 </div>
+                <?php endforeach; ?>
             </div>
-            <div class="col-md-4">
-                <div class="card box h-100 shadow-sm border-0">
-                    <div class="card-body">
-                        <span class="badge bg-success mb-3">Advice</span>
-                        <h5 class="card-title">Preparing Your Home for Rent</h5>
-                        <p class="card-text">A quick landlord guide to improving property appeal and attracting higher-quality tenants fast.</p>
-                        <a href="#" class="text-primary">Read More</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card box h-100 shadow-sm border-0">
-                    <div class="card-body">
-                        <span class="badge bg-success mb-3">Insights</span>
-                        <h5 class="card-title">Top Cities for First-Time Renters</h5>
-                        <p class="card-text">Compare cost, amenities, and community feel for the best cities to rent your first home in Nigeria.</p>
-                        <a href="#" class="text-primary">Read More</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+            <?php endif; ?>
+        <?php endif; ?>
     </div>
     <!-- Trending News & Real Estate Blog -->
   
