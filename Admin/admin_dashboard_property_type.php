@@ -65,21 +65,21 @@
                 <!-- Stats Cards -->
                 <div class="row g-3 mb-4">
                     <div class="col-md-4">
-                        <div class="stat-card primary text-center">
+                        <div class="stat-card text-center">
                             <div class="stat-icon mx-auto"><i class="fa-regular fa-folder-open"></i></div>
                             <div class="stat-value"><?php echo count($properties_types); ?></div>
                             <div class="stat-label">Total Types</div>
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="stat-card success text-center">
+                        <div class="stat-card text-center">
                             <div class="stat-icon mx-auto"><i class="fa-solid fa-circle-check"></i></div>
                             <div class="stat-value">70</div>
                             <div class="stat-label">Active Listings</div>
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="stat-card danger text-center">
+                        <div class="stat-card text-center">
                             <div class="stat-icon mx-auto"><i class="fa-solid fa-ban"></i></div>
                             <div class="stat-value">100</div>
                             <div class="stat-label">Total Listings</div>

@@ -70,21 +70,21 @@
                 <!-- Stats Cards -->
                 <div class="row g-3 mb-4">
                     <div class="col-6 col-md-4">
-                        <div class="stat-card primary text-center">
+                        <div class="stat-card text-center">
                             <div class="stat-icon mx-auto"><i class="fa-solid fa-house-chimney"></i></div>
                             <div class="stat-value"><?php echo count($all); ?></div>
                             <div class="stat-label">Total Listings</div>
                         </div>
                     </div>
                     <div class="col-6 col-md-4">
-                        <div class="stat-card success text-center">
+                        <div class="stat-card text-center">
                             <div class="stat-icon mx-auto"><i class="fa-solid fa-circle-check"></i></div>
                             <div class="stat-value">70</div>
                             <div class="stat-label">Live</div>
                         </div>
                     </div>
                     <div class="col-6 col-md-4">
-                        <div class="stat-card warning text-center">
+                        <div class="stat-card text-center">
                             <div class="stat-icon mx-auto"><i class="fa-solid fa-clock"></i></div>
                             <div class="stat-value">30</div>
                             <div class="stat-label">Pending Approval</div>

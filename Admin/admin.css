@@ -104,81 +104,46 @@ a { text-decoration: none; }
 
 /* ── Stat Cards ─────────────────────────── */
 .stat-card {
-    border: none;
-    border-radius: 16px;
+    border: 1px solid #e9edf2;
+    border-radius: 10px;
     padding: 22px 18px;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
+    transition: box-shadow 0.2s ease;
     background: #ffffff;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-}
-.stat-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 4px;
-    height: 100%;
-    border-radius: 16px 0 0 16px;
 }
 .stat-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
 }
 .stat-card .stat-icon {
     width: 48px;
     height: 48px;
-    border-radius: 14px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.2em;
     margin-bottom: 14px;
+    background: #eef1fa;
+    color: #1E3888;
 }
 .stat-card .stat-value {
-    font-family: "Voltaire", sans-serif;
-    font-size: 1.9em;
+    font-family: "Inter", sans-serif;
+    font-size: 1.8em;
     font-weight: 700;
     line-height: 1.2;
     margin-bottom: 2px;
+    color: #111827;
 }
 .stat-card .stat-label {
     font-size: 0.82em;
-    color: #8a94a6;
+    color: #6b7280;
     font-weight: 500;
-    letter-spacing: 0.3px;
 }
 .stat-card .stat-trend {
     font-size: 0.75em;
-    font-weight: 600;
+    font-weight: 500;
     margin-top: 6px;
+    color: #9ca3af;
 }
-
-/* Stat Card Variants */
-.stat-card.primary::before { background: #1E3888; }
-.stat-card.primary .stat-icon { background: #eef1fa; color: #1E3888; }
-.stat-card.primary .stat-value { color: #1E3888; }
-
-.stat-card.success::before { background: #10b981; }
-.stat-card.success .stat-icon { background: #ecfdf5; color: #10b981; }
-.stat-card.success .stat-value { color: #10b981; }
-
-.stat-card.warning::before { background: #f59e0b; }
-.stat-card.warning .stat-icon { background: #fffbeb; color: #f59e0b; }
-.stat-card.warning .stat-value { color: #f59e0b; }
-
-.stat-card.danger::before { background: #ef4444; }
-.stat-card.danger .stat-icon { background: #fef2f2; color: #ef4444; }
-.stat-card.danger .stat-value { color: #ef4444; }
-
-.stat-card.info::before { background: #6366f1; }
-.stat-card.info .stat-icon { background: #eef2ff; color: #6366f1; }
-.stat-card.info .stat-value { color: #6366f1; }
-
-.stat-card.gold::before { background: #f59e0b; }
-.stat-card.gold .stat-icon { background: linear-gradient(135deg, #fff8e1, #fffbeb); color: #b8860b; }
-.stat-card.gold .stat-value { color: #14213D; }
 
 /* ── Welcome Banner (dashboard) ─────────── */
 .welcome-banner {

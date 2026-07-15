@@ -5,9 +5,7 @@ require_once "classes/Admin.php";
 $agents = new Admin();
 $res = $agents->get_all_agents();
 $sn = 1;
-// echo "<pre>";
-// print_r($res);
-// echo "</pre>";
+
 
 $total_agents = count($res);
 
@@ -69,53 +67,7 @@ $total_agents = count($res);
                     </div>
                 </div>
 
-                <!-- Stats Cards -->
-                <div class="row g-3 mb-4">
-                     <!-- Alert Messages -->
-                <?php if(isset($_SESSION['errormsg'])){ ?>
-                    <div class="alert-custom alert-danger alert-dismissible fade show" role="alert">
-                        <i class="fa-solid fa-circle-exclamation me-2"></i>
-                        <?php echo $_SESSION['errormsg']; unset($_SESSION['errormsg']);?>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                <?php } ?>
-
-                <?php if(isset($_SESSION['successmsg'])){ ?>
-                    <div class="alert-custom alert-success alert-dismissible fade show" role="alert">
-                        <i class="fa-solid fa-circle-check me-2"></i>
-                        <?php echo $_SESSION['successmsg']; unset($_SESSION['successmsg']);?>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                <?php } ?>
-                    <div class="col-6 col-md-3">
-                        <div class="stat-card primary text-center">
-                            <div class="stat-icon mx-auto"><i class="fa-solid fa-user-tie"></i></div>
-                            <div class="stat-value"><?php echo $total_agents; ?></div>
-                            <div class="stat-label">Total Agents</div>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <div class="stat-card success text-center">
-                            <div class="stat-icon mx-auto"><i class="fa-solid fa-badge-check"></i></div>
-                            <div class="stat-value">980</div>
-                            <div class="stat-label">Verified</div>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <div class="stat-card warning text-center">
-                            <div class="stat-icon mx-auto"><i class="fa-solid fa-clock"></i></div>
-                            <div class="stat-value">245</div>
-                            <div class="stat-label">Pending</div>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <div class="stat-card danger text-center">
-                            <div class="stat-icon mx-auto"><i class="fa-solid fa-ban"></i></div>
-                            <div class="stat-value">115</div>
-                            <div class="stat-label">Banned</div>
-                        </div>
-                    </div>
-                </div>
+              
 
                 <!-- Search and Filter -->
                 <div class="row g-3 mb-4 align-items-center">
@@ -194,7 +146,7 @@ $total_agents = count($res);
                                                     $class = $vstatus == 'verified' ? 'verified' : ($vstatus == 'pending' ? 'pending' : ($vstatus == 'suspended' ? 'suspended' : 'banned'));
                                                 ?>
                                                 <span class="status-badge <?php echo $class; ?>">
-                                                    <i class="fa-solid fa-circle-check"></i> <?php echo ucfirst($vstatus); ?>
+                                                    <i class="fa-solid fa-circle-check"></i> <?php echo $agent['verification_status']; ?>
                                                 </span>
                                             </td>
                                             <td class="text-end pe-4">

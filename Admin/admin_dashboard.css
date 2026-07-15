@@ -1,0 +1,230 @@
+        body {
+            font-family: "Inter", sans-serif;
+            background: #f4f6fb;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: "Inter", sans-serif;
+            color: #111827;
+        }
+
+        /* ── Dashboard Banner (clean) ──────────── */
+        .dashboard-banner {
+            background: #ffffff;
+            border: 1px solid #e9edf2;
+            border-radius: 10px;
+            padding: 28px 32px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .dashboard-banner .banner-icon-box {
+            width: 52px;
+            height: 52px;
+            border-radius: 10px;
+            background: #eef1fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1E3888;
+            font-size: 1.3em;
+            flex-shrink: 0;
+        }
+        .dashboard-banner h1 {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 2px;
+        }
+        .dashboard-banner p {
+            font-size: 0.88em;
+            color: #6b7280;
+            margin-bottom: 0;
+        }
+        .dashboard-banner .btn-banner-primary {
+            background: #1E3888;
+            border: none;
+            color: #ffffff;
+            font-weight: 500;
+            padding: 9px 20px;
+            border-radius: 8px;
+            font-size: 0.85em;
+            transition: background 0.15s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .dashboard-banner .btn-banner-primary:hover {
+            background: #14213D;
+            color: #ffffff;
+        }
+        .dashboard-banner .btn-banner-outline {
+            background: transparent;
+            border: 1px solid #d1d9e6;
+            color: #374151;
+            font-weight: 500;
+            padding: 9px 20px;
+            border-radius: 8px;
+            font-size: 0.85em;
+            transition: border-color 0.15s ease, background 0.15s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .dashboard-banner .btn-banner-outline:hover {
+            border-color: #1E3888;
+            background: #f8faff;
+            color: #374151;
+        }
+
+        /* ── Alert Card ────────────────────────── */
+        .alert-card {
+            background: #ffffff;
+            border: 1px solid #e9edf2;
+            border-left: 4px solid #f59e0b;
+            border-radius: 10px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .alert-card .alert-icon-box {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: #fffbeb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #b45309;
+            font-size: 0.9em;
+            flex-shrink: 0;
+        }
+        .alert-card .alert-text {
+            font-size: 0.85em;
+            color: #4b5563;
+        }
+        .alert-card .alert-text strong {
+            color: #1f2937;
+        }
+        .alert-card .btn-alert-sm {
+            background: transparent;
+            border: 1px solid #d1d9e6;
+            border-radius: 6px;
+            padding: 6px 14px;
+            font-size: 0.78em;
+            font-weight: 500;
+            color: #374151;
+            transition: border-color 0.15s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .alert-card .btn-alert-sm:hover {
+            border-color: #1E3888;
+        }
+
+        /* ── Activity Card ─────────────────────── */
+        .activity-card {
+            background: #ffffff;
+            border: 1px solid #e9edf2;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .activity-card .card-heading {
+            padding: 16px 20px;
+            border-bottom: 1px solid #f0f2f5;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .activity-card .card-heading h6 {
+            font-size: 0.88em;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .activity-card .card-heading a {
+            font-size: 0.78em;
+            color: #1E3888;
+            font-weight: 500;
+            text-decoration: none;
+        }
+        .activity-card .card-heading a:hover {
+            text-decoration: underline;
+        }
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            border-bottom: 1px solid #f9fafb;
+            font-size: 0.85em;
+            color: #4b5563;
+        }
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        .activity-item .activity-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .activity-dot.green { background: #10b981; }
+        .activity-dot.blue { background: #1E3888; }
+        .activity-dot.yellow { background: #f59e0b; }
+        .activity-dot.red { background: #ef4444; }
+        .activity-item .activity-text {
+            flex: 1;
+        }
+        .activity-item .activity-text strong {
+            color: #1f2937;
+        }
+        .activity-item .activity-time {
+            font-size: 0.78em;
+            color: #9ca3af;
+            white-space: nowrap;
+        }
+
+        /* ── Section Header ────────────────────── */
+        .section-header {
+            font-size: 0.82em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #9ca3af;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-header::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e5e7eb;
+        }
+
+        /* ── Misc ──────────────────────────────── */
+        .label {
+            font-family: "Inter", sans-serif;
+            font-size: 0.8em;
+            font-weight: 400;
+        }
+        .icon {
+            width: 30px;
+            object-fit: cover;
+        }
+        .box:hover {
+            background-color: white;
+            transform: scale(1.02);
+            transition: 0.5s;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        }

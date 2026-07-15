@@ -4,6 +4,9 @@
     require_once "classes/Admin.php";
     $tenants = new Admin;
     $response = $tenants->get_all_tenants();
+    // echo "<pre>";
+    // print_r($response);
+    // echo "</pre>";
     $sn=0;
 ?>
 
@@ -66,38 +69,6 @@
                     </div>
                 </div>
 
-                <!-- Stats Cards -->
-                <div class="row g-3 mb-4">
-                    <div class="col-6 col-md-3">
-                        <div class="stat-card primary text-center">
-                            <div class="stat-icon mx-auto"><i class="fa-solid fa-users"></i></div>
-                            <div class="stat-value">11,200</div>
-                            <div class="stat-label">Total Tenants</div>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <div class="stat-card success text-center">
-                            <div class="stat-icon mx-auto"><i class="fa-solid fa-circle-check"></i></div>
-                            <div class="stat-value">9,840</div>
-                            <div class="stat-label">Verified</div>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <div class="stat-card warning text-center">
-                            <div class="stat-icon mx-auto"><i class="fa-solid fa-clock"></i></div>
-                            <div class="stat-value">1,120</div>
-                            <div class="stat-label">Unverified</div>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <div class="stat-card danger text-center">
-                            <div class="stat-icon mx-auto"><i class="fa-solid fa-ban"></i></div>
-                            <div class="stat-value">240</div>
-                            <div class="stat-label">Banned</div>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Search and Filter -->
                 <div class="row g-3 mb-4 align-items-center">
                     <form action="process_pages/process_filter_admin.php" method="GET" class="row g-3 align-items-center">
@@ -143,7 +114,6 @@
                                             <th class="py-3">Email</th>
                                             <th class="py-3">Phone</th>
                                             <th class="py-3">Date Joined</th>
-                                            <th class="py-3">Status</th>
                                             <th class="py-3 text-end pe-4">Actions</th>
                                         </tr>
                                     </thead>
@@ -164,11 +134,7 @@
                                             <td class="text-muted"><?php echo $response["$user"]['email']; ?></td>
                                             <td class="text-muted"><?php echo $response["$user"]['phone']; ?></td>
                                             <td class="text-muted"><?php echo $response["$user"]['date_joined']; ?></td>
-                                            <td>
-                                                <span class="badge rounded-pill px-3 py-2 <?php echo $response["$user"]['status']; ?>">
-                                                    <i class="fa-solid fa-circle-check me-1"></i> <?php echo $response["$user"]['is_verified']; ?>
-                                                </span>
-                                            </td>
+                                            
                                             <td class="text-end pe-4">
                                                 <div class="dropdown">
                                                     <button class="btn btn-sm px-3" type="button" data-bs-toggle="dropdown" style="border:1px solid #e5e7eb;border-radius:8px;color:#4b5563;background:#fff;">

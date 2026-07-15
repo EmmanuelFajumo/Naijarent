@@ -67,28 +67,28 @@
                 <!-- Stats Cards -->
                 <div class="row g-3 mb-4">
                     <div class="col-6 col-md-3">
-                        <div class="stat-card warning text-center">
+                        <div class="stat-card text-center">
                             <div class="stat-icon mx-auto"><i class="fa-solid fa-clock"></i></div>
                             <div class="stat-value">6</div>
                             <div class="stat-label">Pending Agents</div>
                         </div>
                     </div>
                     <div class="col-6 col-md-3">
-                        <div class="stat-card primary text-center">
+                        <div class="stat-card text-center">
                             <div class="stat-icon mx-auto"><i class="fa-solid fa-house-chimney"></i></div>
                             <div class="stat-value">18</div>
                             <div class="stat-label">Pending Listings</div>
                         </div>
                     </div>
                     <div class="col-6 col-md-3">
-                        <div class="stat-card success text-center">
+                        <div class="stat-card text-center">
                             <div class="stat-icon mx-auto"><i class="fa-solid fa-circle-check"></i></div>
                             <div class="stat-value">1,240</div>
                             <div class="stat-label">Total Approved</div>
                         </div>
                     </div>
                     <div class="col-6 col-md-3">
-                        <div class="stat-card danger text-center">
+                        <div class="stat-card text-center">
                             <div class="stat-icon mx-auto"><i class="fa-solid fa-circle-xmark"></i></div>
                             <div class="stat-value">84</div>
                             <div class="stat-label">Total Rejected</div>

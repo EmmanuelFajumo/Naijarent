@@ -18,6 +18,7 @@
             <a href="#" class="d-block text-light box"><i class="fa-solid fa-flag"></i> Reports</a>
             <a href="#" class="d-block text-light box"><i class="fa-solid fa-circle-dollar-to-slot"></i> Payments</a>
             <a href="admin_dashboard_property_type.php" class="d-block text-light box"><i class="fa-solid fa-tags"></i> Property Types</a>
+            <a href="admin_dashboard_blog.php" class="d-block text-light box"><i class="fa-solid fa-tags"></i> Blogs</a>
             <a href="#" class="d-block text-light box"><i class="fa-solid fa-gear"></i> Settings</a>
         </div>
 
