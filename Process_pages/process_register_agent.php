@@ -60,7 +60,7 @@ if(isset($_POST['btn'])){
             echo "Agent data not saved, try again ";
         }
         else{
-            $_SESSION['firstname'] = $firstname;
+            $_SESSION['firstname'] = $firstname;   
             header("location:../Agent/agent_login.php");
             return "Account created successfully";
         }

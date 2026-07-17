@@ -146,7 +146,7 @@ class Agent extends Db
        catch(PDOException $e){
            return $e->getMessage();
        }
-       
+        
     } 
     
     public function fetch_All_listings($agent_id){
@@ -160,8 +160,99 @@ class Agent extends Db
        catch(PDOException $e){
            return $e->getMessage();
        }
-       
-    } 
+        
+    }
+
+    public function delete_listing_by_id($id){
+        try{
+            $sql = "DELETE FROM properties WHERE property_id = ?";
+            $stmt = $this->conn->prepare($sql);
+            $res = $stmt->execute([$id]);
+            return $res;
+        }
+        catch(PDOException $e){
+            return false;
+        }
+    }
+
+    public function count_total_listings($agent_id){
+        try{
+            $sql = "SELECT COUNT(*) as total FROM properties WHERE agent_id = ?";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([$agent_id]);
+            $res = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $res['total'];
+        }
+        catch(PDOException $e){
+            return 0;
+        }
+    }
+
+    public function count_active_listings($agent_id){
+        try{
+            $sql = "SELECT COUNT(*) as total FROM properties WHERE agent_id = ? AND verification_status = 'approved'";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([$agent_id]);
+            $res = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $res['total'];
+        }
+        catch(PDOException $e){
+            return 0;
+        }
+    }
+
+    public function count_conversations($agent_id){
+        try{
+            $sql = "SELECT COUNT(*) as total FROM conversations WHERE agent_id = ?";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([$agent_id]);
+            $res = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $res['total'];
+        }
+        catch(PDOException $e){
+            return 0;
+        }
+    }
+
+    public function count_pending_listings($agent_id){
+        try{
+            $sql = "SELECT COUNT(*) as total FROM properties WHERE agent_id = ? AND verification_status = 'pending'";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([$agent_id]);
+            $res = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $res['total'];
+        }
+        catch(PDOException $e){
+            return 0;
+        }
+    }
+
+    public function count_suspended_listings($agent_id){
+        try{
+            $sql = "SELECT COUNT(*) as total FROM properties WHERE agent_id = ? AND verification_status = 'suspended'";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([$agent_id]);
+            $res = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $res['total'];
+        }
+        catch(PDOException $e){
+            return 0;
+        }
+    }
+
+    public function count_rejected_listings($agent_id){
+        try{
+            $sql = "SELECT COUNT(*) as total FROM properties WHERE agent_id = ? AND verification_status = 'rejected'";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute([$agent_id]);
+            $res = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $res['total'];
+        }
+        catch(PDOException $e){
+            return 0;
+        }
+    }
+
 }
 // $hey = new Agent();
 // $res = $hey->update_agent_profile_picture("rhefjskjdfnskfnsdfgs", 6);
@@ -169,4 +260,3 @@ class Agent extends Db
 //     echo "<pre>";
 //      print_r($res);
 //     echo "</pre>";
-

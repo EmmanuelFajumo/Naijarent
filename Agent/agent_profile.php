@@ -216,7 +216,7 @@
             color: #adb5bd;
             margin-top: 4px;
         }
-    </style>
+    </style>   
 
 </head>
 
@@ -401,7 +401,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">Upload Government-issued ID</label>
-                                        <input type="file" name="id_file" class="form-control form-input" accept="image/png, image/jpg, image/jpeg, .pdf,.doc,.docx">
+                                        <input type="file" name="id_file" class="form-control form-input" accept=".png,.jpg,.jpeg,.pdf,.doc,.docx">
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">Proof of Address Type</label>
@@ -413,11 +413,11 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">Upload Proof of Address</label>
-                                        <input type="file" name="proof_of_address_file" class="form-control form-input" accept="image/png, image/jpg, image/jpeg, .pdf,.doc,.docx">
+                                        <input type="file" name="proof_of_address_file" class="form-control form-input" accept=".png,.jpg,.jpeg,.pdf,.doc,.docx">
                                     </div>
                                     <div class="col-12">
                                         <label class="form-label">Selfie Verification</label>
-                                        <input type="file" class="form-control form-input" name="selfie_verification" accept="image/png, image/jpg, image/jpeg">
+                                        <input type="file" class="form-control form-input" name="selfie_verification" accept=".png,.jpg,.jpeg,.pdf,.doc,.docx">
                                         <div class="upload-hint">Upload a clear photo of your face for identity verification</div>
                                     </div>
                                 </div>
@@ -437,23 +437,23 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">CAC Certificate of Registration</label>
-                                        <input type="file" name="cac_file" class="form-control form-input">
+                                        <input type="file" name="cac_file" class="form-control form-input"accept=".png,.jpg,.jpeg,.pdf,.doc,.docx">
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">ESVARBON Registration Number</label>
-                                        <input type="text" name="ESVARBON_number" class="form-control form-input">
+                                        <input type="text" name="ESVARBON_number" class="form-control form-input" >
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">ESVARBON Certificate</label>
-                                        <input type="file" name="ESVARBON" class="form-control form-input">
+                                        <input type="file" name="ESVARBON" class="form-control form-input" accept=".png,.jpg,.jpeg,.pdf,.doc,.docx">
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">NIESV Membership Number</label>
-                                        <input type="text" class="form-control form-input">
+                                        <input type="text" class="form-control form-input" >
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">NIESV Membership Certificate</label>
-                                        <input type="file" class="form-control form-input">
+                                        <input type="file" class="form-control form-input" accept=".png,.jpg,.jpeg,.pdf,.doc,.docx">
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">NAEAN Membership Number</label>
@@ -461,7 +461,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">NAEAN Membership Certificate</label>
-                                        <input type="file" class="form-control form-input">
+                                        <input type="file" class="form-control form-input" accept=".png,.jpg,.jpeg,.pdf,.doc,.docx">
                                     </div>
                                 </div>
                                 <div class="d-flex gap-3 mt-4 pt-3 border-top">

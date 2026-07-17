@@ -28,10 +28,10 @@ session_start();
         $id_file_error= $_FILES['id_file']['error'];
         //proof of address
         $proof_of_address = htmlentities($_POST['proof_of_address']); 
-        $poa_filename = $_FILES['proof_of_address']['name'];
-        $poa_tmp_name = $_FILES['proof_of_address']['tmp_name'];
-        $poa_size = $_FILES['proof_of_address']['size'];
-        $poa_error= $_FILES['proof_of_address']['error'];
+        $poa_filename = $_FILES['proof_of_address_file']['name'];
+        $poa_tmp_name = $_FILES['proof_of_address_file']['tmp_name'];
+        $poa_size = $_FILES['proof_of_address_file']['size'];
+        $poa_error= $_FILES['proof_of_address_file']['error'];
 
         //CAC Registration Number
         $cac = htmlentities($_POST['cac']);
@@ -48,40 +48,53 @@ session_start();
 
         if(empty($cac) || empty($ESVARBON_number)){
             $_SESSION['errormsg'] = "Kindly submit your CAC number and ESVARBON";
-            header("location:../agent/agent_profile.php");
+            header("location:../Agent/agent_profile.php");
             exit;
         }
         // check if there is error
         if($id_file_error !=0 || $poa_error != 0 || $ESVARBON_file_error !=0 ||  $cac_file_error != 0){
             $_SESSION['errormsg'] = "Kindly upload a real file";
-            header("location:../agent/agent_profile.php");
+            header("location:../Agent/agent_profile.php");
             exit;
         }
-        // validate the file size
-        // if(($id_file_size > (1024 * 1024 * 4)) || ($poa_size > (1024 * 1024 * 4)) || ($cac_file_size > (1024 * 1024 * 4)) || ($ESVARBON_file_size > (1024 * 1024 * 4))){
-        //     $_SESSION['errormsg'] = "File size too large. Maximum size must be 4mb";
-        //     header("location:../agent/agent_profile.php");
-        //     exit;
-        // }
 
         // validate wrong file type
+        $accepted = ['jpg', 'jpeg', 'png', 'doc', 'pdf', 'docx'];
+
         $ESVARBON_file_extension = pathinfo($ESVARBON_filename, PATHINFO_EXTENSION);
         $ESVARBON_file_extension = strtolower($ESVARBON_file_extension);
 
         $cac_file_extension = pathinfo($cac_filename, PATHINFO_EXTENSION);
         $cac_file_extension = strtolower($cac_file_extension);
 
-        $accepted = ['jpg', 'jpeg', 'png', 'doc', 'pdf', 'docx'];
+
         $id_file_extension = pathinfo($id_filename, PATHINFO_EXTENSION);
         $id_file_extension = strtolower($id_file_extension);
+
 
         $poa_file_extension = pathinfo($poa_filename, PATHINFO_EXTENSION);
         $poa_file_extension = strtolower($poa_file_extension);
 
 
-        if(!in_array($id_file_extension, $accepted) || !in_array($poa_file_extension, $accepted) || !in_array($ESVARBON_file_extension, $accepted) || !in_array($cac_file_extension, $accepted)){
-            $_SESSION['errormsg'] = "wrong file type. Upload an image wiht extension png or jpg or jpeg";
-            header("location:../agent/agent_profile.php");
+        if((!in_array($id_file_extension, $accepted))){
+            $_SESSION['errormsg'] = "Wrong ID file type. Please upload a file with extension: png, jpg, jpeg, pdf, doc, or docx.";
+            header("location:../Agent/agent_profile.php");
+            exit;
+        }
+         if((!in_array($poa_file_extension, $accepted))){
+            $_SESSION['errormsg'] = "Wrong proof of address file type. Please upload a file with extension: png, jpg, jpeg, pdf, doc, or docx.";
+            header("location:../Agent/agent_profile.php");
+            exit;
+        }
+         if(!in_array($ESVARBON_file_extension, $accepted)){
+            $_SESSION['errormsg'] = "Wrong ESVARBON file type. Please upload a file with extension: png, jpg, jpeg, pdf, doc, or docx.";
+            header("location:../Agent/agent_profile.php");
+            exit;
+        }
+
+         if((!in_array($cac_file_extension, $accepted))){
+            $_SESSION['errormsg'] = "Wrong CAC file type. Please upload a file with extension: png, jpg, jpeg, pdf, doc, or docx.";
+            header("location:../Agent/agent_profile.php");
             exit;
         }
         
@@ -106,16 +119,16 @@ session_start();
         
             require_once "classes/Agent.php";
             $update_profile = new Agent();
-            $update = $update_profile->update_agent_profile($firstname, $lastname, $bio, $years_of_experience, $agency_name, $phone, $id_type, $unique_id_filename, $proof_of_address, $unique_poa_filename, $cac_number, $unique_cac_filename, $ESVARBON_number, $unique_ESVARBON_filename, $about_agency, $location, $_SESSION['agent_online']);
+            $update = $update_profile->update_agent_profile($firstname, $lastname, $bio, $years_of_experience, $agency_name, $phone, $id_type, $unique_id_filename, $proof_of_address, $unique_poa_filename, $cac, $unique_cac_filename, $ESVARBON_number, $unique_ESVARBON_filename, $about_agency, $location, $_SESSION['agent_online']);
 
            if($update){
                  $_SESSION['successmsg'] = "Profile Updated, we'll review and get back to you within 24/48 hours";
-                header("location:../agent/agent_profile.php");
+                header("location:../Agent/agent_profile.php");
                 exit;
            }
             else{
                 $_SESSION['errormsg'] = "profile not updated";
-                header("location:../agent/agent_profile.php");
+                header("location:../Agent/agent_profile.php");
                 exit;
             }
     

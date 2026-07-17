@@ -3,14 +3,14 @@
     require_once "adminguard.php";
     require_once "classes/Admin.php";
     $admin = new Admin();
-    $tenants = $admin->get_all_tenants();
-    $agents = $admin->get_all_agents();
+    $tenants  = $admin->get_all_tenants();
+    $agents   = $admin->get_all_agents();
     $listings = $admin->fetch_All_listings();
-    
+    $pending_listings = $admin->get_all_listing_bystatus('pending');
+    $pending_agents   = $admin->get_agents_byid('pending');
+    $new_this_week    = $admin->get_new_users_this_week();
+    $total_users      = count($tenants) + count($agents);
 
-    $no_of_listing = 18;
-    $no_of_agents = 6;
-    $no_of_reports = 7;
 
 ?>
 
@@ -43,7 +43,7 @@
             <?php include 'admin_nav.php'; ?>
 
             <!-- Main Content -->
-            <div class="col-md-9 col-lg-10 px-4 px-lg-5 pb-5 pt-3" style="background:#f4f6fb;">
+            <div class="col-12 col-md-9 col-lg-10 px-3 px-md-4 px-lg-5 pb-5 pt-3" style="background:#f4f6fb;">
 
                 <!-- Mobile Menu Toggle -->
                 <div class="row mb-3">
@@ -87,7 +87,7 @@
                                     <i class="fa-solid fa-triangle-exclamation"></i>
                                 </div>
                                 <span class="alert-text">
-                                    You have <strong><?php echo count($listings); ?></strong> listings and <strong><?php echo count($listings); ?></strong> agents awaiting verification, and <strong>7 open reports</strong> to resolve.
+                                    You have <strong><?php echo count($pending_listings); ?></strong> listings and <strong><?php echo count($pending_agents); ?></strong> agents awaiting verification, and <strong>7 open reports</strong> to resolve.
                                 </span>
                             </div>
                             <div class="d-flex gap-2 flex-wrap">
@@ -108,7 +108,7 @@
                     <div class="col-6 col-md-3">
                         <div class="stat-card text-center">
                             <div class="stat-icon mx-auto"><i class="fa-solid fa-users"></i></div>
-                            <div class="stat-value">--</div>
+                            <div class="stat-value"><?php echo $total_users; ?></div>
                             <div class="stat-label">Total Users</div>
                             <div class="stat-trend text-muted"><i class="fa-regular fa-circle me-1"></i> All time</div>
                         </div>
@@ -132,7 +132,7 @@
                     <div class="col-6 col-md-3">
                         <div class="stat-card text-center">
                             <div class="stat-icon mx-auto"><i class="fa-solid fa-user-plus"></i></div>
-                            <div class="stat-value">---</div>
+                            <div class="stat-value"><?php echo $new_this_week; ?></div>
                             <div class="stat-label">New This Week</div>
                             <div class="stat-trend text-muted"><i class="fa-regular fa-clock me-1"></i> This week</div>
                         </div>
@@ -157,7 +157,7 @@
                     <div class="col-6 col-md-3">
                         <div class="stat-card text-center">
                             <div class="stat-icon mx-auto"><i class="fa-solid fa-clock"></i></div>
-                            <div class="stat-value"><?php echo count($listings); ?></div>
+                            <div class="stat-value"><?php echo count($pending_listings); ?></div>
                             <div class="stat-label">Pending Approvals</div>
                             <div class="stat-trend text-muted"><i class="fa-regular fa-hourglass-half me-1"></i> Needs review</div>
                         </div>

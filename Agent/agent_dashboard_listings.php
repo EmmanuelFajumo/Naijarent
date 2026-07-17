@@ -7,12 +7,12 @@
     $det = $agent->fetch_agent_details($_SESSION['agent_online']);
 
     $listings = $agent->fetch_All_listings($_SESSION['agent_online']);
-    // foreach($listings as $l){
-    //     echo $l['description'];
-    // }
-    //     echo "<pre>";
-    //  print_r($listings);
-    // echo "</pre>";            
+
+    // Stats for agent dashboard
+    $total_listings = $agent->count_total_listings($_SESSION['agent_online']);
+    $active_listings = $agent->count_active_listings($_SESSION['agent_online']);
+    $pending_listings = $agent->count_pending_listings($_SESSION['agent_online']);
+            
          ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,6 +23,7 @@
     <title>Agent Dashboard - My Listings</title>
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="listings.css">
     <link rel="stylesheet" href="../css/animate.min.css">
     <link rel="stylesheet" href="../fontawesome/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,239 +32,7 @@
         href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Voltaire&display=swap"
         rel="stylesheet">
 
-    <style>
-        :root {
-            --navy-dark: #14213D;
-            --navy-light: #1E3888;
-            --gold: #FFD700;
-            --gold-hover: #FFA500;
-        }
-
-        .stat-card {
-            border-radius: 12px;
-            border: none;
-            background: #ffffff;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            border-radius: 12px 0 0 12px;
-        }
-        .stat-card.card-primary::before { background: #0d6efd; }
-        .stat-card.card-success::before { background: #198754; }
-        .stat-card.card-warning::before { background: #ffc107; }
-        .stat-card.card-danger::before { background: #dc3545; }
-        .stat-card .stat-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.25rem;
-        }
-        .stat-card .stat-icon.bg-primary-soft { background: rgba(13, 110, 253, 0.1); color: #0d6efd; }
-        .stat-card .stat-icon.bg-success-soft { background: rgba(25, 135, 84, 0.1); color: #198754; }
-        .stat-card .stat-icon.bg-warning-soft { background: rgba(255, 193, 7, 0.1); color: #ffc107; }
-        .stat-card .stat-icon.bg-danger-soft { background: rgba(220, 53, 69, 0.1); color: #dc3545; }
-        .stat-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1) !important;
-        }
-
-        .filter-tabs {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        .filter-tab {
-            padding: 8px 18px;
-            border-radius: 50px;
-            border: 1.5px solid #dee2e6;
-            background: #fff;
-            color: #6c757d;
-            font-size: 0.85rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.25s ease;
-        }
-        .filter-tab:hover {
-            border-color: var(--navy-light);
-            color: var(--navy-dark);
-            background: rgba(30, 56, 136, 0.05);
-        }
-        .filter-tab.active {
-            background: linear-gradient(135deg, var(--navy-dark), var(--navy-light));
-            color: #fff;
-            border-color: transparent;
-            box-shadow: 0 4px 12px rgba(20, 33, 61, 0.3);
-        }
-
-        .property-card {
-            border-radius: 12px;
-            border: none;
-            background: #fff;
-            transition: all 0.3s ease;
-            overflow: hidden;
-        }
-        .property-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12) !important;
-        }
-        .property-card .card-img-top {
-            height: 200px;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-        .property-card:hover .card-img-top {
-            transform: scale(1.05);
-        }
-        .property-card .img-wrapper {
-            overflow: hidden;
-            position: relative;
-        }
-        .property-card .status-badge {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            padding: 5px 12px;
-            border-radius: 50px;
-            font-size: 0.72rem;
-            font-weight: 600;
-            backdrop-filter: blur(4px);
-            z-index: 2;
-        }
-        .property-card .status-badge.status-live {
-            background: rgba(25, 135, 84, 0.9);
-            color: #fff;
-        }
-        .property-card .status-badge.status-pending {
-            background: rgba(255, 193, 7, 0.9);
-            color: #212529;
-        }
-        .property-card .status-badge.status-rejected {
-            background: rgba(220, 53, 69, 0.9);
-            color: #fff;
-        }
-        .property-card .status-badge.status-suspended {
-            background: rgba(108, 117, 125, 0.9);
-            color: #fff;
-        }
-
-        .btn-gradient {
-            background: linear-gradient(135deg, var(--navy-dark), var(--navy-light));
-            color: #fff;
-            border: none;
-            border-radius: 10px;
-            padding: 10px 24px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(20, 33, 61, 0.25);
-        }
-        .btn-gradient:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(20, 33, 61, 0.35);
-            color: #fff;
-        }
-        .btn-gradient-outline {
-            background: transparent;
-            color: var(--navy-dark);
-            border: 2px solid var(--navy-dark);
-            border-radius: 10px;
-            padding: 8px 20px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-        .btn-gradient-outline:hover {
-            background: linear-gradient(135deg, var(--navy-dark), var(--navy-light));
-            color: #fff;
-            border-color: transparent;
-        }
-
-        .search-box {
-            border-radius: 12px;
-            border: 1.5px solid #e9ecef;
-            padding: 8px 16px;
-            transition: all 0.3s ease;
-        }
-        .search-box:focus-within {
-            border-color: var(--navy-light);
-            box-shadow: 0 0 0 3px rgba(30, 56, 136, 0.1);
-        }
-        .search-box input {
-            border: none;
-            background: transparent;
-            padding: 6px 0;
-        }
-        .search-box input:focus {
-            outline: none;
-            box-shadow: none;
-        }
-
-        .form-select-custom {
-            border-radius: 10px;
-            border: 1.5px solid #e9ecef;
-            padding: 10px 16px;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        .form-select-custom:focus {
-            border-color: var(--navy-light);
-            box-shadow: 0 0 0 3px rgba(30, 56, 136, 0.1);
-        }
-
-        .pagination-custom .page-link {
-            border-radius: 8px;
-            margin: 0 3px;
-            border: 1.5px solid #e9ecef;
-            color: var(--navy-dark);
-            font-weight: 500;
-            padding: 8px 14px;
-            transition: all 0.25s ease;
-        }
-        .pagination-custom .page-link:hover {
-            background: rgba(30, 56, 136, 0.05);
-            border-color: var(--navy-light);
-            color: var(--navy-dark);
-        }
-        .pagination-custom .page-item.active .page-link {
-            background: linear-gradient(135deg, var(--navy-dark), var(--navy-light));
-            border-color: transparent;
-            color: #fff;
-            box-shadow: 0 4px 12px rgba(20, 33, 61, 0.25);
-        }
-        .pagination-custom .page-item.disabled .page-link {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .section-divider {
-            height: 2px;
-            background: linear-gradient(to right, transparent, rgba(20, 33, 61, 0.15), transparent);
-            border: none;
-            margin: 20px 0;
-            opacity: 1;
-        }
-
-        .alert-custom {
-            border-radius: 12px;
-            border-left: 4px solid;
-        }
-        .alert-custom.alert-success {
-            border-left-color: #198754;
-        }
-        .alert-custom.alert-danger {
-            border-left-color: #dc3545;
-        }
-    </style>
+   
 
 </head>
 
@@ -318,7 +87,7 @@
                                     <i class="fa-solid fa-building"></i>
                                 </div>
                                 <div>
-                                    <h5 class="mb-0 fw-bold">20</h5>
+                                    <h5 class="mb-0 fw-bold"><?php echo $total_listings; ?></h5>
                                     <small class="text-muted fw-medium">Total Listings</small>
                                 </div>
                             </div>
@@ -331,7 +100,7 @@
                                     <i class="fa-solid fa-circle-check"></i>
                                 </div>
                                 <div>
-                                    <h5 class="mb-0 fw-bold">19</h5>
+                                    <h5 class="mb-0 fw-bold"><?php echo $active_listings; ?></h5>
                                     <small class="text-muted fw-medium">Live</small>
                                 </div>
                             </div>
@@ -344,7 +113,7 @@
                                     <i class="fa-solid fa-clock"></i>
                                 </div>
                                 <div>
-                                    <h5 class="mb-0 fw-bold">1</h5>
+                                    <h5 class="mb-0 fw-bold"><?php echo $pending_listings; ?></h5>
                                     <small class="text-muted fw-medium">Pending</small>
                                 </div>
                             </div>
@@ -357,8 +126,8 @@
                                     <i class="fa-solid fa-eye"></i>
                                 </div>
                                 <div>
-                                    <h5 class="mb-0 fw-bold">1,000</h5>
-                                    <small class="text-muted fw-medium">Total Views</small>
+                                    <h5 class="mb-0 fw-bold"><?php echo $active_listings; ?></h5>
+                                    <small class="text-muted fw-medium">Active Listings</small>
                                 </div>
                             </div>
                         </div>
@@ -462,9 +231,11 @@
                                            class="btn btn-gradient-outline btn-sm flex-grow-1">
                                             <i class="fa-solid fa-pen-to-square me-1"></i> Edit
                                         </a>
-                                        <a href="#" class="btn btn-outline-secondary btn-sm flex-grow-1">
+                                        <!-- <a href="#" class="btn btn-outline-secondary btn-sm flex-grow-1">
                                             <i class="fa-solid fa-trash-can me-1"></i> Delete
-                                        </a>
+                                        </a> -->
+                                        <input type="number" hidden name='prop_id' class="property" value= "<?php echo $list['property_id']; ?>">
+                                        <button type="button" class="btn btn-outline-secondary btn-sm flex-grow-1 delete" data-bs-toggle="modal" data-bs-target="#staticBackdrop" > Delete</button>
                                     </div>
                                 </div>
                             </div>
@@ -509,6 +280,36 @@
         </div> 
     </div>
 
+
+
+
+
+
+
+    <!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        This listing will be deleted from our databse. Are you sure you want to delete it?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <form action="../process_pages/process_delete.php" method="post">
+            <input type="number" value="" hidden name="id" id="prop_id">
+            <button href="#" class="btn btn-outline-danger" name='delete'>
+            <i class="fa-solid fa-trash-can me-1"></i>Yes, Delete
+        </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
     <script src="../jquery.js"></script>
     <script src="../bootstrap/js/bootstrap.min.js"></script>
     <script>
@@ -518,6 +319,12 @@
                 $('.filter-tab').removeClass('active');
                 $(this).addClass('active');
             });
+
+
+            $(".delete").click(function(){
+                var property_id = $(this).prev(".property").val();
+                $("#prop_id").val(property_id);
+            })
         });
     </script>
 </body>

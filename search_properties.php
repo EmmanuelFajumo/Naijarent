@@ -273,7 +273,7 @@ $states =  $a->fetch_all_states();
             $('#state').change(function(){
                 var state_id = $(this).val();
                 if(state_id){
-                    $.ajax({
+                    $.ajax({  
                         url: 'Process_pages/process_state_lga.php',
                         type: 'GET',
                         data: {state_id: state_id},

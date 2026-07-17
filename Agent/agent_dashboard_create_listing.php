@@ -647,9 +647,7 @@ $states = $a->fetch_all_states();
                     <div class="col-md-12">
                         <form action="../process_pages/process_new_listing.php" method="POST" enctype="multipart/form-data">
 
-                            <!-- ======================== -->
                             <!-- STEP 1 — BASIC INFO      -->
-                            <!-- ======================== -->
                             <div id="step1" class="step-content">
                                 <div class="listing-card">
                                     <div class="step-header">
@@ -744,9 +742,7 @@ $states = $a->fetch_all_states();
                                 </div>
                             </div>
 
-                            <!-- ======================== -->
                             <!-- STEP 2 — FEATURES        -->
-                            <!-- ======================== -->
                             <div id="step2" class="step-content d-none">
                                 <div class="listing-card">
                                     <div class="step-header">
@@ -916,9 +912,7 @@ $states = $a->fetch_all_states();
                                 </div>
                             </div>
 
-                            <!-- ======================== -->
                             <!-- STEP 3 — MEDIA UPLOAD    -->
-                            <!-- ======================== -->
                             <div id="step3" class="step-content d-none">
                                 <div class="listing-card">
                                     <div class="step-header">
@@ -978,9 +972,7 @@ $states = $a->fetch_all_states();
                                 </div>
                             </div>
 
-                            <!-- ======================== -->
                             <!-- STEP 4 — DOCUMENTS       -->
-                            <!-- ======================== -->
                             <div id="step4" class="step-content d-none">
                                 <div class="listing-card">
                                     <div class="step-header">
@@ -1046,9 +1038,7 @@ $states = $a->fetch_all_states();
                                 </div>
                             </div>
 
-                            <!-- ======================== -->
                             <!-- STEP 5 — REVIEW & SUBMIT -->
-                            <!-- ======================== -->
                             <div id="step5" class="step-content d-none">
                                 <div class="listing-card">
                                     <div class="step-header">
@@ -1058,7 +1048,7 @@ $states = $a->fetch_all_states();
                                             <p class="step-header-sub">Double-check everything before submitting for admin review</p>
                                         </div>
                                     </div>
-
+     
                                     <div class="row g-3 mb-4">
 
                                         <!-- Basic Info -->
@@ -1191,9 +1181,7 @@ $states = $a->fetch_all_states();
     <script>
         $(document).ready(function () {
 
-            // ============================================
-            // STATE → LGA AJAX (unchanged)
-            // ============================================
+            // STATE → LGA AJAX
             $('#state').change(function () {
                 var state_id = $('#state').val();
                 $.ajax({
@@ -1214,9 +1202,7 @@ $states = $a->fetch_all_states();
                 });
             });
 
-            // ============================================
-            // STEP NAVIGATION (unchanged logic)
-            // ============================================
+            // STEP NAVIGATION 
             var stepNumber = 1;
 
             $('#nextStep2').click(function () {

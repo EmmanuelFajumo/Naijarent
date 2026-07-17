@@ -3,16 +3,27 @@ session_start();
     require_once "userguard.php";
     require_once("process_pages/classes/Tenant.php");
     require_once "process_pages/classes/Site.php";
-    $user = new Tenant();
+    require_once "process_pages/classes/Utilities.php";
+    $user    = new Tenant();
     $listing = new Site();
+    $utils   = new Utilities();
 
-     require_once "userguard.php";
-    $user_deet = $user->fetch_user_detailby_id($_SESSION['useronline']);
+    $user_deet      = $user->fetch_user_detailby_id($_SESSION['useronline']);
+    $property_types = $listing->fetch_property_types();
+    $all_states     = $utils->fetch_all_states();
 
-    $all_listings = $listing->get_all_listing_bystatus('approved');
-    // echo "<pre>";
-    // print_r($all_listings);
-    // echo "</pre>";
+    // Apply sidebar filters when submitted
+    $filter_type  = isset($_GET['property_type']) ? trim($_GET['property_type']) : '';
+    $filter_state = isset($_GET['state'])         ? trim($_GET['state'])         : '';
+
+    if (!empty($filter_type) || !empty($filter_state)) {
+        $all_listings = $listing->search_property($filter_type, $filter_state, '');
+        if ($all_listings === false) {
+            $all_listings = [];
+        }
+    } else {
+        $all_listings = $listing->get_all_listing_bystatus('approved');
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -321,6 +332,117 @@ session_start();
             margin: 20px 0;
             opacity: 1;
         }
+
+        /* ── Filter Sidebar ── */
+        .filter-sidebar {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 22px 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 80px;
+        }
+        .filter-sidebar .filter-title {
+            font-family: "Voltaire", sans-serif;
+            font-size: 1.15em;
+            color: var(--navy-dark);
+            margin-bottom: 18px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(20,33,61,0.08);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .filter-sidebar .filter-group {
+            margin-bottom: 20px;
+        }
+        .filter-sidebar .filter-group label {
+            font-size: 0.78em;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .filter-sidebar select {
+            width: 100%;
+            padding: 9px 14px;
+            border-radius: 10px;
+            border: 1.5px solid #e9ecef;
+            background: var(--bg-light);
+            font-size: 0.88em;
+            color: #374151;
+            transition: all 0.25s ease;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'%3E%3Cpath fill='%236b7280' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            cursor: pointer;
+        }
+        .filter-sidebar select:focus {
+            border-color: var(--navy-light);
+            box-shadow: 0 0 0 3px rgba(30,56,136,0.08);
+            outline: none;
+        }
+        .btn-filter-apply {
+            width: 100%;
+            background: linear-gradient(135deg, var(--navy-dark), var(--navy-light));
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 0;
+            font-size: 0.88em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(20,33,61,0.18);
+        }
+        .btn-filter-apply:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(20,33,61,0.25);
+        }
+        .btn-filter-clear {
+            width: 100%;
+            background: transparent;
+            color: #6b7280;
+            border: 1.5px solid #e9ecef;
+            border-radius: 10px;
+            padding: 8px 0;
+            font-size: 0.82em;
+            font-weight: 500;
+            margin-top: 8px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+        .btn-filter-clear:hover {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+        .filter-active-badge {
+            display: inline-block;
+            background: var(--navy-light);
+            color: #fff;
+            border-radius: 50px;
+            font-size: 0.7em;
+            padding: 2px 9px;
+            margin-left: 6px;
+            font-weight: 600;
+        }
+        .listings-count {
+            font-size: 0.85em;
+            color: #6b7280;
+            margin-bottom: 14px;
+        }
+        .listings-count strong { color: var(--navy-dark); }
+        .no-results {
+            text-align: center;
+            padding: 48px 20px;
+            color: #9ca3af;
+        }
+        .no-results i { font-size: 2.5em; margin-bottom: 12px; display: block; }
+        .no-results p { font-size: 0.9em; }
     </style>
 
 </head>
@@ -405,51 +527,120 @@ session_start();
 
                 <hr class="section-divider">
 
-                <!-- Recommended Properties -->
-                <div class="section-header-tenant">
-                    <h4><i class="fa-solid fa-thumbs-up me-2" style="color:var(--navy-light);"></i>Recommended For You</h4>
-                    <a href="all_properties.php">
-                        View All <i class="fa-solid fa-arrow-right ms-1"></i>
-                    </a>
+                <!-- Listings heading -->
+                <div class="section-header-tenant mb-3">
+                    <h4>
+                        <i class="fa-solid fa-thumbs-up me-2" style="color:var(--navy-light);"></i>Recommended For You
+                        <?php if(!empty($filter_type) || !empty($filter_state)): ?>
+                            <span class="filter-active-badge">Filtered</span>
+                        <?php endif; ?>
+                    </h4>
+                    <a href="all_properties.php">View All <i class="fa-solid fa-arrow-right ms-1"></i></a>
                 </div>
 
-                <div class="row g-3 mb-5">
+                <!-- Sidebar + Listings grid -->
+                <div class="row g-4 mb-5 align-items-start">
 
-                <?php
-                    foreach($all_listings as $li){
-                ?>
-                    <div class="col-md-4">
-                        <div class="card property-card-tenant">
-                            <div class="img-wrap">
-                                <img src="uploads/property_pictures/<?php echo $li['image1'] ?>" alt="Property">
-                                <span class="badge-verified">
-                                    <i class="fa-solid fa-circle-check me-1"></i> Verified
-                                </span>
-                                <span class="badge-rent badge bg-primary">For Rent</span>
+                    <!-- ── Filter Sidebar ── -->
+                    <div class="col-lg-3">
+                        <div class="filter-sidebar">
+                            <div class="filter-title">
+                                <i class="fa-solid fa-sliders" style="color:var(--navy-light);"></i> Filter Listings
                             </div>
-                            <div class="card-body">
-                                <div class="prop-title"><?php echo $li['title']?></div>
-                                <div class="prop-location">
-                                    <i class="fa-solid fa-location-dot me-1"></i>
-                                    Lekki Phase 1, Lagos
+                            <form method="GET" action="tenant_dashboard.php" id="filterForm">
+
+                                <!-- Property Category -->
+                                <div class="filter-group">
+                                    <label for="filterType">Property Category</label>
+                                    <select name="property_type" id="filterType">
+                                        <option value="">All Categories</option>
+                                        <?php foreach($property_types as $pt): ?>
+                                        <option value="<?php echo $pt['property_typeid']; ?>"
+                                            <?php echo ($filter_type == $pt['property_typeid']) ? 'selected' : ''; ?>>
+                                            <?php echo htmlspecialchars($pt['name']); ?>
+                                        </option>
+                                        <?php endforeach; ?>
+                                    </select>
                                 </div>
-                                <div class="prop-price"><?php echo $li['price']?> <small>/ yr</small></div>
-                                <div class="prop-features">
-                                    <span><i class="fa-solid fa-bed"></i> <?php echo $li['bedrooms']?> Beds</span>
-                                    <span><i class="fa-solid fa-bath"></i> <?php echo $li['bathrooms']?></span>
-                                    <span><i class="fa-solid fa-couch"></i> <?php echo $li['furnished_status']?></span>
+
+                                <!-- State -->
+                                <div class="filter-group">
+                                    <label for="filterState">State</label>
+                                    <select name="state" id="filterState">
+                                        <option value="">All States</option>
+                                        <?php foreach($all_states as $st): ?>
+                                        <option value="<?php echo $st['state_id']; ?>"
+                                            <?php echo ($filter_state == $st['state_id']) ? 'selected' : ''; ?>>
+                                            <?php echo htmlspecialchars($st['state']); ?>
+                                        </option>
+                                        <?php endforeach; ?>
+                                    </select>
                                 </div>
-                                <div class="d-flex gap-2">
-                                    <a href="property_details.php?id=<?php echo $li['property_id']?>" class="btn btn-outline-primary btn-sm flex-grow-1">View Details</a>
-                                    <button class="btn btn-outline-secondary btn-sm">
-                                        <i class="fa-regular fa-bookmark"></i>
-                                    </button>
-                                </div>
-                            </div>
+
+                                <button type="submit" class="btn-filter-apply">
+                                    <i class="fa-solid fa-magnifying-glass me-1"></i> Apply Filter
+                                </button>
+                                <?php if(!empty($filter_type) || !empty($filter_state)): ?>
+                                <a href="tenant_dashboard.php" class="btn-filter-clear d-block text-center text-decoration-none mt-2">
+                                    <i class="fa-solid fa-xmark me-1"></i> Clear Filters
+                                </a>
+                                <?php endif; ?>
+                            </form>
                         </div>
                     </div>
 
-                    <?php } ?>
+                    <!-- ── Listings Grid ── -->
+                    <div class="col-lg-9">
+                        <div class="listings-count">
+                            Showing <strong><?php echo count($all_listings); ?></strong> listing<?php echo count($all_listings) !== 1 ? 's' : ''; ?>
+                            <?php if(!empty($filter_type) || !empty($filter_state)): ?>
+                                matching your filters
+                            <?php endif; ?>
+                        </div>
+
+                        <?php if(empty($all_listings)): ?>
+                            <div class="no-results">
+                                <i class="fa-regular fa-folder-open"></i>
+                                <p>No listings match your selected filters.<br>Try adjusting or clearing the filters.</p>
+                            </div>
+                        <?php else: ?>
+                        <div class="row g-3">
+                        <?php foreach($all_listings as $li): ?>
+                            <div class="col-md-4">
+                                <div class="card property-card-tenant">
+                                    <div class="img-wrap">
+                                        <img src="uploads/property_pictures/<?php echo $li['image1']; ?>" alt="Property">
+                                        <span class="badge-verified">
+                                            <i class="fa-solid fa-circle-check me-1"></i> Verified
+                                        </span>
+                                        <span class="badge-rent badge bg-primary">For Rent</span>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="prop-title"><?php echo htmlspecialchars($li['title']); ?></div>
+                                        <div class="prop-location">
+                                            <i class="fa-solid fa-location-dot me-1"></i>
+                                            <?php echo htmlspecialchars($li['full_address']); ?>
+                                        </div>
+                                        <div class="prop-price">₦<?php echo number_format($li['price']); ?> <small>/ yr</small></div>
+                                        <div class="prop-features">
+                                            <span><i class="fa-solid fa-bed"></i> <?php echo $li['bedrooms']; ?> Beds</span>
+                                            <span><i class="fa-solid fa-bath"></i> <?php echo $li['bathrooms']; ?></span>
+                                            <span><i class="fa-solid fa-couch"></i> <?php echo $li['furnished_status']; ?></span>
+                                        </div>
+                                        <div class="d-flex gap-2">
+                                            <a href="property_details.php?id=<?php echo $li['property_id']; ?>" class="btn btn-outline-primary btn-sm flex-grow-1">View Details</a>
+                                            <button class="btn btn-outline-secondary btn-sm">
+                                                <i class="fa-regular fa-bookmark"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                        </div>
+                        <?php endif; ?>
+                    </div>
+                    <!-- End Listings Grid -->
 
                 </div>
 

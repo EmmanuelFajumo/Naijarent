@@ -22,7 +22,7 @@
         header("Location: ../search_properties.php?data=result");
         exit;
 
-    }
+    }   
     else{
         header("location:../search_properties.php");
         exit;

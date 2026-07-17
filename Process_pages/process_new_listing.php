@@ -19,7 +19,7 @@ if(isset($_POST['create'])){
     $lga = htmlentities($_POST['lga']);
     $state = htmlentities($_POST['state']);
     $bedrooms = intval($_POST['bedrooms']);
-    $bathrooms = intval($_POST['bathrooms']);
+    $bathrooms = intval($_POST['bathrooms']);  
     $toilets = intval($_POST['toilets']);
     $furnishing = htmlentities($_POST['furnishing']);
 
@@ -58,14 +58,14 @@ if(isset($_POST['create'])){
         if(!in_array( $picture_extension, $accepted)){
              //$error_message = urlencode("Oga, wrong file type. Upload an image wiht extension png or jpg or jpeg");  //urlencode - to carry a long text in the url
             $_SESSION['errormsg'] = "All fields are required. Kindly fill the form completely";
-            header("location:../agent/agent_dashboard_listings.php");
+            header("location:../Agent/agent_dashboard_listings.php");
             exit;
-        } 
+        }    
     
         //validate the data
         if(empty($title) || empty($property_type) || empty($listing_purpose) || empty($payment_flexibility) || empty($description) || empty($price) || empty($full_address) || empty($lga) || empty($state) || empty($bedrooms) || empty($bathrooms) || empty($toilets) || empty($furnishing)){
             $_SESSION['errormsg'] = "All fields are required. Kindly fill the form completely";
-            header("location:../agent/agent_dashboard_listings.php");
+            header("location:../Agent/agent_dashboard_listings.php");
             exit;
         } 
  
@@ -78,7 +78,7 @@ if(isset($_POST['create'])){
 
         if(!$res){
             $_SESSION['errormsg'] = "Image not saved to server";
-            header("location:../agent/agent_dashboard_listings.php");
+            header("location:../Agent/agent_dashboard_listings.php");
         exit;
         }
     //create an instance of the Agent class
@@ -96,11 +96,11 @@ if(isset($_POST['create'])){
 
     if($response){
         $_SESSION['successmsg'] = "Listing created successfully";
-       header("location:../agent/agent_dashboard_create_listing.php");
+       header("location:../Agent/agent_dashboard_create_listing.php");
         exit;
     } else{
         $_SESSION['errormsg'] = "An error occurred while creating the listing. Please try again.";
-       header("location:../agent/agent_dashboard_create_listing.php");
+       header("location:../Agent/agent_dashboard_create_listing.php");
        exit;
     }
 
@@ -108,6 +108,6 @@ if(isset($_POST['create'])){
 
 }else{
     $_SESSION['errormsg'] = "What are you looking for?";
-    header("location:../agent/agent_dashboard_create_listing.php");
+    header("location:../Agent/agent_dashboard_create_listing.php");
     exit;
 }

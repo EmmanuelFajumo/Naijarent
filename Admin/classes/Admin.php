@@ -128,7 +128,7 @@ class Admin extends Db
     //fetch listing details by id
         public function fetch_property_detail($property_id){
             try{
-                $sql = "SELECT properties.*, lga.LGA_name, property_type.name, state.state, agentprofile.first_name, agentprofile.last_name  FROM properties JOIN Property_type ON properties.property_type = property_type.property_typeid JOIN lga ON properties.LGA = lga.LgA_id JOIN state ON properties.state = state.state_id JOIN agentprofile ON properties.agent_id = agentprofile.Agent_id WHERE property_id = ?";
+                $sql = "SELECT properties.*, lga.LGA_name, property_type.name, state.state, agentprofile.first_name, agentprofile.last_name  FROM properties JOIN property_type ON properties.property_type = property_type.property_typeid JOIN lga ON properties.LGA = lga.LgA_id JOIN state ON properties.state = state.state_id JOIN agentprofile ON properties.agent_id = agentprofile.Agent_id WHERE property_id = ?";
                 $stmt = $this->conn->prepare($sql);
                 $stmt->execute([$property_id]);
                 $res = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -179,12 +179,43 @@ class Admin extends Db
         }
     }
 
+    // count new tenants + agents registered in the last 7 days
+    public function get_new_users_this_week(){
+        try{
+            $sql_tenants = "SELECT COUNT(*) FROM tenant WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)";
+            $stmt = $this->conn->prepare($sql_tenants);
+            $stmt->execute();
+            $new_tenants = (int)$stmt->fetchColumn();
+
+            $sql_agents = "SELECT COUNT(*) FROM agentprofile WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)";
+            $stmt2 = $this->conn->prepare($sql_agents);
+            $stmt2->execute();
+            $new_agents = (int)$stmt2->fetchColumn();
+
+            return $new_tenants + $new_agents;
+        }catch(PDOException $e){
+            return 0;
+        }
+    }
+
     //update agent status
     public function update_property_status($status, $id){
         $sql = "UPDATE properties SET verification_status = ? WHERE property_id = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([$status, $id]);
         return true;
+    }
+
+    public function delete_listing_by_id($id){
+        try{
+            $sql = "DELETE FROM properties WHERE property_id = ?";
+            $stmt = $this->conn->prepare($sql);
+            $res = $stmt->execute([$id]);
+            return $res;
+        }
+        catch(PDOException $e){
+            return false;
+        }
     }
 }
 // $update = new Admin();

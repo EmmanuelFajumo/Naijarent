@@ -215,6 +215,147 @@ $agent_profile = $agent_detail->fetch_agent_details($id);
                             </div>
                         </div>
 
+                        <!-- Certificate Documents Preview -->
+                        <div class="mt-4 mb-4">
+                            <div class="d-flex align-items-center gap-3 mb-3">
+                                <div class="section-title-icon" style="background:#fef3c7;color:#92400e;">
+                                    <i class="fa-solid fa-file-certificate"></i>
+                                </div>
+                                <div>
+                                    <div class="section-title" style="font-size:0.95rem;">Uploaded Certificate Documents</div>
+                                    <div class="section-subtitle">Click on a certificate to view the full document</div>
+                                </div>
+                            </div>
+                            <div class="row g-3">
+                                <!-- CAC Certificate -->
+                                <div class="col-md-6">
+                                    <div class="doc-card-item" style="cursor:pointer;" onclick="$('#cacCertModal').modal('show');">
+                                        <div class="d-flex align-items-center gap-3">
+                                            <div class="doc-icon-box" style="background:#eef1fa;color:#1E3888;width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;">
+                                                <i class="fa-solid fa-file-pdf"></i>
+                                            </div>
+                                            <div>
+                                                <div class="doc-label">CAC Registration Certificate</div>
+                                                <div class="doc-value" style="font-size:0.8rem;color:#6b7280;">
+                                                    <?php echo !empty($agent_profile['cac_file']) ? basename($agent_profile['cac_file']) : 'Not uploaded'; ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- ESVARBON Certificate -->
+                                <div class="col-md-6">
+                                    <div class="doc-card-item" style="cursor:pointer;" onclick="$('#esvarbonCertModal').modal('show');">
+                                        <div class="d-flex align-items-center gap-3">
+                                            <div class="doc-icon-box" style="background:#eef1fa;color:#1E3888;width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;">
+                                                <i class="fa-solid fa-file-pdf"></i>
+                                            </div>
+                                            <div>
+                                                <div class="doc-label">ESVARBON Certificate</div>
+                                                <div class="doc-value" style="font-size:0.8rem;color:#6b7280;">
+                                                    <?php echo !empty($agent_profile['ESVARBON_file']) ? basename($agent_profile['ESVARBON_file']) : 'Not uploaded'; ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CAC Certificate Modal -->
+                        <div class="modal fade" id="cacCertModal" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog modal-lg modal-dialog-centered">
+                                <div class="modal-content" style="border-radius:12px;border:none;">
+                                    <div class="modal-header" style="border-bottom:1px solid #f0f2f5;padding:16px 24px;">
+                                        <h5 class="modal-title" style="font-size:1rem;font-weight:600;color:#14213D;">
+                                            <i class="fa-solid fa-certificate me-2" style="color:#1E3888;"></i>
+                                            CAC Registration Certificate
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body p-4 text-center">
+                                        <?php if (!empty($agent_profile['cac_file'])): 
+                                            $cacFile = htmlspecialchars($agent_profile['cac_file']);
+                                            $cacExt = strtolower(pathinfo($cacFile, PATHINFO_EXTENSION));
+                                            $cacFullPath = '../media/uploads/cac/' . $cacFile;
+                                        ?>
+                                            <?php if (in_array($cacExt, ['jpg', 'jpeg', 'png', 'webp'])): ?>
+                                                <img src="<?php echo $cacFullPath; ?>" alt="CAC Certificate" style="max-width:100%;max-height:70vh;border-radius:8px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+                                            <?php else: ?>
+                                                <div class="py-5">
+                                                    <i class="fa-solid fa-file-pdf" style="font-size:4rem;color:#dc2626;margin-bottom:16px;"></i>
+                                                    <p class="text-muted mb-3">This certificate is a PDF document.</p>
+                                                    <a href="<?php echo $cacFullPath; ?>" target="_blank" class="btn btn-primary rounded-pill px-4">
+                                                        <i class="fa-solid fa-eye me-2"></i> Open PDF
+                                                    </a>
+                                                </div>
+                                            <?php endif; ?>
+                                        <?php else: ?>
+                                            <div class="py-5">
+                                                <i class="fa-regular fa-circle-question" style="font-size:3rem;color:#d1d5db;margin-bottom:12px;"></i>
+                                                <p class="text-muted">No CAC certificate has been uploaded by this agent.</p>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="modal-footer" style="border-top:1px solid #f0f2f5;padding:12px 24px;">
+                                        <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">Close</button>
+                                        <?php if (!empty($agent_profile['cac_file'])): ?>
+                                            <a href="<?php echo $cacFullPath; ?>" download class="btn btn-primary rounded-pill px-4">
+                                                <i class="fa-solid fa-download me-2"></i> Download
+                                            </a>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ESVARBON Certificate Modal -->
+                        <div class="modal fade" id="esvarbonCertModal" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog modal-lg modal-dialog-centered">
+                                <div class="modal-content" style="border-radius:12px;border:none;">
+                                    <div class="modal-header" style="border-bottom:1px solid #f0f2f5;padding:16px 24px;">
+                                        <h5 class="modal-title" style="font-size:1rem;font-weight:600;color:#14213D;">
+                                            <i class="fa-solid fa-scroll me-2" style="color:#1E3888;"></i>
+                                            ESVARBON Certificate
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body p-4 text-center">
+                                        <?php if (!empty($agent_profile['ESVARBON_file'])): 
+                                            $esvarbonFile = htmlspecialchars($agent_profile['ESVARBON_file']);
+                                            $esvarbonExt = strtolower(pathinfo($esvarbonFile, PATHINFO_EXTENSION));
+                                            $esvarbonFullPath = '../media/uploads/ESVARBON/' . $esvarbonFile;
+                                        ?>
+                                            <?php if (in_array($esvarbonExt, ['jpg', 'jpeg', 'png', 'webp'])): ?>
+                                                <img src="<?php echo $esvarbonFullPath; ?>" alt="ESVARBON Certificate" style="max-width:100%;max-height:70vh;border-radius:8px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+                                            <?php else: ?>
+                                                <div class="py-5">
+                                                    <i class="fa-solid fa-file-pdf" style="font-size:4rem;color:#dc2626;margin-bottom:16px;"></i>
+                                                    <p class="text-muted mb-3">This certificate is a PDF document.</p>
+                                                    <a href="<?php echo $esvarbonFullPath; ?>" target="_blank" class="btn btn-primary rounded-pill px-4">
+                                                        <i class="fa-solid fa-eye me-2"></i> Open PDF
+                                                    </a>
+                                                </div>
+                                            <?php endif; ?>
+                                        <?php else: ?>
+                                            <div class="py-5">
+                                                <i class="fa-regular fa-circle-question" style="font-size:3rem;color:#d1d5db;margin-bottom:12px;"></i>
+                                                <p class="text-muted">No ESVARBON certificate has been uploaded by this agent.</p>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="modal-footer" style="border-top:1px solid #f0f2f5;padding:12px 24px;">
+                                        <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">Close</button>
+                                        <?php if (!empty($agent_profile['ESVARBON_file'])): ?>
+                                            <a href="<?php echo $esvarbonFullPath; ?>" download class="btn btn-primary rounded-pill px-4">
+                                                <i class="fa-solid fa-download me-2"></i> Download
+                                            </a>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Action Buttons -->
                         <hr class="section-divider-inner">
                         <div class="d-flex gap-2 flex-wrap">

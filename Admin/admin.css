@@ -88,6 +88,33 @@ a { text-decoration: none; }
     border-color: #1E3888;
 }
 
+/* Offcanvas Mobile Sidebar */
+.offcanvas.sidebar-offcanvas {
+    background: linear-gradient(135deg, #14213D, #1E3888);
+    width: 280px;
+}
+.offcanvas.sidebar-offcanvas .offcanvas-header {
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding: 16px 20px;
+}
+.offcanvas.sidebar-offcanvas .offcanvas-body {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+.offcanvas.sidebar-offcanvas .sidebar-nav a.box {
+    margin: 2px 8px;
+    padding: 10px 16px !important;
+    font-size: 0.85em;
+}
+.offcanvas.sidebar-offcanvas .sidebar-nav a.box i {
+    width: 20px;
+}
+.offcanvas.sidebar-offcanvas .sidebar-nav:last-child {
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding: 12px 8px;
+}
+
 /* ── Page Header ────────────────────────── */
 .page-header h2 {
     font-family: "Voltaire", sans-serif;
