@@ -31,7 +31,7 @@ if (is_string($published_articles)) {
 }
 $a = new Utilities();
 $states =  $a->fetch_all_states();
-
+$all_agents = $a->get_all_agents();
 ?>
 
 
@@ -43,9 +43,8 @@ $states =  $a->fetch_all_states();
     <title>Homepage</title>
     <meta name="description" content="A Rental Management App" />
 	<meta name="author" content="Emmanuel Fajumo" />
-
-    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="fontawesome/css/all.min.css">
     <link rel="stylesheet" href="animate.min.css">
@@ -53,7 +52,128 @@ $states =  $a->fetch_all_states();
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Voltaire&display=swap" rel="stylesheet">
 
-
+<style>
+   
+.agent-carousel-section {
+    padding: 60px 0;
+}
+.agent-carousel-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.agent-carousel-track-container {
+    overflow: hidden;
+    width: 100%;
+    border-radius: 16px;
+}
+.agent-carousel-track {
+    display: flex;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    gap: 20px;
+    padding: 10px 0;
+}
+.agent-carousel-card {
+    min-width: calc(25% - 15px);
+    flex-shrink: 0;
+}
+.agent-carousel-card-inner {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 30px 20px 25px;
+    text-align: center;
+    border: 1px solid #f0f0f0;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.04);
+    transition: all 0.4s ease;
+    height: 100%;
+}
+.agent-carousel-card-inner:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+    border-color: #e0e0e0;
+}
+.agent-carousel-img-wrapper {
+    width: 90px;
+    height: 90px;
+    margin: 0 auto;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid #f0f2f5;
+    transition: border-color 0.3s ease;
+}
+.agent-carousel-card-inner:hover .agent-carousel-img-wrapper {
+    border-color: #1E3888;
+}
+.agent-carousel-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.agent-carousel-bio {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.5;
+    min-height: 48px;
+}
+.agent-carousel-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid #e0e0e0;
+    background: #ffffff;
+    color: #1E3888;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    z-index: 2;
+}
+.agent-carousel-btn:hover {
+    background: #1E3888;
+    color: #ffffff;
+    border-color: #1E3888;
+    box-shadow: 0 4px 14px rgba(30, 56, 136, 0.3);
+    transform: scale(1.05);
+}
+.agent-carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 24px;
+}
+.agent-carousel-dots .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #d0d5dd;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+}
+.agent-carousel-dots .dot.active {
+    background: #1E3888;
+    width: 28px;
+    border-radius: 5px;
+}
+@media (max-width: 991px) {
+    .agent-carousel-card { min-width: calc(33.333% - 14px); }
+}
+@media (max-width: 767px) {
+    .agent-carousel-card { min-width: calc(50% - 10px); }
+    .agent-carousel-btn { width: 36px; height: 36px; font-size: 0.85rem; }
+}
+@media (max-width: 480px) {
+    .agent-carousel-card { min-width: calc(100% - 0px); }
+}
+</style>
 
 </head>
 <body>
@@ -457,60 +577,74 @@ $states =  $a->fetch_all_states();
          if(!isset($_SESSION['agent_online']) && (!isset($_SESSION['useronline'])) ){
            ?>
     <div class="container section">
-        <div class="row ">
-                <div class="col-md-12 py-5 text-center">
-                    <p>FIND YOUR HOME IN 3 STEPS</p> 
-                    <h2 class="text-left mb-4 heading" style="font-family: 'Voltaire', sans-serif; font-size: 2.2em; color: #1E3888;">Finding a Home Has <span >Never Been This Easy</span></h2> 
-                    <a href="register.html" class="btn btn-outline-primary rounded ">SignUp Now</a>
-                </div>
-               
-                <div class="col-md-4">
-                    <div class="service-card-simple p-5 text-center h-100">
-                        <div class="step-label text-primary fw-semibold mb-3" style="font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;">
-                            Step 01
-                        </div>
-                        <div class="icon-wrapper mb-4">
-                            <i class="fas fa-handshake fa-3x text-primary"></i>
-                        </div>
-                        <h3 class="fw-bold mb-3" style="font-size: 1.6rem; line-height: 1.2;">Search</h3>
-                        <p class="text-muted mb-0" style="font-size: 0.95rem; line-height: 1.7;">
-                            Register as an agent, submit your verification documents, and get your verified badge.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="service-card-simple p-5 text-center h-100">
-                        <div class="step-label text-primary fw-semibold mb-3" style="font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;">
-                            Step 02
-                        </div>
-                        <div class="icon-wrapper mb-4">
-                            <i class="fas fa-handshake fa-3x text-primary"></i>
-                        </div>
-                        <h3 class="fw-bold mb-3" style="font-size: 1.6rem; line-height: 1.2;">Inspect</h3>
-                        <p class="text-muted mb-0" style="font-size: 0.95rem; line-height: 1.7;">
-                            View detailed photos, video walkthroughs, and full property features before committing to a visit.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="service-card-simple p-5 text-center h-100">
-                        <div class="step-label text-primary fw-semibold mb-3" style="font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;">
-                            Step 03
-                        </div>
-                        <div class="icon-wrapper mb-4">
-                            <i class="fas fa-handshake fa-3x text-primary"></i>
-                        </div>
-                        <h3 class="fw-bold mb-3" style="font-size: 1.6rem; line-height: 1.2;">Connect</h3>
-                        <p class="text-muted mb-0" style="font-size: 0.95rem; line-height: 1.7;">
-                           Chat directly with verified agents, schedule a visit, and make your payment securely on the platform.
-                        </p>
-                    </div>
-                </div>
-                
+        <div class="row ">        
         </div> 
 
+        <!-- AGENTS CAROUSEL SECTION -->
+        <div class="agent-carousel-section">
+            <div class="text-center mb-4">
+                <span class="badge rounded-pill px-4 py-2 mb-2"
+                    style="background-color: #e8f0fe; color: #1E3888; font-size: 0.82em;">
+                    MEET OUR AGENTS
+                </span>
+                <h2 style="font-family: 'Voltaire', sans-serif; font-size: 2.2em; color: #1E3888;">
+                    Work With Trusted Professionals
+                </h2>
+                <p class="text-muted mx-auto" style="max-width: 480px; font-size: 0.95em;">
+                    Our verified agents are ready to help you find the perfect home.
+                </p>
+            </div>
+
+            <div class="agent-carousel-wrapper">
+                <button class="agent-carousel-btn agent-carousel-prev" onclick="slideAgents('prev')" aria-label="Previous agents">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+
+                <div class="agent-carousel-track-container">
+                    <div class="agent-carousel-track" id="agentCarouselTrack">
+                        <?php if (!empty($all_agents)): ?>
+                            <?php foreach ($all_agents as $agent): ?>
+                                <div class="agent-carousel-card">
+                                    <div class="agent-carousel-card-inner">
+                                        <div class="agent-carousel-img-wrapper">
+                                            <img src="media/profile_pictures/<?php echo !empty($agent['profile_picture']) ? htmlspecialchars($agent['profile_picture']) : 'default.png'; ?>"
+                                                 alt="<?php echo htmlspecialchars($agent['first_name'] . ' ' . $agent['last_name']); ?>"
+                                                 onerror="this.src='media/agent.png'">
+                                        </div>
+                                        <h5 class="fw-bold mt-3 mb-1" style="color: #14213D;">
+                                            <?php echo htmlspecialchars($agent['first_name'] . ' ' . $agent['last_name']); ?>
+                                        </h5>
+                                        <p class="text-muted small mb-2">
+                                            <?php echo !empty($agent['agency']) ? htmlspecialchars($agent['agency']) : 'Independent Agent'; ?>
+                                        </p>
+                                        <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-1.5 rounded-pill" style="font-size: 0.7rem;">
+                                            <i class="fa-solid fa-circle-check me-1"></i><?php echo htmlspecialchars($agent['verification_status'] ?? 'Verified'); ?>
+                                        </span>
+                                        <p class="text-muted small mt-3 agent-carousel-bio">
+                                            <?php echo !empty($agent['agent_bio']) ? htmlspecialchars(substr($agent['agent_bio'], 0, 100)) . (strlen($agent['agent_bio']) > 100 ? '...' : '') : 'Experienced real estate agent dedicated to helping you find your dream home.'; ?>
+                                        </p>
+                                        <a href="browse_agents.php" class="btn btn-outline-primary btn-sm mt-2 px-4 rounded-pill">
+                                            View Profile
+                                        </a>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <div class="text-center py-4 w-100">
+                                <p class="text-muted">No agents available at the moment. Check back soon.</p>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+                <button class="agent-carousel-btn agent-carousel-next" onclick="slideAgents('next')" aria-label="Next agents">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+
+            <div class="agent-carousel-dots" id="agentCarouselDots"></div>
+        </div>
+        <!-- END AGENTS CAROUSEL SECTION -->
 
     </div>
     <!-- Why choose us -->
@@ -835,6 +969,98 @@ $states =  $a->fetch_all_states();
             heroSlider.addEventListener('mouseenter', () => clearInterval(slideInterval));
             heroSlider.addEventListener('mouseleave', startAutoPlay);
         }
+
+        // AGENT CAROUSEL
+        (function() {
+            const track = document.getElementById('agentCarouselTrack');
+            if (!track) return;
+
+            const cards = track.querySelectorAll('.agent-carousel-card');
+            if (cards.length === 0) return;
+
+            let currentAgentIndex = 0;
+            let cardsPerView = 4;
+            const gap = 20;
+
+            function getCardsPerView() {
+                const w = window.innerWidth;
+                if (w <= 480) return 1;
+                if (w <= 767) return 2;
+                if (w <= 991) return 3;
+                return 4;
+            }
+
+            function getCardWidth() {
+                const container = track.parentElement;
+                const containerWidth = container.offsetWidth;
+                cardsPerView = getCardsPerView();
+                const totalGap = gap * (cardsPerView - 1);
+                return (containerWidth - totalGap) / cardsPerView;
+            }
+
+            function updateTrack() {
+                const cardWidth = getCardWidth();
+                // Set card widths
+                cards.forEach(c => {
+                    c.style.minWidth = cardWidth + 'px';
+                });
+                const offset = currentAgentIndex * (cardWidth + gap);
+                track.style.transform = 'translateX(-' + offset + 'px)';
+                updateDots();
+            }
+
+            function updateDots() {
+                const maxIndex = Math.max(0, cards.length - cardsPerView);
+                const dotsContainer = document.getElementById('agentCarouselDots');
+                if (!dotsContainer) return;
+                
+                const totalDots = Math.ceil(cards.length / cardsPerView);
+                dotsContainer.innerHTML = '';
+                
+                for (let i = 0; i < totalDots; i++) {
+                    const dot = document.createElement('button');
+                    dot.className = 'dot' + (i === Math.floor(currentAgentIndex / cardsPerView) ? ' active' : '');
+                    dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+                    dot.onclick = function() {
+                        currentAgentIndex = i * cardsPerView;
+                        if (currentAgentIndex > maxIndex) currentAgentIndex = maxIndex;
+                        updateTrack();
+                    };
+                    dotsContainer.appendChild(dot);
+                }
+            }
+
+            // Expose slideAgents globally
+            window.slideAgents = function(direction) {
+                const cardWidth = getCardWidth();
+                const maxIndex = Math.max(0, cards.length - cardsPerView);
+                
+                if (direction === 'prev') {
+                    currentAgentIndex = Math.max(0, currentAgentIndex - cardsPerView);
+                } else {
+                    currentAgentIndex = Math.min(maxIndex, currentAgentIndex + cardsPerView);
+                }
+                updateTrack();
+            };
+
+            // Handle resize
+            let resizeTimer;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(function() {
+                    cardsPerView = getCardsPerView();
+                    // Reset index if out of bounds
+                    const maxIndex = Math.max(0, cards.length - cardsPerView);
+                    if (currentAgentIndex > maxIndex) currentAgentIndex = maxIndex;
+                    updateTrack();
+                }, 200);
+            });
+
+            // Initialize
+            cardsPerView = getCardsPerView();
+            // Wait a tick for layout to settle
+            setTimeout(updateTrack, 100);
+        })();
     </script>
 </body>
 </html>

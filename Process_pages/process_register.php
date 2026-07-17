@@ -30,7 +30,7 @@ if(isset($_POST['btn'])){
         $_SESSION['user_id'] = $newUser;
         $_SESSION['user_type'] = 'tenant';
         $_SESSION['user_name'] = trim($firstname . ' ' . $lastname);
-        header("location:../tenant_dashboard.php");
+        header("location:../index.php");
         // echo "Tenant data saved, successfully";
         include_once "classes/Registaration.php";
             

@@ -312,7 +312,7 @@ if(isset($_SESSION['agent_online'])){
                             </p>
 
                             <div class="d-flex gap-2 mt-3 w-100">
-                                <a href="#" class="btn btn-outline-primary btn-sm flex-grow-1 py-2 fw-semibold">View Profile</a>
+                                <a href="agent_detail.php?id=<?php echo $agent['Agent_id']; ?>" class="btn btn-outline-primary btn-sm flex-grow-1 py-2 fw-semibold">View Profile</a>
                                 <a href="#" class="btn btn-primary btn-sm flex-grow-1 py-2 fw-semibold text-light">Message Agent</a>
                             </div>
                         </div>

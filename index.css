@@ -21,7 +21,7 @@
             transition: all 0.3s ease; 
             box-shadow: 0 4px 18px rgba(255, 165, 0, 0.4); 
             white-space: nowrap;
-        }
+        }  
 
         /* ── Hero Slider ── */
         .hero-slider {
@@ -245,9 +245,6 @@
             opacity: 1;
         }
 
-        /* ================================
-           THE GRID LAYOUT
-        ================================ */
         .cities-grid {
             display: grid;
             gap: 14px;
@@ -302,9 +299,6 @@
             font-size: 2.2em;
         }
 
-        /* ================================
-           RESPONSIVE BREAKPOINTS
-        ================================ */
 
         /* Tablet — 2 columns */
         @media (max-width: 991px) {
@@ -373,9 +367,8 @@
             }
         }
 
-        /* =========================================
-           HERO SEARCH WIDGET — Modern Redesign
-        ========================================= */
+        
+           /* HERO SEARCH WIDGET — Modern Redesign */
 
         /* Pill toggle tabs */
         .search-tabs {

@@ -309,7 +309,7 @@
                          <i class="fa-solid fa-paper-plane me-1"></i> Leave a Message
                     </button>
                     <?php 
-                        if(isset($_SESSION['useroline'])){
+                        if(isset($_SESSION['useronline'])){
                             $phone = $res['phone'];
                             $phone = preg_replace('/[^0-9]/', '', $phone);
                             if (substr($phone, 0, 1) === '0') {
@@ -322,7 +322,7 @@
                         }
                     ?>
 
-                    <?php if(isset($_SESSION['useroline'])){
+                    <?php if(isset($_SESSION['useronline'])){
                     ?>
                     <a href="<?= $wa_link ?>" target="_blank" class="btn-view-profile mt-3"><i class="fa-brands fa-whatsapp"></i> Chat on WhatsApp</a>
 
