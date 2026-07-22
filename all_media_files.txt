@@ -1,0 +1,70 @@
+c:\xampp\htdocs\RMS\media\1.png
+c:\xampp\htdocs\RMS\media\abuja_city.png
+c:\xampp\htdocs\RMS\media\agent.jpeg
+c:\xampp\htdocs\RMS\media\agent.png
+c:\xampp\htdocs\RMS\media\agentandten.png
+c:\xampp\htdocs\RMS\media\bg.png
+c:\xampp\htdocs\RMS\media\blog_images
+c:\xampp\htdocs\RMS\media\chat.jpeg
+c:\xampp\htdocs\RMS\media\corridor.png
+c:\xampp\htdocs\RMS\media\country-house.png
+c:\xampp\htdocs\RMS\media\duplex.png
+c:\xampp\htdocs\RMS\media\enugu_city.png
+c:\xampp\htdocs\RMS\media\footer.png
+c:\xampp\htdocs\RMS\media\heart.png
+c:\xampp\htdocs\RMS\media\home.png
+c:\xampp\htdocs\RMS\media\ibadan_city.png
+c:\xampp\htdocs\RMS\media\image.png
+c:\xampp\htdocs\RMS\media\kaduna_city.png
+c:\xampp\htdocs\RMS\media\lagos_city.png
+c:\xampp\htdocs\RMS\media\port_harcourt_city.png
+c:\xampp\htdocs\RMS\media\profile_pictures
+c:\xampp\htdocs\RMS\media\q.png
+c:\xampp\htdocs\RMS\media\residential.png
+c:\xampp\htdocs\RMS\media\singleproperty.png
+c:\xampp\htdocs\RMS\media\singleproperty01.png
+c:\xampp\htdocs\RMS\media\singleproperty02.png
+c:\xampp\htdocs\RMS\media\singleproperty03.png
+c:\xampp\htdocs\RMS\media\singleproperty1.png
+c:\xampp\htdocs\RMS\media\singleproperty2.png
+c:\xampp\htdocs\RMS\media\singleproperty3.png
+c:\xampp\htdocs\RMS\media\uploads
+c:\xampp\htdocs\RMS\media\blog_images\blog_1784104181_6a5744f5b1070.png
+c:\xampp\htdocs\RMS\media\blog_images\blog_1784104454_6a5746062588c.png
+c:\xampp\htdocs\RMS\media\profile_pictures\default.png
+c:\xampp\htdocs\RMS\media\profile_pictures\NR_agent_6a46d02ddb4a91783025709_WhatsApp Image 2025-11-17 at 23.00.57_654d08be.jpg
+c:\xampp\htdocs\RMS\media\profile_pictures\NR_agent_6a46d10f13d7a1783025935_banner.png
+c:\xampp\htdocs\RMS\media\profile_pictures\NR_agent_6a4e48609e1b11783515232_WhatsApp Image 2025-11-17 at 23.00.57_654d08be.jpg
+c:\xampp\htdocs\RMS\media\profile_pictures\NR_agent_6a4e491595c351783515413_WhatsApp Image 2025-11-17 at 22.35.59_ae679842.jpg
+c:\xampp\htdocs\RMS\media\uploads\cac
+c:\xampp\htdocs\RMS\media\uploads\ESVARBON
+c:\xampp\htdocs\RMS\media\uploads\id
+c:\xampp\htdocs\RMS\media\uploads\poa
+c:\xampp\htdocs\RMS\media\uploads\cac\NR_user_6a36ced34bd081781976787_heroo.png
+c:\xampp\htdocs\RMS\media\uploads\cac\NR_user_6a36cfc062d4b1781977024_Revive email header.png
+c:\xampp\htdocs\RMS\media\uploads\cac\NR_user_6a36d7b5cd2211781979061_Revive email header.png
+c:\xampp\htdocs\RMS\media\uploads\cac\NR_user_6a37067eb3d1d1781991038_Revive email header.png
+c:\xampp\htdocs\RMS\media\uploads\cac\NR_user_6a4150ee5d1ea1782665454_Revised Privacy Policy.pdf
+c:\xampp\htdocs\RMS\media\uploads\cac\NR_user_6a46bd6be69fe1783020907_Revised Privacy Policy.pdf
+c:\xampp\htdocs\RMS\media\uploads\cac\NR_user_6a57b9b2c00381784134066_NYSC request Letter1.pdf
+c:\xampp\htdocs\RMS\media\uploads\ESVARBON\NR_user_6a36ced34ba701781976787_heroo.png
+c:\xampp\htdocs\RMS\media\uploads\ESVARBON\NR_user_6a36cfc0626781781977024_Revive email header.png
+c:\xampp\htdocs\RMS\media\uploads\ESVARBON\NR_user_6a36d7b5ccea61781979061_Revive email header.png
+c:\xampp\htdocs\RMS\media\uploads\ESVARBON\NR_user_6a37067eb391c1781991038_Revive email header.png
+c:\xampp\htdocs\RMS\media\uploads\ESVARBON\NR_user_6a4150ee5c9671782665454_Revised Privacy Policy.pdf
+c:\xampp\htdocs\RMS\media\uploads\ESVARBON\NR_user_6a46bd6be660f1783020907_Revised Privacy Policy.pdf
+c:\xampp\htdocs\RMS\media\uploads\ESVARBON\NR_user_6a57b9b2ba3ca1784134066_NYSC request Letter1.pdf
+c:\xampp\htdocs\RMS\media\uploads\id\NR_user_6a36ced34c0701781976787_hero1.png
+c:\xampp\htdocs\RMS\media\uploads\id\NR_user_6a36cfc0630ea1781977024_Revive email header.png
+c:\xampp\htdocs\RMS\media\uploads\id\NR_user_6a36d7b5cd5e21781979061_hero.png
+c:\xampp\htdocs\RMS\media\uploads\id\NR_user_6a37067eb409b1781991038_Revive email header.png
+c:\xampp\htdocs\RMS\media\uploads\id\NR_user_6a4150ee5d6aa1782665454_banner.png
+c:\xampp\htdocs\RMS\media\uploads\id\NR_user_6a46bd6be6da41783020907_travel1.PNG
+c:\xampp\htdocs\RMS\media\uploads\id\NR_user_6a57b9b2c1b431784134066_NYSC request Letter1.pdf
+c:\xampp\htdocs\RMS\media\uploads\poa\NR_user_6a36ced34c3ca1781976787_heroo.png
+c:\xampp\htdocs\RMS\media\uploads\poa\NR_user_6a36cfc0634b21781977024_Revive email header.png
+c:\xampp\htdocs\RMS\media\uploads\poa\NR_user_6a36d7b5cd8981781979061_Revive email header.png
+c:\xampp\htdocs\RMS\media\uploads\poa\NR_user_6a37067eb44ec1781991038_Revive email header.png
+c:\xampp\htdocs\RMS\media\uploads\poa\NR_user_6a4150ee5e5631782665454_q.png
+c:\xampp\htdocs\RMS\media\uploads\poa\NR_user_6a46bd6be707d1783020907_gui.PNG
+c:\xampp\htdocs\RMS\media\uploads\poa\NR_user_6a57b9b2c216e1784134066_Revised Privacy Policy.pdf

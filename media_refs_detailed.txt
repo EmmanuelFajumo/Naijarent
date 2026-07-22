@@ -1,0 +1,72 @@
+Admin\admin_dashboard_blog.php:184:                                $imgSrc = !empty($blog['featured_image']) ? '../' . htmlspecialchars($blog['featured_image']) : '../media/home.png';
+Admin\admin_dashboard_blog.php:198:                                    <img src="../media/blog_images/<?php echo $imgSrc; ?>" alt="<?php echo $blogTitle; ?>" class="blog-img">
+Admin\admin_dashboard_manage_agents.php:132:                                                    <img src="../media/profile_pictures/<?php echo $agent['profile_picture']; ?>" alt="avatar"
+Admin\admin_dashboard_manage_agents.php:215:                            <img src="media/q.png" alt="Profile Picture" class="box"
+Admin\admin_dashboard_manage_listings.php:228:                            <img src="media/q.png" alt="Profile Picture" class="box"
+Admin\admin_dashboard_manage_tenants.php:129:                                                    <img src="../media/q.png" alt="avatar"
+Admin\admin_dashboard_manage_tenants.php:224:                            <img src="media/q.png" alt="Profile Picture" class="box"
+Admin\admin_dashboard_verifications.php:147:                                        <img src="media/q.png" alt="avatar"
+Admin\admin_dashboard_verifications.php:267:                                                    <img src="media/q.png" alt=""
+Admin\admin_dashboard_verifications.php:304:                                            <img src="media/q.png" alt="property"
+Admin\admin_dashboard_verifications.php:306:                                            <img src="media/q.png" alt="property"
+Admin\admin_dashboard_verifications.php:441:                            <img src="media/q.png" alt="Profile Picture" class="box"
+Admin\agent_profile.php:86:                                <img src="../../media/profile_pictures/<?php echo $agent_profile['profile_picture'] ?>" alt="avatar" class="agent-avatar">
+Admin\agent_profile.php:280:                                            $cacFullPath = '../media/uploads/cac/' . $cacFile;
+Admin\agent_profile.php:327:                                            $esvarbonFullPath = '../media/uploads/ESVARBON/' . $esvarbonFile;
+Admin\Process_pages\process_article.php:9:$upload_dir = __DIR__ . "/../../media/blog_images/";
+Admin\Process_pages\process_article.php:66:                $featured_image = "./../media/blog_images/" . $new_filename;
+Admin\single_listing.php:75:                                    '../media/singleproperty02.png',
+Admin\single_listing.php:76:                                    '../media/singleproperty03.png',
+Admin\single_listing.php:77:                                    '../media/singleproperty01.png',
+Admin\single_listing.php:78:                                    '../media/singleproperty01.png',
+Admin\single_listing.php:79:                                    '../media/singleproperty01.png'
+Admin\single_listing.php:293:                            <img src="../media/q.png" alt="Agent" class="agent-avatar-lg">
+Agent\agent_dashboard.php:229:                            $img_src = !empty($property['image1']) ? '../' . $property['image1'] : '../media/singleproperty3.png';
+Agent\agent_nav.php:7:                        <img src="../media/profile_pictures/<?php echo $det['profile_picture']; ?>" alt="Profile Picture" class="box"
+Agent\agent_plans.php:99:                    <img src="media/agentandten.png" class="img-fluid bg-light rounded rounded-circle" alt="">
+Agent\agent_profile.php:271:                                    <img src="../media/profile_pictures/<?php echo $det['profile_picture']; ?>" alt="Profile Picture" id="profileImagePreview">
+agent_detail.php:88:                    <img src="media/profile_pictures/<?php echo htmlspecialchars($agent_profile['profile_picture'] ?? 'default.png'); ?>" 
+agent_detail.php:243:                                             onerror="this.src='media/home.png'">
+all_properties.php:63:    <div class="container-fluid hero-section" style="background-image: url('media/singleproperty1.png'); background-size: cover; background-position: center; height: 300px; position: relative;">
+browse_agents.php:290:                                <img src="media/profile_pictures/<?php echo $agent['profile_picture']; ?>" class="agent-img" alt="">
+confirm_payment.php:84:            background-image: url("media/bg.png");
+confirm_payment.php:211:                        <a type="botton" href="" id="pro2"> <img src="media/singleproperty02.png"
+confirm_payment.php:215:                        <a type="botton" href="" id="pro3"> <img src="media/singleproperty03.png"
+confirm_payment.php:219:                        <a type="botton" href="" id="pro4"> <img src="media/singleproperty01.png"
+confirm_payment.php:223:                        <a type="botton" href="" id="pro5"> <img src="media/singleproperty01.png"
+confirm_payment.php:227:                        <a type="botton" href="" id="pro5"> <img src="media/singleproperty01.png"
+confirm_payment.php:278:                <img src="media/q.png" class="img-fluid rounded rounded-circle" alt="Agent Image" style="width: 100px; height: 100px; object-fit: cover;">
+index.php:190:        <div class="slide active" style="background-image: url('media/bg.png');"></div>
+index.php:192:        <div class="slide" style="background-image: url('media/lagos_city.png');"></div>
+index.php:194:        <div class="slide" style="background-image: url('media/abuja_city.png');"></div>
+index.php:442:                                <img src="media/duplex.png" class="icon m-2" alt="">    
+index.php:448:                                <img src="media/home.png" class="icon m-2" alt="">     
+index.php:454:                                <img src="media/residential.png" class="icon m-2" alt="">     
+index.php:460:                                <img src="media/corridor.png" class="icon m-2" alt="">     
+index.php:493:                    <img src="media/lagos_city.png" alt="Lagos skyline">
+index.php:506:                    <img src="media/abuja_city.png" alt="Abuja">
+index.php:519:                    <img src="media/port_harcourt_city.png" alt="Port Harcourt">
+index.php:532:                    <img src="media/enugu_city.png" alt="Enugu">
+index.php:545:                    <img src="media/ibadan_city.png" alt="Ibadan">
+index.php:558:                    <img src="media/kaduna_city.png" alt="Kaduna">
+index.php:610:                                            <img src="media/profile_pictures/<?php echo !empty($agent['profile_picture']) ? htmlspecialchars($agent['profile_picture']) : 'default.png'; ?>"
+index.php:612:                                                 onerror="this.src='media/agent.png'">
+index.php:691:                    <img src="media/chat.jpeg" alt="Happy tenant" class="w-100 h-100" style="object-fit: cover;">
+index.php:809:                        $imgSrc = 'media/blog_images/' . basename($rawPath);
+index.php:811:                        $imgSrc = 'media/home.png';
+Process_pages\process_agent_profile_picture.php:35:    $upload_directory = "../media/profile_pictures/";
+Process_pages\process_agent_profile_update.php:104:        $rsp_ESVARBON = move_uploaded_file($ESVARBON_file_tmp_name, "../media/uploads/ESVARBON/$unique_ESVARBON_filename");
+Process_pages\process_agent_profile_update.php:108:        $rsp_cac = move_uploaded_file($cac_file_tmp_name, "../media/uploads/cac/$unique_cac_filename");
+Process_pages\process_agent_profile_update.php:112:        $rsp = move_uploaded_file($id_file_tmp_name, "../media/uploads/id/$unique_id_filename");
+Process_pages\process_agent_profile_update.php:117:        $res = move_uploaded_file($poa_tmp_name, "../media/uploads/poa/$unique_poa_filename");
+property_details.php:93:                    <img src="media/singleproperty02.png" alt="Thumb 2">
+property_details.php:96:                    <img src="media/singleproperty03.png" alt="Thumb 3">
+property_details.php:99:                    <img src="media/singleproperty01.png" alt="Thumb 4">
+property_details.php:102:                    <img src="media/singleproperty01.png" alt="Thumb 5">
+property_details.php:105:                    <img src="media/singleproperty01.png" alt="Thumb 6">
+property_details.php:295:                    <img src="media/profile_pictures/<?php echo $res['profile_picture']; ?>" class="agent-avatar" alt="Agent Image">
+single_article.php:35:    $artImage = !empty($res['featured_image']) ? htmlspecialchars($res['featured_image']) : 'media/home.png';
+style.css:39:            background-image: url("media/bg.png");
+tenant_dashboard.php:668:                            <img src="media/q.png" alt="Profile Picture" class="box"
+tenant_dashboard_payment.php:52:                        <img src="media/q.png" alt="Profile Picture" class="box"
+tenant_dashboard_payment.php:253:                            <img src="media/q.png" alt="Profile Picture" class="box"

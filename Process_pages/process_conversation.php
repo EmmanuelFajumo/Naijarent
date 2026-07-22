@@ -26,9 +26,10 @@ if(isset($_POST['send'])){
     $tenant = new Tenant();
     $user = $tenant->fetch_user_detailby_id($_SESSION['useronline']);
     $sender_id = $user['tenant_id'];
-    // $conversation_id = md5(uniqid(mt_rand(), true));
+    $sender_email = $user['email'];
+    $sender_name = $user['first_name'] . " " . $user['last_name'];
 
-
+    
     $chat = new ChatService();
     $chat_id = $chat->saveConversation($sender_id, $receiver_id, $property_id);
     if($chat_id){
@@ -41,9 +42,19 @@ if(isset($_POST['send'])){
             $agent_deet = $agent-> fetch_agent_details($receiver_id);
             $agent_email = $agent_deet['email'];
             $agent_name = $agent_deet['first_name'] . " " . $agent_deet['last_name'];
-            $property_link = "../property_details.php?id=" . $property_id;
-            $link_to_view_message = "../Agent/messages.php";
-            $message_body = "Hi $agent_name, You have new message.";
+
+
+            require_once "classes/Site.php";
+            $site = new Site();
+            $property_det = $site->fetch_property_detail($property_id);
+            $property_name = $property_det['title'];
+            $message_body = "<html><head><title>New Message</title></head>
+            <body>
+                <p>Hi $agent_name, You have new message from $sender_name, ($sender_email) about property $property_name.</p>
+                <p>The message is: <br> $message</p><br><br>
+                <p>Reach out to him at $sender_email.</p>
+                <p>click the link below to reply to the message</p><a href='http://localhost/FAJUMO_Emmanuel/RMS/agent-messages.php'>View Messages</a>
+            </body></html>" ;
             require_once "classes/Email.php";
             $email = new Email();
             $send_email = $email->agent_message_alert($agent_email, $agent_name, "New Message", $message_body);
@@ -54,7 +65,6 @@ if(isset($_POST['send'])){
             }
         }
 
-        //this is the main redirection code that was commented out
         header("location:../property_details.php?id=$property_id");
         exit;
     }else{

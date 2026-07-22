@@ -327,7 +327,7 @@
                     <a href="<?= $wa_link ?>" target="_blank" class="btn-view-profile mt-3"><i class="fa-brands fa-whatsapp"></i> Chat on WhatsApp</a>
 
                     <?php } ?>
-                    <a href="agent_profile.php?id=<?php echo $res['property_id']?>" class="btn-view-profile mt-3">View Profile</a>
+                    <a href="agent_detail.php?id=<?php echo $res['Agent_id']?>" class="btn-view-profile mt-3">View Profile</a>
                 </div>
             </div>
         </div>
@@ -345,7 +345,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
-            <p class="chat-property-label">Chat about <strong>Property #<?php echo $res['property_id']?></strong></p>
+            <p class="chat-property-label">Chat about <strong>"<?php echo $res['title']?>"</strong></p>
             <form class="col-12" method ="post" action="Process_pages/process_conversation.php" id="chat-form">
                  <input type="number" hidden id="property_id" name="property_id" value="<?php echo $res['property_id']?>">
                 <input type="number" hidden id="Agent_id" name="Agent_id" value="<?php echo $res['Agent_id']; ?>">	
